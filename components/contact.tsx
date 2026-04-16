@@ -36,8 +36,8 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Email us at</p>
-                  <a href="mailto:info@zakaa.tech" className="text-foreground hover:text-accent transition-colors">
-                    info@zakaa.tech
+                  <a href="mailto:info@zakaa.io" className="text-foreground hover:text-accent transition-colors">
+                    info@zakaa.io
                   </a>
                 </div>
               </div>
@@ -48,8 +48,8 @@ export function Contact() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground mb-1">Call us at</p>
-                  <a href="tel:+1234567890" className="text-foreground hover:text-accent transition-colors">
-                    +1 (234) 567-890
+                  <a href="tel:+201000292919" className="text-foreground hover:text-accent transition-colors">
+                    +2 01000292919
                   </a>
                 </div>
               </div>

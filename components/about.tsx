@@ -41,7 +41,7 @@ export function About() {
               <span className="text-accent">Human Mindset</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Zakaa, meaning &quot;intelligence&quot; in Arabic (ذكاء), embodies our approach to technology. 
+              Zakaa (ذكاء) embodies our approach to technology. 
               We combine deep technical expertise with a human-centric mindset to deliver 
               solutions that truly transform businesses.
             </p>
