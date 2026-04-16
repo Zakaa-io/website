@@ -9,12 +9,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase/client"
 
-export default function AuthPage() {
+export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [fullName, setFullName] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,9 +26,16 @@ export default function AuthPage() {
 
     const supabase = createClient()
     
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ?? 
+          `${window.location.origin}/auth/callback`,
+        data: {
+          full_name: fullName,
+        },
+      },
     })
 
     if (error) {
@@ -35,8 +44,31 @@ export default function AuthPage() {
       return
     }
 
-    router.push("/dashboard")
-    router.refresh()
+    setSuccess(true)
+    setIsLoading(false)
+  }
+
+  if (success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-8 bg-background">
+        <div className="w-full max-w-md space-y-8 text-center">
+          <div className="w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center mx-auto">
+            <CheckCircle className="w-8 h-8 text-accent" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold text-foreground">Check your email</h2>
+            <p className="text-muted-foreground">
+              {"We've sent a confirmation link to"} <strong>{email}</strong>. Click the link to activate your account.
+            </p>
+          </div>
+          <Link href="/auth">
+            <Button variant="outline" className="mt-4">
+              Back to login
+            </Button>
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -62,10 +94,10 @@ export default function AuthPage() {
           <div className="space-y-8">
             <div>
               <h1 className="text-4xl font-bold text-foreground mb-4">
-                Intelligent IT Solutions
+                Start Your Journey
               </h1>
               <p className="text-lg text-muted-foreground max-w-md">
-                Cloud, DevOps, Big Data, Security, and AI-powered tools — everything you need to transform your business infrastructure.
+                Join hundreds of businesses transforming their IT infrastructure with intelligent solutions.
               </p>
             </div>
 
@@ -76,8 +108,8 @@ export default function AuthPage() {
                   <CheckCircle className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">Cloud Infrastructure</p>
-                  <p className="text-sm text-muted-foreground">On-prem and cloud solutions</p>
+                  <p className="font-medium text-foreground">Free to start</p>
+                  <p className="text-sm text-muted-foreground">No credit card required</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -85,8 +117,8 @@ export default function AuthPage() {
                   <CheckCircle className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">DevOps & Automation</p>
-                  <p className="text-sm text-muted-foreground">Streamlined deployment pipelines</p>
+                  <p className="font-medium text-foreground">24/7 Support</p>
+                  <p className="text-sm text-muted-foreground">Expert help when you need it</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -94,25 +126,9 @@ export default function AuthPage() {
                   <CheckCircle className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">AI-Powered Tools</p>
-                  <p className="text-sm text-muted-foreground">Coming soon — intelligent automation</p>
+                  <p className="font-medium text-foreground">Enterprise Security</p>
+                  <p className="text-sm text-muted-foreground">Your data is always protected</p>
                 </div>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="flex gap-8 pt-4">
-              <div>
-                <p className="text-3xl font-bold text-foreground">99.9%</p>
-                <p className="text-sm text-muted-foreground">Uptime</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold text-foreground">24/7</p>
-                <p className="text-sm text-muted-foreground">Support</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold text-foreground">100+</p>
-                <p className="text-sm text-muted-foreground">Clients</p>
               </div>
             </div>
           </div>
@@ -131,7 +147,7 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* Right Panel - Login Form */}
+      {/* Right Panel - Signup Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
         <div className="w-full max-w-md space-y-8">
           {/* Mobile Logo */}
@@ -147,19 +163,11 @@ export default function AuthPage() {
             </Link>
           </div>
 
-          {/* Secure Login Badge */}
-          <div className="flex justify-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20">
-              <Lock className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium text-accent">Secure Login</span>
-            </div>
-          </div>
-
           {/* Header */}
           <div className="text-center space-y-2">
-            <h2 className="text-3xl font-bold text-foreground">Welcome back</h2>
+            <h2 className="text-3xl font-bold text-foreground">Create your account</h2>
             <p className="text-muted-foreground">
-              Sign in to continue to your workspace
+              Get started with intelligent IT solutions
             </p>
           </div>
 
@@ -172,6 +180,19 @@ export default function AuthPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="fullName" className="text-foreground">Full name</Label>
+              <Input
+                id="fullName"
+                type="text"
+                placeholder="John Doe"
+                required
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="h-12 bg-secondary border-border focus:border-accent focus:ring-accent"
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="email" className="text-foreground">Email address</Label>
               <Input
@@ -186,21 +207,14 @@ export default function AuthPage() {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-foreground">Password</Label>
-                <Link 
-                  href="/auth/forgot-password" 
-                  className="text-sm text-accent hover:text-accent/80 transition-colors"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+              <Label htmlFor="password" className="text-foreground">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder="Create a strong password"
                   required
+                  minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="h-12 bg-secondary border-border focus:border-accent focus:ring-accent pr-12"
@@ -217,6 +231,7 @@ export default function AuthPage() {
                   )}
                 </button>
               </div>
+              <p className="text-xs text-muted-foreground">Minimum 6 characters</p>
             </div>
 
             <Button 
@@ -224,7 +239,7 @@ export default function AuthPage() {
               className="w-full h-12 text-base font-medium"
               disabled={isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign in to workspace"}
+              {isLoading ? "Creating account..." : "Create account"}
             </Button>
           </form>
 
@@ -238,28 +253,24 @@ export default function AuthPage() {
             </div>
           </div>
 
-          {/* Sign Up Link */}
+          {/* Login Link */}
           <p className="text-center text-muted-foreground">
-            {"Don't have an account? "}
+            Already have an account?{" "}
             <Link 
-              href="/auth/signup" 
+              href="/auth" 
               className="text-accent hover:text-accent/80 font-medium transition-colors"
             >
-              Sign up free
+              Sign in
             </Link>
           </p>
 
-          {/* Security Badges */}
-          <div className="flex items-center justify-center gap-6 pt-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4" />
-              <span>256-bit SSL</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Shield className="w-4 h-4" />
-              <span>Secure</span>
-            </div>
-          </div>
+          {/* Terms */}
+          <p className="text-center text-xs text-muted-foreground">
+            By signing up, you agree to our{" "}
+            <Link href="/terms" className="text-accent hover:underline">Terms of Service</Link>
+            {" "}and{" "}
+            <Link href="/privacy" className="text-accent hover:underline">Privacy Policy</Link>
+          </p>
         </div>
       </div>
     </div>
