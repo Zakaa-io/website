@@ -43,9 +43,11 @@ export function Hero() {
               <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
-          <Button variant="outline" size="lg" className="gap-2 px-8 border-border hover:bg-secondary">
-            Explore Services
-          </Button>
+          <Link href="#services" className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" className="gap-2 px-8 border-border hover:bg-secondary w-full sm:w-auto">
+              Explore Services
+            </Button>
+          </Link>
         </div>
 
         {/* Stats */}
