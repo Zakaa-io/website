@@ -44,11 +44,11 @@ export function Header() {
         </div>
 
         <div className="hidden md:flex md:items-center md:gap-4">
-          <Button variant="outline" size="sm" className="border-border hover:bg-secondary">
-            Log in
+          <Button variant="outline" size="sm" className="border-border hover:bg-secondary" asChild>
+            <Link href="/auth">Log in</Link>
           </Button>
-          <Button size="sm">
-            Get Started
+          <Button size="sm" asChild>
+            <Link href="/auth">Get Started</Link>
           </Button>
         </div>
 
@@ -83,11 +83,11 @@ export function Header() {
               </Link>
             ))}
             <div className="flex flex-col gap-3 pt-4 border-t border-border">
-              <Button variant="outline" size="sm" className="w-full">
-                Log in
+              <Button variant="outline" size="sm" className="w-full" asChild>
+                <Link href="/auth">Log in</Link>
               </Button>
-              <Button size="sm" className="w-full">
-                Get Started
+              <Button size="sm" className="w-full" asChild>
+                <Link href="/auth">Get Started</Link>
               </Button>
             </div>
           </div>
