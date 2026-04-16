@@ -12,20 +12,20 @@ const navigation = {
   company: [
     { name: "About", href: "#about" },
     { name: "Contact", href: "#contact" },
-    { name: "Careers", href: "#" },
-    { name: "Blog", href: "#" },
+    { name: "Careers", href: "/careers" },
+    { name: "Blog", href: "/blog" },
   ],
   legal: [
-    { name: "Privacy Policy", href: "#" },
-    { name: "Terms of Service", href: "#" },
-    { name: "Cookie Policy", href: "#" },
+    { name: "Privacy Policy", href: "/privacy-policy" },
+    { name: "Terms of Service", href: "/terms-of-service" },
+    { name: "Cookie Policy", href: "/cookie-policy" },
   ],
 }
 
 const social = [
-  { name: "Twitter", href: "#", icon: Twitter },
-  { name: "LinkedIn", href: "#", icon: Linkedin },
-  { name: "GitHub", href: "#", icon: Github },
+  { name: "Twitter", href: "https://twitter.com/zakaaio", icon: Twitter },
+  { name: "LinkedIn", href: "https://linkedin.com/company/zakaa", icon: Linkedin },
+  { name: "GitHub", href: "https://github.com/zakaaio", icon: Github },
 ]
 
 export function Footer() {

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles } from "lucide-react"
 
@@ -36,10 +37,12 @@ export function Hero() {
 
         {/* CTA buttons */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button size="lg" className="gap-2 px-8">
-            Get Started
-            <ArrowRight className="w-4 h-4" />
-          </Button>
+          <Link href="/auth/signup" className="w-full sm:w-auto">
+            <Button size="lg" className="gap-2 px-8 w-full sm:w-auto">
+              Get Started
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
           <Button variant="outline" size="lg" className="gap-2 px-8 border-border hover:bg-secondary">
             Explore Services
           </Button>
