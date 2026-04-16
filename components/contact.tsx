@@ -1,16 +1,58 @@
 "use client"
 
 import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mail, MapPin, Phone, Send, CheckCircle } from "lucide-react"
 
+const contactSchema = z.object({
+  name: z.string().min(2, 'Please enter your full name.'),
+  email: z.string().email('Please enter a valid email address.'),
+  company: z.string().max(100, 'Company name must be 100 characters or less.').optional(),
+  message: z.string().min(10, 'Message must be at least 10 characters.').max(5000, 'Message is too long.'),
+})
+
+type ContactFormData = z.infer<typeof contactSchema>
+
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
+  const [serverError, setServerError] = useState<string | null>(null)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setSubmitted(true)
+  const onSubmit = async (data: ContactFormData) => {
+    setServerError(null)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        const errorMessage = result.error || 'Unable to send message. Please try again later.'
+        setServerError(errorMessage)
+        return
+      }
+
+      setSubmitted(true)
+      reset()
+    } catch (error) {
+      setServerError('Unable to send message. Please try again later.')
+      console.error('Contact form submission failed:', error)
+    }
   }
 
   return (
@@ -80,8 +122,8 @@ export function Contact() {
                 <p className="text-muted-foreground max-w-sm">
                   We&apos;ve received your message and will get back to you within 24 hours.
                 </p>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="mt-6"
                   onClick={() => setSubmitted(false)}
                 >
@@ -89,7 +131,7 @@ export function Contact() {
                 </Button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                     Full Name
@@ -98,9 +140,12 @@ export function Contact() {
                     id="name"
                     type="text"
                     placeholder="John Doe"
-                    required
                     className="bg-secondary border-border"
+                    {...register('name')}
                   />
+                  {errors.name && (
+                    <p className="text-xs text-destructive mt-2">{errors.name.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -111,9 +156,12 @@ export function Contact() {
                     id="email"
                     type="email"
                     placeholder="john@company.com"
-                    required
                     className="bg-secondary border-border"
+                    {...register('email')}
                   />
+                  {errors.email && (
+                    <p className="text-xs text-destructive mt-2">{errors.email.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -125,7 +173,11 @@ export function Contact() {
                     type="text"
                     placeholder="Your Company"
                     className="bg-secondary border-border"
+                    {...register('company')}
                   />
+                  {errors.company && (
+                    <p className="text-xs text-destructive mt-2">{errors.company.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -136,13 +188,20 @@ export function Contact() {
                     id="message"
                     rows={4}
                     placeholder="Tell us about your project..."
-                    required
                     className="w-full px-3 py-2 rounded-md bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+                    {...register('message')}
                   />
+                  {errors.message && (
+                    <p className="text-xs text-destructive mt-2">{errors.message.message}</p>
+                  )}
                 </div>
 
-                <Button type="submit" className="w-full gap-2">
-                  Send Message
+                {serverError && (
+                  <p className="text-sm text-destructive text-center">{serverError}</p>
+                )}
+
+                <Button type="submit" className="w-full gap-2" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                   <Send className="w-4 h-4" />
                 </Button>
               </form>
