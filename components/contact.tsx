@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
+import emailjs from '@emailjs/browser'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mail, MapPin, Phone, Send, CheckCircle } from "lucide-react"
@@ -33,19 +34,17 @@ export function Contact() {
     setServerError(null)
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-
-      const result = await response.json()
-
-      if (!response.ok || !result.success) {
-        const errorMessage = result.error || 'Unable to send message. Please try again later.'
-        setServerError(errorMessage)
-        return
-      }
+      await emailjs.send(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        {
+          name: data.name,
+          email: data.email,
+          company: data.company || '',
+          message: data.message,
+        },
+        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      )
 
       setSubmitted(true)
       reset()
