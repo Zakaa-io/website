@@ -20,6 +20,18 @@ export default function ResetPasswordPage() {
   const [isValidSession, setIsValidSession] = useState<boolean | null>(null)
   const router = useRouter()
 
+  const formatSupabaseError = (error: { message?: string; status?: number; name?: string; details?: string } | null) =>
+    error
+      ? [
+          error.message ?? "An unexpected error occurred",
+          error.status ? `status ${error.status}` : undefined,
+          error.name,
+          error.details,
+        ]
+          .filter(Boolean)
+          .join(" • ")
+      : null
+
   useEffect(() => {
     // Check if user has a valid recovery session
     const checkSession = async () => {
@@ -58,20 +70,27 @@ export default function ResetPasswordPage() {
 
     const supabase = createClient()
 
-    const { error } = await supabase.auth.updateUser({
-      password: password,
-    })
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: password,
+      })
 
-    setIsLoading(false)
+      setIsLoading(false)
 
-    if (error) {
-      setError(error.message)
-    } else {
-      setIsSuccess(true)
-      // Redirect to login after 3 seconds
-      setTimeout(() => {
-        router.push("/auth")
-      }, 3000)
+      if (error) {
+        console.error("Supabase updateUser error", error)
+        setError(formatSupabaseError(error))
+      } else {
+        setIsSuccess(true)
+        // Redirect to login after 3 seconds
+        setTimeout(() => {
+          router.push("/auth")
+        }, 3000)
+      }
+    } catch (caught) {
+      console.error("Supabase updateUser exception", caught)
+      setError(caught instanceof Error ? caught.message : String(caught))
+      setIsLoading(false)
     }
   }
 

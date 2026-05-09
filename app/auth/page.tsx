@@ -17,26 +17,45 @@ export default function AuthPage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
+  const formatSupabaseError = (error: { message?: string; status?: number; name?: string; details?: string } | null) =>
+    error
+      ? [
+          error.message ?? "An unexpected error occurred",
+          error.status ? `status ${error.status}` : undefined,
+          error.name,
+          error.details,
+        ]
+          .filter(Boolean)
+          .join(" • ")
+      : null
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
 
     const supabase = createClient()
-    
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
 
-    if (error) {
-      setError(error.message)
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) {
+        console.error("Supabase signIn error", error)
+        setError(formatSupabaseError(error))
+        setIsLoading(false)
+        return
+      }
+
+      router.push("/dashboard")
+      router.refresh()
+    } catch (caught) {
+      console.error("Supabase signIn exception", caught)
+      setError(caught instanceof Error ? caught.message : String(caught))
       setIsLoading(false)
-      return
     }
-
-    router.push("/dashboard")
-    router.refresh()
   }
 
   return (

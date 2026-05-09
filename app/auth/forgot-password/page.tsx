@@ -14,6 +14,18 @@ export default function ForgotPasswordPage() {
   const [error, setError] = useState<string | null>(null)
   const [isSuccess, setIsSuccess] = useState(false)
 
+  const formatSupabaseError = (error: { message?: string; status?: number; name?: string; details?: string } | null) =>
+    error
+      ? [
+          error.message ?? "An unexpected error occurred",
+          error.status ? `status ${error.status}` : undefined,
+          error.name,
+          error.details,
+        ]
+          .filter(Boolean)
+          .join(" • ")
+      : null
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -23,20 +35,27 @@ export default function ForgotPasswordPage() {
       process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zakaa.io'
     const redirectTo = process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL
       ? `${process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL}?next=/auth/reset-password`
-      : `${productionBaseUrl}/auth/reset-password`
+      : `${productionBaseUrl}/auth/callback?next=/auth/reset-password`
 
     const supabase = createClient()
 
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo,
-    })
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo,
+      })
 
-    setIsLoading(false)
+      setIsLoading(false)
 
-    if (error) {
-      setError(error.message)
-    } else {
-      setIsSuccess(true)
+      if (error) {
+        console.error("Supabase resetPasswordForEmail error", error)
+        setError(formatSupabaseError(error))
+      } else {
+        setIsSuccess(true)
+      }
+    } catch (caught) {
+      console.error("Supabase resetPasswordForEmail exception", caught)
+      setError(caught instanceof Error ? caught.message : String(caught))
+      setIsLoading(false)
     }
   }
 

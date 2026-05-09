@@ -1,12 +1,11 @@
 import { createBrowserClient } from '@supabase/ssr'
+import { getPublicEnv } from '@/lib/env'
 
 export function createClient() {
-  const anonKey =
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  const { supabaseUrl, supabaseAnonKey } = getPublicEnv()
 
   return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    anonKey!,
+    supabaseUrl,
+    supabaseAnonKey,
   )
 }

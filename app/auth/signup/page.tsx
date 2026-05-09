@@ -19,6 +19,18 @@ export default function SignUpPage() {
   const [success, setSuccess] = useState(false)
   const router = useRouter()
 
+  const formatSupabaseError = (error: { message?: string; status?: number; name?: string; details?: string } | null) =>
+    error
+      ? [
+          error.message ?? "An unexpected error occurred",
+          error.status ? `status ${error.status}` : undefined,
+          error.name,
+          error.details,
+        ]
+          .filter(Boolean)
+          .join(" • ")
+      : null
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -27,30 +39,37 @@ export default function SignUpPage() {
     const productionBaseUrl =
       process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zakaa.io'
     const emailRedirectTo =
-      process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL ||
+      process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL ??
       `${productionBaseUrl}/auth/callback`
 
     const supabase = createClient()
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo,
-        data: {
-          full_name: fullName,
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo,
+          data: {
+            full_name: fullName,
+          },
         },
-      },
-    })
+      })
 
-    if (error) {
-      setError(error.message)
+      if (error) {
+        console.error("Supabase signUp error", error)
+        setError(formatSupabaseError(error))
+        setIsLoading(false)
+        return
+      }
+
+      setSuccess(true)
       setIsLoading(false)
-      return
+    } catch (caught) {
+      console.error("Supabase signUp exception", caught)
+      setError(caught instanceof Error ? caught.message : String(caught))
+      setIsLoading(false)
     }
-
-    setSuccess(true)
-    setIsLoading(false)
   }
 
   if (success) {
