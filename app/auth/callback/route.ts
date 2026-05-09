@@ -16,6 +16,9 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(`${origin}/auth/reset-password`)
       }
       return NextResponse.redirect(`${origin}${next}`)
+    } else {
+      // Log the error for debugging
+      console.error('Auth callback error:', error)
     }
   }
 

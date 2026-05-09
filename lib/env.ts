@@ -16,6 +16,13 @@ export function getPublicEnv() {
     )
   }
 
+  // Basic URL validation
+  try {
+    new URL(supabaseUrl)
+  } catch {
+    throw new Error(`Invalid Supabase URL: ${supabaseUrl}`)
+  }
+
   return {
     supabaseUrl,
     supabaseAnonKey,
