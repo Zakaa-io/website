@@ -5,6 +5,22 @@ export const dynamic = 'force-dynamic'
 const BUILD_DATE =
   process.env.NEXT_PUBLIC_BUILD_DATE || process.env.BUILD_DATE || new Date().toISOString()
 
+function formatLocalEgyptTime(isoDate: string) {
+  const date = new Date(isoDate)
+  if (Number.isNaN(date.getTime())) return isoDate
+
+  return date.toLocaleString('en-GB', {
+    timeZone: 'Africa/Cairo',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }) + ' (EG local time)'
+}
+
 async function getSupabaseStatus() {
   const supabase = await createClient()
 
@@ -20,13 +36,18 @@ async function getSupabaseStatus() {
       const message = error.message ?? 'Unknown error'
       const networkError = message.includes('Failed to fetch') || message.includes('NetworkError')
 
+      if (networkError) {
+        return {
+          connected: false,
+          label: 'Disconnected',
+          details: 'Network request failed',
+        }
+      }
+
       return {
-        connected: !networkError,
-        label: networkError
-          ? 'Connection failed'
-          : 'Service reachable (query returned an error)',
-        details: message,
-        rowCount: Array.isArray(data) ? data.length : 0,
+        connected: true,
+        label: 'Connected',
+        details: 'Supabase service is reachable',
       }
     }
 
@@ -34,15 +55,13 @@ async function getSupabaseStatus() {
       connected: true,
       label: 'Connected',
       details: `Query succeeded, ${Array.isArray(data) ? data.length : 0} row(s) returned`,
-      rowCount: Array.isArray(data) ? data.length : 0,
     }
   } catch (error) {
     return {
       connected: false,
-      label: 'Connection failed',
+      label: 'Disconnected',
       details:
         error instanceof Error ? error.message : String(error ?? 'Unknown error'),
-      rowCount: 0,
     }
   }
 }
@@ -74,7 +93,7 @@ export default async function StatusPage() {
           <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
             <h2 className="text-xl font-semibold">Build Information</h2>
             <p className="mt-4 text-sm text-muted-foreground">Build timestamp</p>
-            <p className="mt-2 text-base text-foreground break-words">{BUILD_DATE}</p>
+            <p className="mt-2 text-base text-foreground break-words">{formatLocalEgyptTime(BUILD_DATE)}</p>
           </div>
         </div>
       </div>
