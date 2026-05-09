@@ -9,10 +9,12 @@ async function getSupabaseStatus() {
   const supabase = await createClient()
 
   try {
-    const { data, error } = await supabase
+    const result = (await supabase
       .from('profiles')
       .select('id')
-      .limit(1)
+      .limit(1)) as { data: unknown; error: { message?: string } | null }
+
+    const { data, error } = result
 
     if (error) {
       const message = error.message ?? 'Unknown error'
