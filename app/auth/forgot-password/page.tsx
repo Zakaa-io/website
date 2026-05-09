@@ -37,6 +37,8 @@ export default function ForgotPasswordPage() {
       ? `${process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL}?next=/auth/reset-password`
       : `${productionBaseUrl}/auth/callback?next=/auth/reset-password`
 
+    console.log('Forgot-password redirect URL:', { redirectTo, productionBaseUrl, envRedirect: process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL })
+
     const supabase = createClient()
 
     try {

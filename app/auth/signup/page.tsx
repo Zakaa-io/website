@@ -42,6 +42,8 @@ export default function SignUpPage() {
       process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL ??
       `${productionBaseUrl}/auth/callback`
 
+    console.log('Signup redirect URL:', { emailRedirectTo, productionBaseUrl, envRedirect: process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL })
+
     const supabase = createClient()
 
     try {
