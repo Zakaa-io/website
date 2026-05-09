@@ -24,14 +24,19 @@ export default function SignUpPage() {
     setIsLoading(true)
     setError(null)
 
+    const productionBaseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zakaa.io'
+    const emailRedirectTo =
+      process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL ||
+      `${productionBaseUrl}/auth/callback`
+
     const supabase = createClient()
     
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ?? 
-          `${window.location.origin}/auth/callback`,
+        emailRedirectTo,
         data: {
           full_name: fullName,
         },

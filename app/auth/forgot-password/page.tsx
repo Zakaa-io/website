@@ -19,12 +19,16 @@ export default function ForgotPasswordPage() {
     setIsLoading(true)
     setError(null)
 
+    const productionBaseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || 'https://www.zakaa.io'
+    const redirectTo = process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL
+      ? `${process.env.NEXT_PUBLIC_SUPABASE_REDIRECT_URL}?next=/auth/reset-password`
+      : `${productionBaseUrl}/auth/reset-password`
+
     const supabase = createClient()
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL 
-        ? `${process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL}?next=/auth/reset-password`
-        : `${window.location.origin}/auth/reset-password`,
+      redirectTo,
     })
 
     setIsLoading(false)
