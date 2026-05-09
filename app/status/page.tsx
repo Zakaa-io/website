@@ -48,7 +48,6 @@ async function getSupabaseStatus() {
 }
 
 export default async function StatusPage() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'Not configured'
   const status = await getSupabaseStatus()
 
   return (
@@ -64,26 +63,18 @@ export default async function StatusPage() {
         <div className="grid gap-6 md:grid-cols-2">
           <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
             <h2 className="text-xl font-semibold">Supabase Connection</h2>
-            <p className="mt-4 text-sm text-muted-foreground">Project URL</p>
-            <p className="mt-1 break-words text-base text-foreground">{supabaseUrl}</p>
             <p className="mt-6 text-sm text-muted-foreground">Status</p>
             <div className="mt-2 inline-flex items-center rounded-full bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
               {status.connected ? 'Connected' : 'Disconnected'}
             </div>
             <p className="mt-4 text-sm text-foreground">{status.label}</p>
             <p className="mt-2 text-sm text-muted-foreground">{status.details}</p>
-            <p className="mt-4 text-sm text-muted-foreground">Rows returned from test query</p>
-            <p className="mt-1 text-base text-foreground">{status.rowCount}</p>
           </div>
 
           <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
             <h2 className="text-xl font-semibold">Build Information</h2>
             <p className="mt-4 text-sm text-muted-foreground">Build timestamp</p>
             <p className="mt-2 text-base text-foreground break-words">{BUILD_DATE}</p>
-            <p className="mt-6 text-sm text-muted-foreground">Environment</p>
-            <p className="mt-2 text-base text-foreground">{process.env.VERCEL_ENV ?? 'unknown'}</p>
-            <p className="mt-6 text-sm text-muted-foreground">Commit</p>
-            <p className="mt-2 text-base text-foreground break-words">{process.env.VERCEL_GIT_COMMIT_SHA ?? 'not set'}</p>
           </div>
         </div>
       </div>
