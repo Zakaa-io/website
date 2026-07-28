@@ -1,73 +1,33 @@
-"use client"
-
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Home, ArrowLeft } from "lucide-react"
+import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="max-w-md w-full text-center">
-        {/* 404 Text */}
-        <div className="mb-6">
-          <h1 className="text-7xl font-bold text-accent mb-2">404</h1>
-          <h2 className="text-3xl font-bold text-foreground">
-            Page Not Found
-          </h2>
-        </div>
-
-        {/* Description */}
-        <p className="text-lg text-muted-foreground mb-8">
-          The page you're looking for doesn't exist or has been moved. 
-          Please check the URL and try again.
+    <main className="min-h-screen bg-[#0B1120] text-[#F8FAFC] flex items-center justify-center px-6">
+      <section className="w-full max-w-[680px] text-center rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-10">
+        <p className="text-sm font-semibold tracking-[0.14em] text-[#EF4444] mb-3">404 ERROR</p>
+        <h1 className="text-[clamp(2rem,5vw,3.25rem)] font-extrabold tracking-tight mb-4">
+          Page Not Found
+        </h1>
+        <p className="text-[#94A3B8] leading-relaxed mb-8">
+          The page you requested does not exist or may have been moved. You can return to the homepage
+          or jump to our services section.
         </p>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col gap-3">
-          <Link href="/" className="w-full">
-            <Button className="w-full gap-2">
-              <Home className="w-4 h-4" />
-              Go Home
-            </Button>
-          </Link>
-          <button
-            onClick={() => window.history.back()}
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 border border-border rounded-lg hover:bg-secondary transition-colors text-foreground"
+        <div className="flex justify-center gap-3 flex-wrap">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-white bg-[#3B82F6] hover:bg-[#2563EB] transition-all no-underline"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Go Back
-          </button>
+            Back to Home
+          </Link>
+          <Link
+            href="/#services"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.16)] hover:bg-[#1E293B] hover:text-[#F8FAFC] transition-all no-underline"
+          >
+            View Services
+          </Link>
         </div>
-
-        {/* Helpful Links */}
-        <div className="mt-8 pt-6 border-t border-border">
-          <p className="text-xs text-muted-foreground mb-4">
-            Popular Pages:
-          </p>
-          <div className="flex gap-2 justify-center flex-wrap">
-            <Link 
-              href="/#services"
-              className="text-xs text-accent hover:underline"
-            >
-              Services
-            </Link>
-            <span className="text-muted-foreground">•</span>
-            <Link 
-              href="/#about"
-              className="text-xs text-accent hover:underline"
-            >
-              About
-            </Link>
-            <span className="text-muted-foreground">•</span>
-            <Link 
-              href="/#contact"
-              className="text-xs text-accent hover:underline"
-            >
-              Contact
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+      </section>
+    </main>
+  );
 }

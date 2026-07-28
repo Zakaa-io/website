@@ -1,0 +1,46 @@
+name: Client Portal CI
+
+on:
+  pull_request:
+    paths:
+      - "app/portal/_zakaa-client-portal/**"
+      - ".github/workflows/client-portal-ci.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "app/portal/_zakaa-client-portal/**"
+      - ".github/workflows/client-portal-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  client-portal:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/portal/_zakaa-client-portal
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/portal/_zakaa-client-portal/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build

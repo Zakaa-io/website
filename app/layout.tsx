@@ -1,54 +1,55 @@
-import type { Metadata } from 'next'
-import { Inter, IBM_Plex_Sans_Arabic } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
-
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: '--font-inter',
-});
-
-const ibmPlexArabic = IBM_Plex_Sans_Arabic({ 
-  subsets: ["arabic"],
-  weight: ["400", "500", "600", "700"],
-  variable: '--font-arabic',
-});
+import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: 'Zakaa | ذكاء - Intelligent IT Solutions',
-  description: 'Zakaa provides intelligent IT solutions including cloud services, DevOps, Big Data, security, programming, and AI tools. Your trusted technology partner.',
-  keywords: ['IT services', 'cloud computing', 'DevOps', 'Big Data', 'cybersecurity', 'AI', 'programming', 'hosting'],
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+  title: "Zakaa — Enterprise IT Infrastructure & AI Operations",
+  description:
+    "We design, deploy, and manage cloud-native infrastructure with autonomous AI agents that handle repetitive operations — so your team focuses on what matters.",
+  keywords: [
+    "IT services",
+    "cloud infrastructure",
+    "DevOps",
+    "managed hosting",
+    "AI operations",
+    "cybersecurity",
+    "networking",
+    "Cairo",
+    "Egypt",
+  ],
+  openGraph: {
+    title: "Zakaa — Enterprise IT Infrastructure & AI Operations",
+    description:
+      "Cloud-native infrastructure management powered by autonomous AI agents. 99.99% uptime SLA.",
+    type: "website",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className={`${inter.variable} ${ibmPlexArabic.variable} font-sans antialiased`}>
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                try {
+                  var stored = localStorage.getItem('zakaa-theme');
+                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  var theme = stored === 'light' || stored === 'dark' ? stored : (prefersDark ? 'dark' : 'light');
+                  document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {
+                  document.documentElement.setAttribute('data-theme', 'dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body className="antialiased">{children}</body>
     </html>
-  )
+  );
 }

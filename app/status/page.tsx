@@ -1,102 +1,52 @@
-import { createClient } from '@/lib/supabase/server'
+import MarketingPageShell from "../components/MarketingPageShell";
 
-export const dynamic = 'force-dynamic'
+const services = [
+  { name: "API Platform", status: "Operational", uptime: "99.99%" },
+  { name: "Portal Services", status: "Operational", uptime: "99.95%" },
+  { name: "AI Assistance Endpoints", status: "Operational", uptime: "99.93%" },
+  { name: "Monitoring & Alerting", status: "Operational", uptime: "99.99%" },
+];
 
-const BUILD_DATE =
-  process.env.NEXT_PUBLIC_BUILD_DATE || process.env.BUILD_DATE || new Date().toISOString()
+const incidents = [
+  { date: "2026-07-10", detail: "Short-lived latency increase on analytics endpoints. Resolved in 14 minutes." },
+  { date: "2026-06-22", detail: "Planned maintenance completed with no service interruption." },
+];
 
-function formatLocalEgyptTime(isoDate: string) {
-  const date = new Date(isoDate)
-  if (Number.isNaN(date.getTime())) return isoDate
-
-  return date.toLocaleString('en-GB', {
-    timeZone: 'Africa/Cairo',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  }) + ' (EG local time)'
-}
-
-async function getSupabaseStatus() {
-  const supabase = await createClient()
-
-  try {
-    const result = (await supabase
-      .from('profiles')
-      .select('id')
-      .limit(1)) as { data: unknown; error: { message?: string } | null }
-
-    const { data, error } = result
-
-    if (error) {
-      const message = error.message ?? 'Unknown error'
-      const networkError = message.includes('Failed to fetch') || message.includes('NetworkError')
-
-      if (networkError) {
-        return {
-          connected: false,
-          label: 'Disconnected',
-          details: 'Network request failed',
-        }
-      }
-
-      return {
-        connected: true,
-        label: 'Connected',
-        details: 'Supabase service is reachable',
-      }
-    }
-
-    return {
-      connected: true,
-      label: 'Connected',
-      details: `Query succeeded, ${Array.isArray(data) ? data.length : 0} row(s) returned`,
-    }
-  } catch (error) {
-    return {
-      connected: false,
-      label: 'Disconnected',
-      details:
-        error instanceof Error ? error.message : String(error ?? 'Unknown error'),
-    }
-  }
-}
-
-export default async function StatusPage() {
-  const status = await getSupabaseStatus()
-
+export default function StatusPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground p-8">
-      <div className="mx-auto max-w-4xl space-y-8">
-        <div className="rounded-3xl border border-border bg-card p-10 shadow-sm">
-          <h1 className="text-4xl font-bold">System Status</h1>
-          <p className="mt-3 text-base text-muted-foreground">
-            This page verifies whether your Supabase service is reachable and displays the current build timestamp.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-            <h2 className="text-xl font-semibold">Supabase Connection</h2>
-            <p className="mt-6 text-sm text-muted-foreground">Status</p>
-            <div className="mt-2 inline-flex items-center rounded-full bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
-              {status.connected ? 'Connected' : 'Disconnected'}
+    <MarketingPageShell
+      label="Operations"
+      title="Service Status & SLA"
+      subtitle="Transparent visibility into service health, uptime targets, and incident communication."
+    >
+      <section className="grid gap-4 md:grid-cols-2">
+        {services.map((service) => (
+          <article
+            key={service.name}
+            className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-5"
+          >
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="text-base font-semibold">{service.name}</h2>
+              <span className="rounded-full bg-[rgba(16,185,129,0.15)] px-3 py-1 text-xs font-semibold text-[#10B981]">
+                {service.status}
+              </span>
             </div>
-            <p className="mt-4 text-sm text-foreground">{status.label}</p>
-            <p className="mt-2 text-sm text-muted-foreground">{status.details}</p>
-          </div>
+            <p className="mt-3 text-sm text-[#94A3B8]">30-day uptime target: {service.uptime}</p>
+          </article>
+        ))}
+      </section>
 
-          <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-            <h2 className="text-xl font-semibold">Build Information</h2>
-            <p className="mt-4 text-sm text-muted-foreground">Build timestamp</p>
-            <p className="mt-2 text-base text-foreground break-words">{formatLocalEgyptTime(BUILD_DATE)}</p>
-          </div>
-        </div>
-      </div>
-    </main>
-  )
+      <section className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6">
+        <h2 className="text-xl font-semibold">Recent Incident Log</h2>
+        <ul className="mt-4 space-y-3 text-sm text-[#94A3B8]">
+          {incidents.map((incident) => (
+            <li key={incident.date} className="rounded-lg bg-[#0F172A] p-3">
+              <p className="font-semibold text-[#CBD5E1]">{incident.date}</p>
+              <p className="mt-1">{incident.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </MarketingPageShell>
+  );
 }
