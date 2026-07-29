@@ -9,6 +9,8 @@ interface Particle {
   vy: number;
   size: number;
   opacity: number;
+  twinkleSpeed: number;
+  twinkleOffset: number;
 }
 
 interface ParticleCanvasProps {
@@ -26,66 +28,44 @@ export default function ParticleCanvas({ className = "fixed inset-0 z-0 pointer-
 
     let particles: Particle[] = [];
     let animId: number;
-    const mouse = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-      tx: window.innerWidth / 2,
-      ty: window.innerHeight / 2,
-    };
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      mouse.x = canvas.width / 2;
-      mouse.y = canvas.height / 2;
-      mouse.tx = canvas.width / 2;
-      mouse.ty = canvas.height / 2;
     };
     resize();
     window.addEventListener("resize", resize);
 
-    const onMouseMove = (event: MouseEvent) => {
-      mouse.tx = event.clientX;
-      mouse.ty = event.clientY;
-    };
-    window.addEventListener("mousemove", onMouseMove);
-
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 60; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: (Math.random() - 0.5) * 0.2,
-        size: Math.random() * 1.5 + 0.5,
-        opacity: Math.random() * 0.3 + 0.05,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        size: Math.random() * 1.8 + 0.4,
+        opacity: Math.random() * 0.5 + 0.1,
+        twinkleSpeed: Math.random() * 2 + 1,
+        twinkleOffset: Math.random() * Math.PI * 2,
       });
     }
 
-    const animate = () => {
+    const animate = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      mouse.x += (mouse.tx - mouse.x) * 0.1;
-      mouse.y += (mouse.ty - mouse.y) * 0.1;
-
-      const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 52);
-      glow.addColorStop(0, "rgba(239,68,68,0.18)");
-      glow.addColorStop(1, "rgba(239,68,68,0)");
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 1.7, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(239,68,68,0.8)";
-      ctx.fill();
 
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        const twinkle = Math.sin(time * 0.001 * p.twinkleSpeed + p.twinkleOffset) * 0.3 + 0.7;
+        const alpha = p.opacity * twinkle;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(59,130,246,${p.opacity})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
         ctx.fill();
       });
 
@@ -94,11 +74,11 @@ export default function ParticleCanvas({ className = "fixed inset-0 z-0 pointer-
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
+          if (dist < 100) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(59,130,246,${0.04 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.03 * (1 - dist / 100)})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -107,11 +87,10 @@ export default function ParticleCanvas({ className = "fixed inset-0 z-0 pointer-
 
       animId = requestAnimationFrame(animate);
     };
-    animate();
+    animId = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", onMouseMove);
       cancelAnimationFrame(animId);
     };
   }, []);

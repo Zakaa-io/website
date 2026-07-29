@@ -23,13 +23,13 @@ export default function CTA({ locale = "en" }: Readonly<CTAProps>) {
   return (
     <section
       id="contact"
-      className="py-24 relative overflow-hidden border-y border-[rgba(148,163,184,0.08)] bg-[#0F172A]"
+      className="py-24 relative overflow-hidden border-y border-[rgba(148,163,184,0.08)] bg-[#0c0c12]"
     >
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(59,130,246,0.06), transparent)",
+            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(99,102,241,0.06), transparent)",
         }}
       />
 
@@ -54,16 +54,16 @@ export default function CTA({ locale = "en" }: Readonly<CTAProps>) {
         <FadeIn delay={300}>
           <div className="flex gap-4 justify-center flex-wrap">
             <a
-              href="#assessment-form"
-              className="inline-flex items-center gap-2 px-9 py-4 rounded-[10px] text-base font-semibold text-white bg-[#3B82F6] hover:bg-[#2563EB] shadow-[0_4px_20px_rgba(59,130,246,0.2)] hover:shadow-[0_8px_30px_rgba(59,130,246,0.3)] hover:-translate-y-0.5 transition-all no-underline"
+href="#assessment-form"
+	               className="inline-flex items-center gap-2 px-9 py-4 rounded-[10px] text-base font-semibold text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5 transition-all no-underline"
             >
               <span>{isArabic ? "احجز تقييمك" : "Book Your Assessment"}</span>
               <span>→</span>
             </a>
-            <button
-              type="button"
-              onClick={openChat}
-              className="inline-flex items-center gap-2 px-9 py-4 rounded-[10px] text-base font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.12)] hover:bg-[#1E293B] hover:text-[#F8FAFC] transition-all no-underline"
+<button
+	                type="button"
+	                onClick={openChat}
+	                className="inline-flex items-center gap-2 px-9 py-4 rounded-[10px] text-base font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all no-underline"
             >
               {isArabic ? "تحدث مع مهندس" : "Talk to an Engineer"}
             </button>
@@ -75,22 +75,22 @@ export default function CTA({ locale = "en" }: Readonly<CTAProps>) {
               <button
                 type="button"
                 onClick={() => setAssessmentLanguage("en")}
-                className={`rounded-md px-3 py-1.5 text-xs ${
-                  assessmentLanguage === "en"
-                    ? "bg-[#3B82F6] text-white"
-                    : "bg-[#111827] text-[#94A3B8] border border-[rgba(148,163,184,0.14)]"
-                }`}
+className={`rounded-md px-3 py-1.5 text-xs ${
+	                   assessmentLanguage === "en"
+	                     ? "bg-[#6366f1] text-white"
+	                     : "bg-[#12121a] text-[#a1a1aa] border border-[rgba(148,163,184,0.14)]"
+	                   }`}
               >
                 EN
               </button>
               <button
                 type="button"
                 onClick={() => setAssessmentLanguage("ar")}
-                className={`rounded-md px-3 py-1.5 text-xs ${
-                  assessmentLanguage === "ar"
-                    ? "bg-[#3B82F6] text-white"
-                    : "bg-[#111827] text-[#94A3B8] border border-[rgba(148,163,184,0.14)]"
-                }`}
+className={`rounded-md px-3 py-1.5 text-xs ${
+	                   assessmentLanguage === "ar"
+	                     ? "bg-[#6366f1] text-white"
+	                     : "bg-[#12121a] text-[#a1a1aa] border border-[rgba(148,163,184,0.14)]"
+	                   }`}
               >
                 AR
               </button>

@@ -96,14 +96,14 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
           {plans.map((plan, i) => (
             <FadeIn key={plan.name} delay={i * 150}>
               <div
-                className={`relative bg-[#111827] border rounded-[20px] p-10 transition-all duration-300 hover:border-[rgba(59,130,246,0.15)] ${
-                  plan.popular
-                    ? "border-[#3B82F6] shadow-[0_0_40px_rgba(59,130,246,0.08)] md:scale-[1.03]"
-                    : "border-[rgba(148,163,184,0.08)]"
-                }`}
+className={`relative bg-[#12121a] border rounded-[20px] p-10 transition-all duration-300 hover:border-[rgba(99,102,241,0.15)] ${
+	                  plan.popular
+	                    ? "border-[#6366f1] shadow-[0_0_40px_rgba(99,102,241,0.08)] md:scale-[1.03]"
+	                    : "border-[rgba(148,163,184,0.06)]"
+	                }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full bg-[#3B82F6] text-white text-xs font-bold">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full bg-[#6366f1] text-white text-xs font-bold">
                     {isArabic ? "الأكثر طلباً" : "Most Popular"}
                   </div>
                 )}
@@ -111,10 +111,10 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
                 <h3 className="text-lg font-bold mb-2">{plan.name}</h3>
                 <p className="text-[#94A3B8] text-sm mb-4">{plan.description}</p>
 
-                <div className="text-5xl font-extrabold my-4 text-[#3B82F6]">
+                <div className="text-5xl font-extrabold my-4 text-[#6366f1]">
                   {plan.price}
                   {plan.period && (
-                    <span className="text-base font-normal text-[#64748B]">
+                    <span className="text-xs font-normal text-[#71717a]">
                       {plan.period}
                     </span>
                   )}
@@ -132,14 +132,14 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
                   ))}
                 </ul>
 
-                <button
-                  onClick={handleNav}
-                  className={`w-full justify-center inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold transition-all cursor-pointer ${
-                    plan.ctaStyle === "primary"
-                      ? "text-white bg-[#3B82F6] hover:bg-[#2563EB] shadow-[0_4px_20px_rgba(59,130,246,0.2)] hover:shadow-[0_8px_30px_rgba(59,130,246,0.3)] hover:-translate-y-0.5"
-                      : "text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.12)] hover:bg-[#1E293B] hover:text-[#F8FAFC]"
-                  }`}
-                >
+<button
+	                  onClick={handleNav}
+	                  className={`w-full justify-center inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold transition-all cursor-pointer ${
+	                    plan.ctaStyle === "primary"
+	                      ? "text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5"
+	                      : "text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7]"
+	                  }`}
+	                >
                   {plan.cta}
                 </button>
               </div>

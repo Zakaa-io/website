@@ -49,7 +49,7 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
       </div>
       <div className="relative z-10 max-w-[1280px] mx-auto px-6">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111827] border border-[rgba(148,163,184,0.08)] text-sm font-medium text-[#3B82F6] mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#12121a] border border-[rgba(148,163,184,0.06)] text-sm font-medium text-[#6366f1] mb-8">
           <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981] animate-pulse-dot" />
           <span className="font-mono text-xs">
             {isArabic ? "مراقبة البنية التحتية تعمل 24/7" : "24/7 Infrastructure Monitoring Active"}
@@ -57,13 +57,13 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
         </div>
 
         {/* Heading */}
-        <h1 className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight mb-6">
+        <h1 className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-[#e4e4e7]">
           {isArabic ? "بنية تحتية مؤسسية لتقنية المعلومات،" : "Enterprise IT Infrastructure,"}
           <br />
           <span className="accent-text">{isArabic ? "مدعومة بوكلاء الذكاء الاصطناعي" : "Powered by AI Agents"}</span>
         </h1>
 
-        <p className="text-[clamp(1rem,2vw,1.25rem)] text-[#94A3B8] max-w-[600px] mb-10 leading-relaxed">
+        <p className="text-[clamp(1rem,2vw,1.25rem)] text-[#a1a1aa] max-w-[600px] mb-10 leading-relaxed">
           {isArabic
             ? "نقوم بتصميم ونشر وإدارة بنية تحتية سحابية حديثة باستخدام وكلاء ذكاء اصطناعي مستقلين يتولون المهام التشغيلية المتكررة، حتى يركز فريقك على ما يهم فعلاً."
             : "We design, deploy, and manage cloud-native infrastructure with autonomous AI agents that handle repetitive operations — so your team focuses on what matters."}
@@ -73,14 +73,14 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
         <div className="flex gap-4 flex-wrap mb-16">
           <button
             onClick={() => handleNav("#contact")}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-white bg-[#3B82F6] hover:bg-[#2563EB] shadow-[0_4px_20px_rgba(59,130,246,0.2)] hover:shadow-[0_8px_30px_rgba(59,130,246,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer"
           >
             <span>{isArabic ? "ابدأ تقييمك الآن" : "Start Your Assessment"}</span>
             <span>→</span>
           </button>
           <button
             onClick={() => handleNav("#services")}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.12)] hover:bg-[#1E293B] hover:text-[#F8FAFC] transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all cursor-pointer"
           >
             {isArabic ? "استكشف الخدمات" : "Explore Services"}
           </button>
@@ -90,10 +90,10 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
         <div className="flex gap-12 flex-wrap">
           {stats.map((stat) => (
             <div key={stat.label}>
-              <h3 className="text-3xl font-extrabold text-[#3B82F6] font-mono">
+              <h3 className="text-3xl font-extrabold text-[#6366f1] font-mono">
                 {stat.value}
               </h3>
-              <p className="text-sm text-[#64748B] mt-1">{stat.label}</p>
+              <p className="text-sm text-[#71717a] mt-1">{stat.label}</p>
             </div>
           ))}
         </div>

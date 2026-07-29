@@ -1,0 +1,13 @@
+switch the ui to be "cloudflare" ui for the dark mode - DONE
+toggle button to switch from dark to light and vs - DONE (ThemeToggle.tsx updated with Cloudflare styling)
+back to home button, should be present once the header is disappered - DONE
+add a red progress bar around the "back to home" button - DONE
+
+Additional updates:
+- Removed mouse-following shadow effect from ParticleCanvas
+- Implemented randomly moving white stars background animation with twinkling effect
+- Fixed light mode contrast and legibility (darker text colors for better AA contrast)
+- Fixed font readability in Light Mode (font-weight 400 base, font-smoothing, darker secondary/muted text)
+- Removed duplicate "AI Lab" tab (same #phase3 link as Products)
+- Moved "Products" tab to last position in navbar
+- "AI Agents" tab positioned after "Services" and before "Process"

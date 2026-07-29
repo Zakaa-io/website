@@ -49,14 +49,14 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
   };
 
   return (
-    <footer className="bg-[#0B1120] border-t border-[rgba(148,163,184,0.08)] pt-16 pb-8">
+    <footer className="bg-[#06060a] border-t border-[rgba(148,163,184,0.06)] pt-16 pb-8">
       <div className="max-w-[1280px] mx-auto px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-12 mb-12">
           {/* Brand */}
           <div>
-            <a
-              href="#"
-              className="flex items-center gap-3 font-extrabold text-lg tracking-tight text-[#F8FAFC] no-underline"
+<a
+	               href="#"
+	               className="flex items-center gap-3 font-extrabold text-lg tracking-tight text-[#e4e4e7] no-underline"
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -86,7 +86,7 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
                 <a
                   key={item.platform}
                   href="#"
-                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#1E293B] border border-[rgba(148,163,184,0.08)] px-3 py-2 text-[#64748B] text-sm no-underline transition-all hover:bg-[#1E293B] hover:text-[#3B82F6] hover:border-[rgba(59,130,246,0.2)]"
+                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#12121a] border border-[rgba(148,163,184,0.06)] px-3 py-2 text-[#a1a1aa] text-sm no-underline transition-all hover:bg-[#1a1a24] hover:text-[#6366f1] hover:border-[rgba(99,102,241,0.2)]"
                   aria-label={`${item.platform} zakaa-ai`}
                 >
                   <span className="font-semibold">{item.icon}</span>
@@ -99,22 +99,22 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
           {/* Link columns */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
-              <h4 className="text-sm font-bold mb-5 text-[#F8FAFC]">{title}</h4>
+              <h4 className="text-sm font-bold mb-5 text-[#e4e4e7]">{title}</h4>
               <ul className="list-none">
                 {links.map((link) => (
                   <li key={link.label} className="mb-2.5">
                     {link.href.startsWith("#") ? (
-                      <button
-                        onClick={() => handleNav(link.href)}
-                        className="text-[#64748B] text-sm no-underline transition-colors hover:text-[#3B82F6] bg-transparent border-none cursor-pointer"
-                      >
+<button
+	                        onClick={() => handleNav(link.href)}
+	                        className="text-[#a1a1aa] text-sm no-underline transition-colors hover:text-[#6366f1] bg-transparent border-none cursor-pointer"
+	                      >
                         {link.label}
                       </button>
                     ) : (
-                      <a
-                        href={link.href}
-                        className="text-[#64748B] text-sm no-underline transition-colors hover:text-[#3B82F6]"
-                      >
+<a
+	                        href={link.href}
+	                        className="text-[#a1a1aa] text-sm no-underline transition-colors hover:text-[#6366f1]"
+	                      >
                         {link.label}
                       </a>
                     )}

@@ -14,7 +14,7 @@ import Footer from "./sections/Footer";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-[#0B1120] text-[#F8FAFC]">
+    <main className="relative min-h-screen bg-[#06060a] text-[#e4e4e7]">
       <ParticleCanvas />
       <div className="relative z-10">
         <Navbar locale="en" />

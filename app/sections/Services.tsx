@@ -78,12 +78,12 @@ export default function Services({ locale = "en" }: Readonly<ServicesProps>) {
             <FadeIn key={service.title} delay={i * 100}>
               <Link
                 href={service.href}
-                className="group block bg-[#111827] border border-[rgba(148,163,184,0.08)] rounded-2xl p-8 transition-all duration-300 hover:border-[rgba(59,130,246,0.2)] hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_40px_rgba(59,130,246,0.06)] relative overflow-hidden h-full no-underline"
+                className="group block bg-[#12121a] border border-[rgba(148,163,184,0.06)] rounded-2xl p-8 transition-all duration-300 hover:border-[rgba(99,102,241,0.2)] hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_40px_rgba(99,102,241,0.06)] relative overflow-hidden h-full no-underline"
               >
                 {/* Top accent line */}
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#6366f1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5 bg-[#1E293B] border border-[rgba(148,163,184,0.08)]">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-5 bg-[#1a1a24] border border-[rgba(148,163,184,0.06)]">
                   {service.icon}
                 </div>
                 <h3 className="text-lg font-bold mb-2.5">{service.title}</h3>
@@ -92,10 +92,10 @@ export default function Services({ locale = "en" }: Readonly<ServicesProps>) {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-md bg-[#1E293B] text-xs text-[#64748B] border border-[rgba(148,163,184,0.08)]"
-                    >
+<span
+	                       key={tag}
+	                       className="px-3 py-1 rounded-md bg-[#1a1a24] text-xs text-[#a1a1aa] border border-[rgba(148,163,184,0.06)]"
+	                     >
                       {tag}
                     </span>
                   ))}
