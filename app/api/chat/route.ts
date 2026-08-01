@@ -93,13 +93,19 @@ export async function POST(request: Request) {
         : undefined,
     };
 
-    const persistence = await persistChatExchange({
-      language,
-      provider: response.provider,
-      userMessage: latestUserMessage.content,
-      assistantReply: response.reply,
-      suggestedNextStep: response.suggestedNextStep,
-    });
+    let persistence: string;
+    try {
+      persistence = await persistChatExchange({
+        language,
+        provider: generation.provider,
+        userMessage: latestUserMessage.content,
+        assistantReply: generation.text,
+        suggestedNextStep: response.suggestedNextStep,
+      });
+    } catch (persistError) {
+      console.error("[chat] persistence failed", persistError);
+      persistence = "persistence_failed";
+    }
 
     trackServerEvent({
       name: "chat_response_received",
@@ -134,7 +140,7 @@ export async function POST(request: Request) {
     trackServerEvent({
       name: "chat_response_failed",
       route: "/api/chat",
-      details: { reason: message },
+      details: { reason: message, stack: error instanceof Error ? error.stack : undefined },
     });
     return NextResponse.json({ error: "An unexpected error occurred. Please try again later." }, { status: 500 });
   }
