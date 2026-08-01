@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid credentials." }, { status: 401 });
     }
 
-    const token = createSessionToken({ email: auth.email, role: auth.role });
+    const token = await createSessionToken({ email: auth.email, role: auth.role });
     const response = NextResponse.json(
       { success: true, user: { email: auth.email, role: auth.role } },
       { status: 200 }
