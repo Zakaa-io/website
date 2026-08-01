@@ -24,7 +24,7 @@ export default function ArabicHome() {
         <Process locale="ar" />
         <Testimonials locale="ar" />
         <Pricing locale="ar" />
-        <Phase3Labs />
+        <Phase3Labs locale="ar" />
         <CTA locale="ar" />
         <Footer locale="ar" />
       </div>

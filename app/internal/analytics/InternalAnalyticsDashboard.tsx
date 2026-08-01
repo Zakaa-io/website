@@ -184,21 +184,21 @@ export default function InternalAnalyticsDashboard() {
 
   if (checkingSession) {
     return (
-      <main className="min-h-screen bg-[#0B1120] text-[#F8FAFC] p-6 md:p-10">
-        <div className="max-w-6xl mx-auto text-sm text-[#94A3B8]">Checking session...</div>
+      <main className="min-h-screen bg-[#06060a] text-[#e4e4e7] p-6 md:p-10">
+        <div className="max-w-6xl mx-auto text-sm text-[#a1a1aa]">Checking session...</div>
       </main>
     );
   }
 
   if (!session.authenticated) {
     return (
-      <main className="min-h-screen bg-[#0B1120] text-[#F8FAFC] p-6 md:p-10">
-        <div className="max-w-md mx-auto mt-10 md:mt-20 rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 md:p-8">
+      <main className="min-h-screen bg-[#06060a] text-[#e4e4e7] p-6 md:p-10">
+        <div className="max-w-md mx-auto mt-10 md:mt-20 rounded-2xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-6 md:p-8">
           <h1 className="text-2xl font-bold">Internal Analytics Login</h1>
-          <p className="mt-2 text-sm text-[#94A3B8]">Sign in with your session credentials to access ops metrics.</p>
+          <p className="mt-2 text-sm text-[#a1a1aa]">Sign in with your session credentials to access ops metrics.</p>
           <form className="mt-6 space-y-4" onSubmit={onLogin}>
             <div>
-              <label className="block text-sm mb-1 text-[#94A3B8]" htmlFor="email">
+              <label className="block text-sm mb-1 text-[#a1a1aa]" htmlFor="email">
                 Email
               </label>
               <input
@@ -207,11 +207,11 @@ export default function InternalAnalyticsDashboard() {
                 required
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="w-full rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0F172A] px-3 py-2 outline-none focus:border-[#3B82F6]"
+                className="w-full rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0c0c12] px-3 py-2 outline-none focus:border-[#3B82F6]"
               />
             </div>
             <div>
-              <label className="block text-sm mb-1 text-[#94A3B8]" htmlFor="password">
+              <label className="block text-sm mb-1 text-[#a1a1aa]" htmlFor="password">
                 Password
               </label>
               <input
@@ -220,10 +220,10 @@ export default function InternalAnalyticsDashboard() {
                 required
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="w-full rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0F172A] px-3 py-2 outline-none focus:border-[#3B82F6]"
+                className="w-full rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0c0c12] px-3 py-2 outline-none focus:border-[#3B82F6]"
               />
             </div>
-            {authError ? <p className="text-sm text-[#F87171]">{authError}</p> : null}
+            {authError ? <p className="text-sm text-[#ef4444]">{authError}</p> : null}
             <button
               type="submit"
               className="w-full rounded-lg bg-[#3B82F6] py-2 font-semibold hover:bg-[#2563EB] transition-colors"
@@ -237,13 +237,13 @@ export default function InternalAnalyticsDashboard() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0B1120] text-[#F8FAFC] p-6 md:p-10">
+    <main className="min-h-screen bg-[#06060a] text-[#e4e4e7] p-6 md:p-10">
       <div className="max-w-6xl mx-auto space-y-6">
-        <header className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <header className="rounded-2xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-5 md:p-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-[#3B82F6]">Internal Dashboard</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-[#6366f1]">Internal Dashboard</p>
             <h1 className="text-2xl md:text-3xl font-bold mt-2">Analytics & Alerts</h1>
-            <p className="text-sm text-[#94A3B8] mt-2">
+            <p className="text-sm text-[#a1a1aa] mt-2">
               Signed in as {session.user?.email} ({session.user?.role})
             </p>
           </div>
@@ -251,7 +251,7 @@ export default function InternalAnalyticsDashboard() {
             <select
               value={windowMinutes}
               onChange={(event) => setWindowMinutes(Number(event.target.value))}
-              className="rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+              className="rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0c0c12] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
             >
               <option value={5}>Last 5 minutes</option>
               <option value={15}>Last 15 minutes</option>
@@ -268,7 +268,7 @@ export default function InternalAnalyticsDashboard() {
             <button
               type="button"
               onClick={() => void onLogout()}
-              className="rounded-lg border border-[rgba(248,113,113,0.5)] px-4 py-2 text-sm text-[#FCA5A5] hover:bg-[rgba(239,68,68,0.08)] transition-colors"
+              className="rounded-lg border border-[rgba(248,113,113,0.5)] px-4 py-2 text-sm text-[#fca5a5] hover:bg-[rgba(239,68,68,0.06)] transition-colors"
             >
               Logout
             </button>
@@ -276,41 +276,41 @@ export default function InternalAnalyticsDashboard() {
         </header>
 
         {dataError ? (
-          <div className="rounded-xl border border-[rgba(248,113,113,0.35)] bg-[rgba(127,29,29,0.25)] px-4 py-3 text-sm text-[#FCA5A5]">
+          <div className="rounded-xl border border-[rgba(239,68,68,0.3)] bg-[rgba(127,29,29,0.2)] px-4 py-3 text-sm text-[#fca5a5]">
             {dataError}
           </div>
         ) : null}
 
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-          <article className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-4">
-            <p className="text-xs text-[#94A3B8]">Total events</p>
+          <article className="rounded-xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-4">
+            <p className="text-xs text-[#a1a1aa]">Total events</p>
             <p className="text-2xl font-bold mt-2">{metrics?.totals.events ?? "-"}</p>
           </article>
-          <article className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-4">
-            <p className="text-xs text-[#94A3B8]">Failure rate</p>
+          <article className="rounded-xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-4">
+            <p className="text-xs text-[#a1a1aa]">Failure rate</p>
             <p className="text-2xl font-bold mt-2">{metrics ? formatPercent(metrics.failureRate) : "-"}</p>
           </article>
-          <article className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-4">
-            <p className="text-xs text-[#94A3B8]">Chat → Lead conversion</p>
+          <article className="rounded-xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-4">
+            <p className="text-xs text-[#a1a1aa]">Chat → Lead conversion</p>
             <p className="text-2xl font-bold mt-2">{metrics ? formatPercent(metrics.conversion.chatToLeadRate) : "-"}</p>
           </article>
-          <article className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-4">
-            <p className="text-xs text-[#94A3B8]">Lead submissions</p>
+          <article className="rounded-xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-4">
+            <p className="text-xs text-[#a1a1aa]">Lead submissions</p>
             <p className="text-2xl font-bold mt-2">{metrics?.totals.leadSubmissions ?? "-"}</p>
           </article>
-          <article className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-4">
-            <p className="text-xs text-[#94A3B8]">Assessments generated</p>
+          <article className="rounded-xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-4">
+            <p className="text-xs text-[#a1a1aa]">Assessments generated</p>
             <p className="text-2xl font-bold mt-2">{metrics?.totals.assessments ?? "-"}</p>
           </article>
         </section>
 
         <section className="grid gap-4 lg:grid-cols-2">
-          <div className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-4 md:p-5">
+          <div className="rounded-xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-4 md:p-5">
             <h2 className="text-lg font-semibold">Alerts</h2>
-            <p className="text-xs text-[#94A3B8] mt-1">Live rule-based warnings and critical signals.</p>
-            {alertsError ? <p className="mt-4 text-sm text-[#F59E0B]">{alertsError}</p> : null}
+            <p className="text-xs text-[#a1a1aa] mt-1">Live rule-based warnings and critical signals.</p>
+            {alertsError ? <p className="mt-4 text-sm text-[#f59e0b]">{alertsError}</p> : null}
             {!alertsError && alerts.length === 0 ? (
-              <p className="mt-4 text-sm text-[#86EFAC]">No active alerts in this window.</p>
+              <p className="mt-4 text-sm text-[#10b981]">No active alerts in this window.</p>
             ) : null}
             <ul className="mt-4 space-y-3">
               {alerts.map((alert) => (
@@ -318,8 +318,8 @@ export default function InternalAnalyticsDashboard() {
                   key={alert.code}
                   className={`rounded-lg border px-3 py-2 text-sm ${
                     alert.level === "critical"
-                      ? "border-[rgba(248,113,113,0.35)] bg-[rgba(127,29,29,0.25)] text-[#FCA5A5]"
-                      : "border-[rgba(245,158,11,0.35)] bg-[rgba(120,53,15,0.2)] text-[#FDE68A]"
+                      ? "border-[rgba(239,68,68,0.3)] bg-[rgba(127,29,29,0.2)] text-[#fca5a5]"
+                      : "border-[rgba(245,158,11,0.3)] bg-[rgba(120,53,15,0.15)] text-[#fde68a]"
                   }`}
                 >
                   <p className="font-semibold uppercase tracking-wide">{alert.level}</p>
@@ -329,16 +329,16 @@ export default function InternalAnalyticsDashboard() {
             </ul>
           </div>
 
-          <div className="rounded-xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-4 md:p-5">
+          <div className="rounded-xl border border-[rgba(148,163,184,0.1)] bg-[#12121a] p-4 md:p-5">
             <h2 className="text-lg font-semibold">Route activity</h2>
-            <p className="text-xs text-[#94A3B8] mt-1">Requests grouped by endpoint within selected window.</p>
+            <p className="text-xs text-[#a1a1aa] mt-1">Requests grouped by endpoint within selected window.</p>
             <div className="mt-4 space-y-2">
               {routeRows.length === 0 ? (
-                <p className="text-sm text-[#94A3B8]">No route activity yet.</p>
+                <p className="text-sm text-[#a1a1aa]">No route activity yet.</p>
               ) : (
                 routeRows.map(([route, count]) => (
-                  <div key={route} className="flex items-center justify-between rounded-lg bg-[#0F172A] px-3 py-2 text-sm">
-                    <span className="text-[#CBD5E1]">{route}</span>
+                  <div key={route} className="flex items-center justify-between rounded-lg bg-[#0c0c12] px-3 py-2 text-sm">
+                    <span className="text-[#e4e4e7]">{route}</span>
                     <span className="font-semibold">{count}</span>
                   </div>
                 ))

@@ -1,6 +1,7 @@
 "use client";
 
 import BrandLogo from "../components/BrandLogo";
+import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import type { SiteLocale } from "../types/locale";
 
 interface FooterProps {
@@ -41,10 +42,10 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
       { label: isArabic ? "الامتثال" : "Compliance", href: "/legal/compliance" },
     ],
   };
+  const scrollTo = useSmoothScroll();
   const handleNav = (href: string) => {
     if (href.startsWith("#")) {
-      const el = document.querySelector(href);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollTo(href);
     }
   };
 
@@ -113,7 +114,7 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
                     ) : (
 <a
 	                        href={link.href}
-	                        className="text-[#a1a1aa] text-sm no-underline transition-colors hover:text-[#6366f1]"
+	                        className="text-[#a1a1aa] text-sm underline underline-offset-4 transition-colors hover:text-[#6366f1]"
 	                      >
                         {link.label}
                       </a>
@@ -140,7 +141,7 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-[#64748B] text-xs no-underline hover:text-[#94A3B8] transition-colors"
+                className="text-[#64748B] text-xs underline underline-offset-4 hover:text-[#94A3B8] transition-colors"
               >
                 {item.label}
               </a>

@@ -11,8 +11,13 @@ interface FadeInProps {
 export default function FadeIn({ children, delay = 0, className = "" }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      setVisible(true);
+      return;
+    }
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -23,7 +28,11 @@ export default function FadeIn({ children, delay = 0, className = "" }: FadeInPr
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [prefersReducedMotion]);
+
+  if (prefersReducedMotion) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <div

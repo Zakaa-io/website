@@ -34,7 +34,7 @@ export function LogoutButton() {
         void onLogout();
       }}
       disabled={submitting}
-      className="rounded-lg border border-rose-300/40 px-4 py-2 text-sm text-rose-200 transition-colors hover:bg-rose-400/10 disabled:cursor-not-allowed disabled:opacity-60"
+      className="rounded-lg border border-[rgba(239,68,68,0.5)] px-4 py-2 text-sm text-[#fca5a5] transition-colors hover:bg-[rgba(239,68,68,0.08)] disabled:cursor-not-allowed disabled:opacity-60"
     >
       {submitting ? "Signing out..." : "Sign out"}
     </button>

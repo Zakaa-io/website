@@ -2,6 +2,7 @@
 
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
+import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import type { SiteLocale } from "../types/locale";
 
 const plans = [
@@ -68,9 +69,9 @@ interface PricingProps {
 
 export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
   const isArabic = locale === "ar";
+  const scrollTo = useSmoothScroll();
   const handleNav = () => {
-    const el = document.querySelector("#contact");
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollTo("#contact");
   };
 
   return (
@@ -95,15 +96,15 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start max-w-[1100px] mx-auto">
           {plans.map((plan, i) => (
             <FadeIn key={plan.name} delay={i * 150}>
-              <div
-className={`relative bg-[#12121a] border rounded-[20px] p-10 transition-all duration-300 hover:border-[rgba(99,102,241,0.15)] ${
-	                  plan.popular
-	                    ? "border-[#6366f1] shadow-[0_0_40px_rgba(99,102,241,0.08)] md:scale-[1.03]"
-	                    : "border-[rgba(148,163,184,0.06)]"
-	                }`}
+<div
+                className={`relative bg-[#12121a] border rounded-[20px] p-10 transition-all duration-300 hover:border-[rgba(16,185,129,0.15)] ${
+                  plan.popular
+                    ? "border-[#10B981] shadow-[0_0_40px_rgba(16,185,129,0.08)] md:scale-[1.05]"
+                    : "border-[rgba(148,163,184,0.06)]"
+                }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full bg-[#6366f1] text-white text-xs font-bold">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full bg-[#10B981] text-white text-sm font-bold">
                     {isArabic ? "الأكثر طلباً" : "Most Popular"}
                   </div>
                 )}

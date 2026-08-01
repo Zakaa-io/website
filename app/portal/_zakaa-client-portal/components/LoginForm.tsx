@@ -48,14 +48,14 @@ export function LoginForm({ nextPath }: Readonly<{ nextPath: string }>) {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-md items-center px-4">
-      <div className="w-full rounded-2xl border border-slate-800 bg-slate-900 p-6">
-        <p className="text-xs uppercase tracking-[0.2em] text-blue-400">Zakaa Portal</p>
+      <div className="w-full rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#12121a] p-6">
+        <p className="text-xs uppercase tracking-[0.2em] text-[#6366f1]">Zakaa Portal</p>
         <h1 className="mt-2 text-2xl font-bold">Client Login</h1>
-        <p className="mt-2 text-sm text-slate-300">Sign in to access your account workspace.</p>
+        <p className="mt-2 text-sm text-[#a1a1aa]">Sign in to access your account workspace.</p>
 
         <form className="mt-6 space-y-4" onSubmit={onSubmit}>
           <div>
-            <label className="mb-1 block text-sm text-slate-300" htmlFor="email">
+            <label className="mb-1 block text-sm text-[#a1a1aa]" htmlFor="email">
               Email
             </label>
             <input
@@ -65,11 +65,11 @@ export function LoginForm({ nextPath }: Readonly<{ nextPath: string }>) {
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-blue-500"
+              className="w-full rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0c0c12] px-3 py-2 outline-none focus:border-[#6366f1]"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-slate-300" htmlFor="password">
+            <label className="mb-1 block text-sm text-[#a1a1aa]" htmlFor="password">
               Password
             </label>
             <input
@@ -79,14 +79,14 @@ export function LoginForm({ nextPath }: Readonly<{ nextPath: string }>) {
               autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 outline-none focus:border-blue-500"
+              className="w-full rounded-lg border border-[rgba(148,163,184,0.2)] bg-[#0c0c12] px-3 py-2 outline-none focus:border-[#6366f1]"
             />
           </div>
-          {errorMessage ? <p className="text-sm text-rose-300">{errorMessage}</p> : null}
+          {errorMessage ? <p className="text-sm text-[#ef4444]">{errorMessage}</p> : null}
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-lg bg-blue-600 py-2 font-semibold transition-colors hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="w-full rounded-lg bg-[#6366f1] py-2 font-semibold transition-colors hover:bg-[#4f46e5] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Signing in..." : "Sign in"}
           </button>

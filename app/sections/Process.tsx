@@ -53,6 +53,7 @@ export default function Process({ locale = "en" }: Readonly<ProcessProps>) {
               ? "منهجية مجربة تنقلك من الوضع الحالي إلى بنية تحتية مدعومة بالذكاء الاصطناعي خلال 90 يوماً."
               : "A proven methodology that gets you from current state to AI-powered infrastructure in 90 days."
           }
+          layout="split"
         />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

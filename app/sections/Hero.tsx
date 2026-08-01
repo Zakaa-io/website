@@ -1,5 +1,6 @@
 "use client";
 
+import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import Terminal from "../components/Terminal";
 import type { SiteLocale } from "../types/locale";
 
@@ -12,12 +13,10 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
   const stats = [
     { value: "99.99%", label: isArabic ? "اتفاقية الجاهزية" : "Uptime SLA" },
     { value: "500+", label: isArabic ? "خوادم مُدارة" : "Servers Managed" },
-    { value: "<2min", label: isArabic ? "متوسط زمن الاستجابة" : "Avg Response Time" },
-    { value: "40%", label: isArabic ? "خفض في التكلفة" : "Cost Reduction" },
   ];
+  const scrollTo = useSmoothScroll();
   const handleNav = (href: string) => {
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollTo(href);
   };
 
   return (
@@ -57,7 +56,7 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
         </div>
 
         {/* Heading */}
-        <h1 className="text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-[#e4e4e7]">
+        <h1 className="text-[clamp(2rem,5vw,4rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-[#e4e4e7]">
           {isArabic ? "بنية تحتية مؤسسية لتقنية المعلومات،" : "Enterprise IT Infrastructure,"}
           <br />
           <span className="accent-text">{isArabic ? "مدعومة بوكلاء الذكاء الاصطناعي" : "Powered by AI Agents"}</span>
@@ -87,7 +86,7 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
         </div>
 
         {/* Stats */}
-        <div className="flex gap-12 flex-wrap">
+        <div className="flex gap-12 flex-wrap mb-8">
           {stats.map((stat) => (
             <div key={stat.label}>
               <h3 className="text-3xl font-extrabold text-[#6366f1] font-mono">

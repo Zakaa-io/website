@@ -30,8 +30,8 @@ html[data-theme="light"] {
   --border-subtle: rgba(0, 0, 0, 0.08);
   --border-medium: rgba(0, 0, 0, 0.12);
   --text-primary: #18181b;
-  --text-secondary: #000000;
-  --text-muted: #000000;
+  --text-secondary: #3f3f46;
+  --text-muted: #52525b;
   --accent-blue: #4f46e5;
   --accent-blue-glow: rgba(79,70,229,0.08);
   --accent-emerald: #16a34a;
@@ -231,4 +231,28 @@ html[data-theme="light"] .zakaa-navbar-menu-toggle {
   .accent-text {
     color: #6366f1;
   }
+}
+
+:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-theme="light"] .accent-text {
+  color: #4f46e5;
 }

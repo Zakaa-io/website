@@ -1,14 +1,63 @@
 "use client";
 
+import React from "react";
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
 import type { SiteLocale } from "../types/locale";
+
+function ChatMessageContent({ text }: { text: string }) {
+  const segments = text.split(/(<br\s*\/>)/i);
+  return (
+    <div className="whitespace-pre-line">
+      {segments.map((segment, i) => {
+        if (/^<br\s*\/>$/i.test(segment)) {
+          return <br key={i} />;
+        }
+        return <span key={i}>{renderSegment(segment)}</span>;
+      })}
+    </div>
+  );
+}
+
+function renderSegment(text: string): React.ReactNode {
+  const codeParts = text.split(/(<code>.*?<\/code>)/);
+  return codeParts.map((part, i) => {
+    const codeMatch = part.match(/^<code>(.*?)<\/code>$/);
+    if (codeMatch) {
+      return (
+        <code key={i} className="font-mono text-[#DBEAFE] bg-[rgba(59,130,246,0.15)] px-1 rounded">
+          {codeMatch[1]}
+        </code>
+      );
+    }
+    const boldParts = part.split(/(<b>.*?<\/b>)/);
+    return boldParts.map((bp, j) => {
+      const boldMatch = bp.match(/^<b>(.*?)<\/b>$/);
+      if (boldMatch) {
+        return (
+          <strong key={j} className="font-semibold text-[#F8FAFC]">
+            {boldMatch[1]}
+          </strong>
+        );
+      }
+      const spanMatch = bp.match(/^<span class="text-\[#10B981\]">(.*?)<\/span>$/);
+      if (spanMatch) {
+        return (
+          <span key={j} style={{ color: "#10B981" }}>
+            {spanMatch[1]}
+          </span>
+        );
+      }
+      return bp;
+    });
+  });
+}
 
 const chatMessages = [
   {
     type: "user" as const,
     avatar: "👤",
-    text: 'Server <code>web-prod-03</code> is showing high CPU. Can you investigate?',
+    text: "Server <code>web-prod-03</code> is showing high CPU. Can you investigate?",
   },
   {
     type: "ai" as const,
@@ -112,14 +161,15 @@ export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
                     >
                       {msg.avatar}
                     </div>
-                    <div
-                      className={`rounded-[14px] px-5 py-3.5 text-sm leading-relaxed max-w-[380px] border ${
-                        msg.type === "ai"
-                          ? "bg-[rgba(59,130,246,0.06)] border-[rgba(59,130,246,0.12)]"
-                          : "bg-[#1E293B] border-[rgba(148,163,184,0.08)]"
-                      }`}
-                      dangerouslySetInnerHTML={{ __html: msg.text }}
-                    />
+<div
+                       className={`rounded-[14px] px-5 py-3.5 text-sm leading-relaxed max-w-[380px] border ${
+                         msg.type === "ai"
+                           ? "bg-[rgba(59,130,246,0.06)] border-[rgba(59,130,246,0.12)]"
+                           : "bg-[#1E293B] border-[rgba(148,163,184,0.08)]"
+                       }`}
+                     >
+                       <ChatMessageContent text={msg.text} />
+                     </div>
                   </div>
                 ))}
               </div>

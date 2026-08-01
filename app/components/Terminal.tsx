@@ -14,8 +14,18 @@ export default function Terminal() {
   const [displayed, setDisplayed] = useState("");
   const [cmdIndex, setCmdIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
+    setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setDisplayed(commands[cmdIndex]);
+      return;
+    }
+
     const current = commands[cmdIndex];
     let speed = isDeleting ? 30 : 60;
 
@@ -40,7 +50,7 @@ export default function Terminal() {
     }, speed);
 
     return () => clearTimeout(timer);
-  }, [displayed, cmdIndex, isDeleting]);
+  }, [displayed, cmdIndex, isDeleting, reducedMotion]);
 
   return (
     <div className="relative bg-[#0F172A] border border-[rgba(148,163,184,0.08)] rounded-2xl overflow-hidden shadow-[0_25px_80px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.03)] mt-12">
@@ -105,7 +115,9 @@ export default function Terminal() {
         <div className="mt-2">
           <span className="text-[#3B82F6]">$</span>{" "}
           <span>{displayed}</span>
-          <span className="inline-block w-2 h-[18px] bg-[#3B82F6] animate-blink align-middle ml-0.5" />
+          {!reducedMotion && (
+            <span className="inline-block w-2 h-[18px] bg-[#3B82F6] animate-blink align-middle ml-0.5" />
+          )}
         </div>
       </div>
     </div>

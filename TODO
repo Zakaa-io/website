@@ -1,13 +1,209 @@
-switch the ui to be "cloudflare" ui for the dark mode - DONE
-toggle button to switch from dark to light and vs - DONE (ThemeToggle.tsx updated with Cloudflare styling)
-back to home button, should be present once the header is disappered - DONE
-add a red progress bar around the "back to home" button - DONE
+# Zakaa-io Website — UI/UX Audit Action Items
 
-Additional updates:
-- Removed mouse-following shadow effect from ParticleCanvas
-- Implemented randomly moving white stars background animation with twinkling effect
-- Fixed light mode contrast and legibility (darker text colors for better AA contrast)
-- Fixed font readability in Light Mode (font-weight 400 base, font-smoothing, darker secondary/muted text)
-- Removed duplicate "AI Lab" tab (same #phase3 link as Products)
-- Moved "Products" tab to last position in navbar
-- "AI Agents" tab positioned after "Services" and before "Process"
+## Accessibility
+
+### A1: Fix light-mode text color contrast failures
+- [x] A1.1: Replace `--text-muted: #000000` with `#52525b` in `globals.css` light theme
+- [x] A1.2: Replace `--text-secondary: #000000` with `#3f3f46` in `globals.css` light theme
+- [ ] A1.3: Verify all light-mode text colors meet WCAG AA 4.5:1 contrast ratio
+
+### A2: Add light-mode override for `accent-text` utility
+- [x] A2.1: Add `html[data-theme="light"] .accent-text { color: #4f46e5; }` to `globals.css`
+- [x] A2.2: Verify `#4f46e5` on white background meets 4.5:1 contrast for normal text
+
+### A3: Add `prefers-reduced-motion` support to FadeIn component
+- [x] A3.1: Add `@media (prefers-reduced-motion: reduce)` query in `globals.css`
+- [x] A3.2: Disable opacity/transform transitions for users with reduced motion preference
+- [x] A3.3: Update `FadeIn.tsx` to respect `prefers-reduced-motion` and skip animation when active
+
+### A4: Replace `dangerouslySetInnerHTML` in AIAgents chat messages
+- [x] A4.1: Remove `dangerouslySetInnerHTML={{ __html: msg.text }}` from `AIAgents.tsx`
+- [x] A4.2: Implement safe rendering using React `<strong>`, `<code>`, `<br/>` elements
+- [x] A4.3: Add a simple HTML sanitizer or use `dangerouslySetInnerHTML` only for trusted static content
+
+### A4: Replace `dangerouslySetInnerHTML` in AIAgents chat messages
+- [x] A4.1: Remove `dangerouslySetInnerHTML={{ __html: msg.text }}` from `AIAgents.tsx`
+- [x] A4.2: Implement safe rendering using React `<strong>`, `<code>`, `<br/>` elements
+- [x] A4.3: Add a simple HTML sanitizer or use `dangerouslySetInnerHTML` only for trusted static content
+
+### A5: Add ARIA labels and form accessibility improvements
+- [x] A5.1: Add `aria-label` to the chat widget language `<select>` element
+- [x] A5.2: Add `aria-label` or `<label>` to all unlabeled form inputs across the site
+- [x] A5.3: Add `aria-current="location"` to the active nav link in `Navbar.tsx`
+
+### A6: Add keyboard navigation to navbar
+- [x] A6.1: Implement arrow key navigation between nav links in `Navbar.tsx`
+- [x] A6.2: Add `role="navigation"` and `aria-label` to the `<nav>` element
+- [x] A6.3: Ensure all interactive elements are focusable and have visible focus indicators
+
+### A7: Audit portal color consistency
+- [x] A7.1: Replace Tailwind default `slate` colors in portal with site custom color tokens
+- [x] A7.2: Ensure portal login page text contrast meets WCAG AA standards
+
+## Usability
+
+### U1: Fix `type="password"` on non-sensitive form inputs in Phase3Labs
+- [x] U1.1: Change bearer token input from `type="password"` to `type="text"` with visibility toggle
+- [x] U1.2: Change ticket title input from `type="password"` to `type="text"`
+- [x] U1.3: Change affected service input from `type="password"` to `type="text"`
+- [x] U1.4: Change ticket description textarea is already correct (no change needed)
+
+### U2: Make AI chat widget collapsible/minimizable on mobile
+- [x] U2.1: Add a minimize/dock button to `AIChatWidget.tsx`
+- [x] U2.2: Ensure widget does not overlap content on mobile viewports
+- [x] U2.3: Adjust `bottom` offset on mobile to avoid content occlusion
+
+### U3: Add visual feedback for failed `#contact` scroll target
+- [x] U3.1: Add null-check in `handleNav` functions across Navbar, Hero, Pricing, Footer
+- [x] U3.2: Show a toast or inline message when scroll target is not found
+- [x] U3.3: Extract `handleNav` into a shared `useSmoothScroll` hook to avoid duplication
+
+### U4: Remove `no-underline` from navigational links
+- [x] U4.1: Add underline or bottom-border to all `<a>` tags used as navigation
+- [ ] U4.2: Reserve `no-underline` only for decorative or non-navigational text
+- [ ] U4.3: Audit all components for remaining `no-underline` usage on clickable elements
+
+### U5: Standardize interactive element patterns
+- [ ] U5.1: Use `<button>` for all in-page scroll actions
+- [ ] U5.2: Use `<a>` only for actual navigation (external links, page routes)
+- [ ] U5.3: Add `role="button"` and keyboard handlers to any `<div>`/`<span>` used as interactive elements
+
+## Visual Hierarchy
+
+### V1: Simplify hero section content density
+- [x] V1.1: Move stats row below the fold or reduce to 2 key metrics
+- [ ] V1.2: Consider moving the Terminal component to a separate section
+- [x] V1.3: Reduce hero heading size from `clamp(2.5rem,6vw,5rem)` to `clamp(2rem,5vw,4rem)`
+
+### V2: Introduce secondary accent colors for visual differentiation
+- [ ] V2.1: Add `accent-emerald` (`#10B981`) usage for success/positive signals
+- [ ] V2.2: Add `accent-amber` (`#F59E0B`) usage for warnings/important signals
+- [ ] V2.3: Reserve `accent-blue` (`#6366f1`) for primary actions only
+
+### V3: Vary section layouts to break monotony
+- [x] V3.1: Alternate section layouts (centered, left-aligned, split) across the homepage
+- [ ] V3.2: Add a full-bleed or wide-background section for visual variety
+
+### V4: Make "Most Popular" pricing badge more prominent
+- [x] V4.1: Increase badge font size from `text-xs` to `text-sm`
+- [x] V4.2: Change badge background from indigo to emerald for better contrast
+- [x] V4.3: Increase Popular card scale from `md:scale-[1.03]` to `md:scale-[1.05]`
+
+### V5: Add light-mode-specific styles for Terminal component
+- [x] V5.1: Add `data-theme="light"` overrides for terminal background and text colors in `globals.css`
+- [ ] V5.2: Ensure terminal code text is readable in both dark and light modes
+
+## Consistency
+
+### C1: Unify design tokens across marketing site and portal
+- [ ] C1.1: Create a shared `theme.ts` or `tokens.css` file with all color, spacing, radius values
+- [ ] C1.2: Update marketing site to consume from shared tokens
+- [ ] C1.3: Update portal to consume from shared tokens instead of Tailwind default slate
+
+### C2: Define and apply consistent border-radius scale
+- [ ] C2.1: Define a radius scale (sm: 8px, md: 10px, lg: 12px, xl: 16px, 2xl: 20px)
+- [ ] C2.2: Replace ad-hoc `rounded-[10px]`, `rounded-[14px]`, `rounded-[20px]` with scale tokens
+- [ ] C2.3: Audit all components for radius consistency
+
+### C3: Standardize font stack across marketing site and portal
+- [ ] C3.1: Choose a single primary font (Inter or Geist) for both sites
+- [ ] C3.2: Update portal `layout.tsx` to use Inter instead of Geist if Inter is chosen
+- [ ] C3.3: Remove unused font imports from portal
+
+### C4: Consolidate theme toggle logic into a single `useTheme` hook
+- [ ] C4.1: Create `useTheme` hook in `lib/` that manages `data-theme`, localStorage, and `prefers-color-scheme`
+- [ ] C4.2: Remove the inline `<script>` from `layout.tsx`
+- [ ] C4.3: Update `ThemeToggle.tsx` to use the new `useTheme` hook
+- [ ] C4.4: Ensure no flash of wrong theme on toggle
+
+### C5: Extract duplicated `handleNav` into a shared utility
+- [ ] C5.1: Create `useSmoothScroll` hook in `lib/` or `components/`
+- [ ] C5.2: Update Navbar, Hero, Pricing, Footer to use the shared hook
+- [ ] C5.3: Add null-check and fallback behavior (scroll to top or show toast) in the shared hook
+
+### C6: Centralize `zakaa-navbar-control` custom utility
+- [ ] C6.1: Document the `zakaa-navbar-control` class usage
+- [ ] C6.2: Consider converting to a Tailwind `@apply` utility or design token class
+- [ ] C6.3: Ensure all navbar interactive elements use the same base class
+
+## User Flow
+
+### F1: Add post-submission flow for assessment/lead form
+- [ ] F1.1: Add a confirmation message with reference ID after successful form submission
+- [x] F1.2: Add an email confirmation offer ("We'll send a summary to your email")
+- [ ] F1.3: Add a clear next step message ("A Zakaa engineer will contact you within 24 hours")
+- [x] F1.4: Reset form fields after successful submission
+
+### F2: Implement shared authentication between marketing site and portal
+- [ ] F2.1: Check for existing session when user clicks "Portal Access" in navbar
+- [ ] F2.2: If session exists, redirect to portal dashboard; otherwise, show login modal
+- [ ] F2.3: Ensure auth state is shared or synchronized between the two apps
+
+### F3: Preserve chat conversation history when switching languages
+- [x] F3.1: Modify `AIChatWidget.tsx` language switch logic to preserve existing messages
+- [x] F3.2: Add a system message indicating the language switch
+- [x] F3.3: Translate only the UI labels, not the conversation content, on language switch
+
+### F4: Improve "Get Started" nav CTA clarity
+- [ ] F4.1: Add a visual indicator (e.g., scroll progress or section preview) for the `#contact` target
+- [ ] F4.2: Consider changing "Get Started" to scroll to a more prominent section
+- [ ] F4.3: Add a brief tooltip or description of what the user will find at the destination
+
+### F5: Add search or content discovery mechanism
+- [ ] F5.1: Add a search icon/button to the navbar
+- [ ] F5.2: Implement a simple client-side search over page content or a sitemap page
+- [ ] F5.3: Link the sitemap page from the footer and add a search icon to the navbar
+
+### F6: Separate contact and assessment sections visually
+- [ ] F6.1: Use distinct IDs (`#contact` vs. `#assessment`) for the two flows
+- [ ] F6.2: Add clear headings that differentiate "Talk to an Engineer" from "Book Your Assessment"
+- [ ] F6.3: Ensure the two CTAs in the CTA section lead to visually distinct experiences
+
+---
+
+## Re-Audit Findings (2026-08-01)
+
+New issues discovered during the follow-up UI/UX re-audit after the initial fixes were applied.
+
+### N1: Consolidate duplicate light-mode CSS rules in globals.css (CRITICAL)
+- [x] N1.1: Remove duplicate `html[data-theme="light"]` selectors that appear twice with conflicting values
+- [x] N1.2: Duplicates found for: `.bg-[#0F172A]`, `.text-[#94A3B8]`, `.text-[#64748B]`, `.border-[rgba(148,163,184,0.08)]`, `.border-[rgba(148,163,184,0.12)]`, `.bg-[#111827]`, `.bg-[#1E293B]`
+- [x] N1.3: Keep a single canonical set of light-mode overrides and remove the redundant block (lines ~256-282)
+
+### N2: Implement true chat minimize/dock state (not just close)
+- [x] N2.1: Change the "Minimize" button in `AIChatWidget.tsx` to collapse to a docked pill that preserves the conversation
+- [x] N2.2: Add a separate "Close" action that fully dismisses the widget
+- [x] N2.3: Ensure the docked state is distinguishable from the closed state
+
+### N3: Add null-check + fallback to `useSmoothScroll` hook
+- [x] N3.1: Update `lib/useSmoothScroll.ts` to return a boolean success indicator
+- [ ] N3.2: Show a toast or inline message when the scroll target is not found
+- [x] N3.3: Fall back to scrolling to top or a default section when target is missing
+
+### N4: Localize Phase3Labs for Arabic + add input labels
+- [x] N4.1: Pass `locale` prop to `Phase3Labs.tsx` and render Arabic strings on `/ar`
+- [x] N4.2: Add `aria-label` or visible `<label>` to all Phase3Labs inputs (bearer token, ticket title, affected service, description)
+- [x] N4.3: Localize the "Productized AI Ops" section header and product card for AR
+
+### N5: Add portal login affordances
+- [x] N5.1: Add password visibility toggle to the portal login password field
+- [x] N5.2: Add loading/disabled state + `aria-busy` to the portal submit button while authenticating
+- [x] N5.3: Add a "Forgot password?" link and a clear error/success toast
+
+### N6: Add skip-to-content link
+- [x] N6.1: Add a "Skip to content" link as the first focusable element in `layout.tsx`
+- [x] N6.2: Ensure it becomes visible on focus and targets the `<main>` content
+
+### N7: Add `aria-live` region to chat message container
+- [x] N7.1: Add `aria-live="polite"` to the chat message list in `AIChatWidget.tsx`
+- [x] N7.2: Ensure screen readers announce new assistant messages
+
+### N8: Add focus management to mobile menu
+- [x] N8.1: Implement focus trap when the mobile menu is open
+- [x] N8.2: Close the menu on `Escape` key
+- [x] N8.3: Return focus to the toggle button when the menu closes
+
+### N9: Disable Terminal typing effect for reduced-motion users
+- [x] N9.1: Check `prefers-reduced-motion` in `Terminal.tsx` JS and skip the typing animation
+- [x] N9.2: Render the full command text statically when reduced motion is active
+- [x] N9.3: Disable the cursor blink for reduced-motion users

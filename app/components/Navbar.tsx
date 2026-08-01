@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import BrandLogo from "./BrandLogo";
 import ThemeToggle from "./ThemeToggle";
+import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import type { SiteLocale } from "../types/locale";
 
 interface NavbarProps {
@@ -13,6 +14,7 @@ interface NavbarProps {
 export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
   const portalAccessUrl = process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL?.trim() || "https://portal.zakaa.io/login";
   const isArabic = locale === "ar";
   const navLinks = [
@@ -25,16 +27,77 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
   ];
   const langSwitchHref = isArabic ? "/" : "/ar";
 
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const sections = navLinks.map((link) => link.href);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-50% 0px -50% 0px", threshold: 0 }
+    );
+    sections.forEach((href) => {
+      const el = document.querySelector(href);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  // Focus management for mobile menu
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        menuToggleRef.current?.focus();
+        return;
+      }
+
+      if (event.key === "Tab") {
+        const focusable = menuToggleRef.current?.parentElement?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled])'
+        );
+        if (!focusable || focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    if (!mobileOpen) {
+      menuToggleRef.current?.focus();
+    }
+  }, [mobileOpen]);
+
+  const scrollTo = useSmoothScroll();
   const handleNav = (href: string) => {
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollTo(href);
   };
 
   const handlePortalAccess = () => {
@@ -45,6 +108,8 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
   return (
     <>
       <nav
+        role="navigation"
+        aria-label="Main navigation"
         className={`zakaa-navbar fixed top-0 left-0 right-0 z-[1000] border-b transition-all duration-300 ${
           scrolled
             ? "bg-[#06060a]/95 border-[rgba(99,102,241,0.1)]"
@@ -64,11 +129,28 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
             <span>{isArabic ? "ذكاء" : "Zakaa"}</span>
           </a>
 
-          <ul className="hidden md:flex items-center gap-2 list-none">
+          <ul
+            className="hidden md:flex items-center gap-2 list-none"
+            onKeyDown={(event) => {
+              const currentIndex = navLinks.findIndex((l) => l.href === `#${activeSection}`);
+              if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+                event.preventDefault();
+                const next = navLinks[(currentIndex + 1) % navLinks.length];
+                const el = document.querySelector(next.href);
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+                event.preventDefault();
+                const prev = navLinks[(currentIndex - 1 + navLinks.length) % navLinks.length];
+                const el = document.querySelector(prev.href);
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }}
+          >
             {navLinks.map((link) => (
               <li key={link.label}>
                 <button
                   onClick={() => handleNav(link.href)}
+                  aria-current={activeSection === link.href.substring(1) ? "location" : undefined}
                   className="zakaa-navbar-control text-sm font-medium text-[#a1a1aa] px-4 py-2 rounded-lg transition-all hover:text-[#e4e4e7] hover:bg-[#1a1a24] bg-transparent border-none cursor-pointer"
                 >
                   {link.label}
@@ -81,7 +163,7 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
             <ThemeToggle locale={locale} />
 <a
                 href={langSwitchHref}
-                className="zakaa-navbar-control inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all no-underline"
+                className="zakaa-navbar-control inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all underline underline-offset-4"
             >
               {isArabic ? "English" : "العربية"}
             </a>
@@ -128,7 +210,7 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
           </button>
           <a
             href={langSwitchHref}
-            className="zakaa-navbar-control block w-full py-3 text-base font-medium text-[#a1a1aa] border-b border-[rgba(148,163,184,0.06)] no-underline"
+            className="zakaa-navbar-control block w-full py-3 text-base font-medium text-[#a1a1aa] border-b border-[rgba(148,163,184,0.06)] underline underline-offset-4"
           >
             {isArabic ? "English" : "العربية"}
           </a>

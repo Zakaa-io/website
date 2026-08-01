@@ -24,7 +24,7 @@ export default function Home() {
         <Process locale="en" />
         <Testimonials locale="en" />
         <Pricing locale="en" />
-        <Phase3Labs />
+        <Phase3Labs locale="en" />
         <CTA locale="en" />
         <Footer locale="en" />
       </div>

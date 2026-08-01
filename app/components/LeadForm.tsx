@@ -70,6 +70,7 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             type="text"
+            aria-label="Full name"
             placeholder="Full name"
             value={formValues.name}
             onChange={(event) => setFormValues((prev) => ({ ...prev, name: event.target.value }))}
@@ -78,6 +79,7 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
           />
           <input
             type="email"
+            aria-label="Work email"
             placeholder="Work email"
             value={formValues.email}
             onChange={(event) => setFormValues((prev) => ({ ...prev, email: event.target.value }))}
@@ -88,6 +90,7 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
 
         <input
           type="text"
+          aria-label="Company"
           placeholder="Company (optional)"
           value={formValues.company}
           onChange={(event) => setFormValues((prev) => ({ ...prev, company: event.target.value }))}
@@ -95,6 +98,7 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
         />
 
         <textarea
+          aria-label="Tell us about your infrastructure goals or pain points"
           placeholder="Tell us about your infrastructure goals or pain points"
           value={formValues.message}
           onChange={(event) => setFormValues((prev) => ({ ...prev, message: event.target.value }))}
@@ -113,15 +117,16 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
 
       {error && <p className="mt-4 text-sm text-[#EF4444]">{error}</p>}
 
-      {result && (
-        <div className="mt-4 rounded-lg border border-[rgba(16,185,129,0.2)] bg-[rgba(16,185,129,0.08)] p-4 text-sm">
-          <p className="font-semibold">
-            Submitted successfully — lead score {result.score}/100 ({result.tier.toUpperCase()}).
-          </p>
-          <p className="text-[#94A3B8] mt-1">{result.nextStep}</p>
-          <p className="text-[#64748B] mt-2">Reference: {result.referenceId}</p>
-        </div>
-      )}
+{result && (
+          <div className="mt-4 rounded-lg border border-[rgba(16,185,129,0.2)] bg-[rgba(16,185,129,0.08)] p-4 text-sm">
+            <p className="font-semibold">
+              Submitted successfully — lead score {result.score}/100 ({result.tier.toUpperCase()}).
+            </p>
+            <p className="text-[#94A3B8] mt-1">{result.nextStep}</p>
+            <p className="text-[#64748B] mt-1">We will send a summary to your email shortly.</p>
+            <p className="text-[#64748B] mt-2">Reference: {result.referenceId}</p>
+          </div>
+        )}
     </div>
   );
 }

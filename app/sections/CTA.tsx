@@ -5,6 +5,7 @@ import AssessmentWizard from "../components/AssessmentWizard";
 import FadeIn from "../components/FadeIn";
 import LeadForm from "../components/LeadForm";
 import SectionLabel from "../components/SectionLabel";
+import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import type { AssistantLanguage } from "@/types/ai";
 import type { SiteLocale } from "../types/locale";
 

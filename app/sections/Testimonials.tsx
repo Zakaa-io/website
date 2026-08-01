@@ -46,6 +46,7 @@ export default function Testimonials({ locale = "en" }: Readonly<TestimonialsPro
               ? "فرق مؤسسية طورت بنيتها التحتية مع ذكاء."
               : "Enterprise teams that transformed their infrastructure with Zakaa."
           }
+          layout="left"
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { emitAnalyticsEvent } from "@/lib/analytics/client";
 import type { AssistantLanguage, ChatMessage, ChatResponse } from "@/types/ai";
 
@@ -26,7 +26,9 @@ interface AIChatWidgetProps {
 
 export default function AIChatWidget({ initialLanguage = "en" }: Readonly<AIChatWidgetProps>) {
   const [language, setLanguage] = useState<AssistantLanguage>(initialLanguage);
+  const prevLanguage = useRef(language);
   const [open, setOpen] = useState(false);
+  const [minimized, setMinimized] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([getStarterMessage(initialLanguage)]);
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -45,8 +47,23 @@ export default function AIChatWidget({ initialLanguage = "en" }: Readonly<AIChat
   const canSend = useMemo(() => input.trim().length > 0 && !isSending, [input, isSending]);
 
   useEffect(() => {
-    setMessages([getStarterMessage(language)]);
     setError(null);
+  }, [language]);
+
+  useEffect(() => {
+    if (prevLanguage.current !== language) {
+      prevLanguage.current = language;
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            language === "ar"
+              ? "تم تغيير اللغة إلى العربية."
+              : "Language switched to English.",
+        },
+      ]);
+    }
   }, [language]);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -92,22 +109,32 @@ export default function AIChatWidget({ initialLanguage = "en" }: Readonly<AIChat
 
   return (
     <div className="fixed bottom-5 right-5 z-[1100]">
-      {!open && (
+      {!open && !minimized && (
         <button
           onClick={() => {
             setOpen(true);
             void emitAnalyticsEvent({ name: "chat_opened", details: { source: "floating_button" } });
           }}
-          className="inline-flex items-center gap-2 rounded-full bg-[#3B82F6] px-5 py-3 text-sm font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:bg-[#2563EB]"
+          className="inline-flex items-center gap-2 rounded-full bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:bg-[#2563EB]"
         >
           <span>{language === "ar" ? "اسأل المساعد الذكي" : "Ask AI Assistant"}</span>
         </button>
       )}
 
-      {open && (
+      {minimized && (
+        <button
+          onClick={() => setMinimized(false)}
+          className="inline-flex items-center gap-2 rounded-full bg-[#3B82F6] px-4 py-2.5 text-xs font-semibold text-white shadow-[0_8px_30px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:bg-[#2563EB]"
+          aria-label={language === "ar" ? "استئناف المحادثة" : "Resume chat"}
+        >
+          <span>{language === "ar" ? "استئناف المحادثة" : "Resume Chat"}</span>
+        </button>
+      )}
+
+      {open && !minimized && (
         <div
           dir={language === "ar" ? "rtl" : "ltr"}
-          className="w-[min(92vw,380px)] overflow-hidden rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#0F172A] shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+          className="w-[min(92vw,380px)] max-h-[70vh] overflow-hidden rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#0F172A] shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
         >
           <div className="flex items-center justify-between border-b border-[rgba(148,163,184,0.1)] px-4 py-3">
             <div>
@@ -116,6 +143,7 @@ export default function AIChatWidget({ initialLanguage = "en" }: Readonly<AIChat
             </div>
             <div className="flex items-center gap-2">
               <select
+                aria-label="Select language"
                 value={language}
                 onChange={(event) => setLanguage(event.target.value as AssistantLanguage)}
                 className="rounded-md border border-[rgba(148,163,184,0.18)] bg-[#111827] px-2 py-1 text-xs text-[#94A3B8] outline-none"
@@ -124,15 +152,29 @@ export default function AIChatWidget({ initialLanguage = "en" }: Readonly<AIChat
                 <option value="ar">AR</option>
               </select>
               <button
-                onClick={() => setOpen(false)}
+                onClick={() => setMinimized(true)}
                 className="rounded-md px-2 py-1 text-xs text-[#94A3B8] hover:bg-[#1E293B] hover:text-[#F8FAFC]"
+                aria-label={language === "ar" ? "تصغير المحادثة" : "Minimize chat"}
               >
-                {language === "ar" ? "إغلاق" : "Close"}
+                {language === "ar" ? "تصغير" : "Minimize"}
+              </button>
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setMinimized(false);
+                }}
+                className="rounded-md px-2 py-1 text-xs text-[#94A3B8] hover:bg-[#1E293B] hover:text-[#F8FAFC]"
+                aria-label={language === "ar" ? "إغلاق المحادثة" : "Close chat"}
+              >
+                ✕
               </button>
             </div>
           </div>
 
-          <div className="max-h-[350px] space-y-3 overflow-y-auto px-4 py-4">
+          <div
+            aria-live="polite"
+            className="max-h-[350px] space-y-3 overflow-y-auto px-4 py-4"
+          >
             {messages.map((message, index) => (
               <div
                 key={`${message.role}-${index}`}
