@@ -118,7 +118,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    if (error instanceof Error && error.message.includes("OpenAI request failed")) {
+    if (error instanceof Error && error.message.includes("request failed with status")) {
       trackServerEvent({
         name: "chat_response_failed",
         route: "/api/chat",

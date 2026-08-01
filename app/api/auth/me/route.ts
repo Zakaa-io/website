@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { readSession } from "@/lib/server/session-auth";
 
 export async function POST(request: Request) {
-  const session = readSession(request);
+  const session = await readSession(request);
   if (!session) {
     return NextResponse.json({ authenticated: false }, { status: 200 });
   }

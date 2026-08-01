@@ -11,6 +11,7 @@ import {
   validateEmail,
   validationErrorResponse,
 } from "@/lib/server/validation";
+import { requireCsrfToken } from "@/lib/server/csrf";
 
 interface LeadKeywordRule {
   term: string;
@@ -59,6 +60,9 @@ function scoreLead(payload: LeadRequest): number {
 
 export async function POST(request: Request) {
   try {
+    const csrfResponse = requireCsrfToken(request);
+    if (csrfResponse) return csrfResponse;
+
     const rateLimit = checkRateLimit({
       key: resolveRateLimitKey(request, "lead"),
       limit: 8,

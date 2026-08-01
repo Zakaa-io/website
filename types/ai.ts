@@ -13,7 +13,7 @@ export interface ChatRequest {
 
 export interface ChatResponse {
   reply: string;
-  provider: string;
+  provider: "openai" | "openrouter" | "heuristic";
   language: AssistantLanguage;
   suggestedNextStep?: string;
 }

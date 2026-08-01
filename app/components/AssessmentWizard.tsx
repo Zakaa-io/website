@@ -89,9 +89,17 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
     setError(null);
     setResult(null);
 
+    const csrfToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("zakaa_csrf="))
+      ?.split("=")[1];
+
     const response = await fetch("/api/assessment", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(csrfToken ? { "x-zakaa-csrf": csrfToken } : {}),
+      },
       body: JSON.stringify({
         ...state,
         language,

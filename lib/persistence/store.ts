@@ -1,4 +1,5 @@
 import type { AssessmentRequest, AssessmentResponse, LeadRequest, LeadResponse } from "@/types/ai";
+import { escapeHtml } from "@/lib/server/validation";
 import { isDatabaseConfigured, query } from "@/lib/db/postgres";
 
 export type PersistenceResult = "stored" | "skipped_no_database";
@@ -20,11 +21,11 @@ export async function persistLeadSubmission(
       ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
     [
       response.referenceId,
-      request.name,
-      request.email,
-      request.company ?? null,
-      request.message,
-      request.source ?? "unknown",
+      escapeHtml(request.name),
+      escapeHtml(request.email),
+      request.company ? escapeHtml(request.company) : null,
+      escapeHtml(request.message),
+      escapeHtml(request.source ?? "unknown"),
       response.tier,
       response.score,
       nowIso(),
@@ -46,16 +47,16 @@ export async function persistAssessment(
      VALUES
       ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
     [
-      request.companyName,
+      escapeHtml(request.companyName),
       request.employeeRange,
       request.primaryCloud,
-      request.monthlyBudget,
-      JSON.stringify(request.priorities),
+      escapeHtml(request.monthlyBudget),
+      JSON.stringify(request.priorities.map(escapeHtml)),
       request.timeline,
       request.language ?? "en",
       response.readinessScore,
       response.riskLevel,
-      response.summary,
+      escapeHtml(response.summary),
       nowIso(),
     ]
   );
@@ -80,9 +81,9 @@ export async function persistChatExchange(input: {
     [
       input.language,
       input.provider,
-      input.userMessage,
-      input.assistantReply,
-      input.suggestedNextStep ?? null,
+      escapeHtml(input.userMessage),
+      escapeHtml(input.assistantReply),
+      input.suggestedNextStep ? escapeHtml(input.suggestedNextStep) : null,
       nowIso(),
     ]
   );

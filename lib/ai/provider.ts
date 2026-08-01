@@ -1,15 +1,10 @@
 import { buildConversationSummary, buildSystemPrompt } from "@/lib/ai/prompts";
-import type { AssistantLanguage, ChatMessage } from "@/types/ai";
+import type { AssistantLanguage, ChatMessage, ChatResponse } from "@/types/ai";
 
 interface GenerateReplyInput {
   messages: ChatMessage[];
   contextBlocks: string[];
   language: AssistantLanguage;
-}
-
-interface GenerateReplyOutput {
-  text: string;
-  provider: "openai" | "heuristic";
 }
 
 function buildFallbackReply(question: string, contextBlocks: string[], language: AssistantLanguage): string {
@@ -33,49 +28,32 @@ function buildFallbackReply(question: string, contextBlocks: string[], language:
     : `${compactContext} If you share your stack and current challenge, I can suggest the most relevant Zakaa service path next.`;
 }
 
-export async function generateAssistantReply({
-  messages,
-  contextBlocks,
-  language,
-}: GenerateReplyInput): Promise<GenerateReplyOutput> {
-  const latestUserMessage = [...messages].reverse().find((message) => message.role === "user");
-  const question = latestUserMessage?.content ?? "";
-  const openAiApiKey = process.env.OPENAI_API_KEY;
+function resolveProvider(): "openai" | "openrouter" | "heuristic" {
+  const provider = process.env.AI_PROVIDER?.trim().toLowerCase();
+  if (provider === "openrouter") return "openrouter";
+  if (provider === "heuristic") return "heuristic";
+  return "openai";
+}
 
-  if (!openAiApiKey) {
-    return {
-      text: buildFallbackReply(question, contextBlocks, language),
-      provider: "heuristic",
-    };
-  }
-
-  const systemPrompt = buildSystemPrompt(language);
-  const contextText = contextBlocks.map((block, index) => `Context ${index + 1}: ${block}`).join("\n");
-  const conversation = buildConversationSummary(messages);
+async function callOpenAI(messages: { role: string; content: string }[]): Promise<string> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error("OPENAI_API_KEY is not configured.");
 
   const response = await fetch("https://api.openai.com/v1/responses", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${openAiApiKey}`,
+      Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       model: process.env.OPENAI_MODEL ?? "gpt-4.1-mini",
-      input: [
-        {
-          role: "system",
-          content: `${systemPrompt}\n\nKnowledge context:\n${contextText}`,
-        },
-        {
-          role: "user",
-          content: `Conversation:\n${conversation}\n\nAnswer the latest user request.`,
-        },
-      ],
+      input: messages,
     }),
   });
 
   if (!response.ok) {
-    throw new Error(`OpenAI request failed with status ${response.status}`);
+    const body = await response.text();
+    throw new Error(`OpenAI request failed with status ${response.status}: ${body}`);
   }
 
   const data: unknown = await response.json();
@@ -89,8 +67,100 @@ export async function generateAssistantReply({
     throw new Error("OpenAI response did not include output_text");
   }
 
-  return {
-    text: data.output_text.trim(),
-    provider: "openai",
-  };
+  return data.output_text.trim();
+}
+
+async function callOpenRouter(messages: { role: string; content: string }[], model: string): Promise<string> {
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  if (!apiKey) throw new Error("OPENROUTER_API_KEY is not configured.");
+
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL ?? "https://zakaa.io",
+      "X-Title": "Zakaa AI Assistant",
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+    }),
+  });
+
+  if (!response.ok) {
+    const body = await response.text();
+    throw new Error(`OpenRouter request failed with status ${response.status}: ${body}`);
+  }
+
+  const data: unknown = await response.json();
+  if (
+    !data ||
+    typeof data !== "object" ||
+    !("choices" in data) ||
+    !Array.isArray((data as { choices: unknown[] }).choices) ||
+    (data as { choices: { message?: { content?: string } }[] }).choices.length === 0
+  ) {
+    throw new Error("OpenRouter response did not include choices");
+  }
+
+  const content = (data as { choices: { message?: { content?: string } }[] }).choices[0]?.message?.content;
+  if (!content || typeof content !== "string" || content.trim().length === 0) {
+    throw new Error("OpenRouter response did not include message content");
+  }
+
+  return content.trim();
+}
+
+export async function generateAssistantReply({
+  messages,
+  contextBlocks,
+  language,
+}: GenerateReplyInput): Promise<ChatResponse> {
+  const latestUserMessage = [...messages].reverse().find((message) => message.role === "user");
+  const question = latestUserMessage?.content ?? "";
+  const provider = resolveProvider();
+
+  if (provider === "heuristic") {
+    return {
+      text: buildFallbackReply(question, contextBlocks, language),
+      provider: "heuristic",
+      language,
+    };
+  }
+
+  const systemPrompt = buildSystemPrompt(language);
+  const contextText = contextBlocks.map((block, index) => `Context ${index + 1}: ${block}`).join("\n");
+  const conversation = buildConversationSummary(messages);
+
+  const chatMessages = [
+    { role: "system" as const, content: `${systemPrompt}\n\nKnowledge context:\n${contextText}` },
+    { role: "user" as const, content: `Conversation:\n${conversation}\n\nAnswer the latest user request.` },
+  ];
+
+  try {
+    if (provider === "openrouter") {
+      const model = process.env.OPENROUTER_MODEL?.trim();
+      if (!model) {
+        return {
+          text: buildFallbackReply(question, contextBlocks, language),
+          provider: "heuristic",
+          language,
+        };
+      }
+
+      const text = await callOpenRouter(chatMessages, model);
+      return { text, provider: "openrouter", language };
+    }
+
+    const text = await callOpenAI(chatMessages);
+    return { text, provider: "openai", language };
+  } catch (error) {
+    console.error("[ai] provider error", error);
+    return {
+      text: buildFallbackReply(question, contextBlocks, language),
+      provider: "heuristic",
+      language,
+    };
+  }
 }

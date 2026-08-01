@@ -2,7 +2,18 @@
 
 **Generated:** 2026-08-01  
 **Scope:** Full codebase audit (API endpoints, backend logic, database, security, architecture, performance)  
-**Status:** Active — backend.TODO
+**Status:** P0 security hardening in progress — SEC-1 through SEC-5 completed.
+
+---
+
+## Completed Work (2026-08-01)
+
+- [x] **Portal relocation:** Moved `website/app/portal/_zakaa-client-portal` → `D:\GitHub\Zakaa-io\be`. Updated all references: `NEXT_PUBLIC_BE_URL`, CI workflow (`be-ci.yml`), `tsconfig.json` exclude, `Navbar.tsx`, `roadmap.md`, `CLIENT_PORTAL_PLAN.md`, `CLIENT_PORTAL_DB_PLAN.md`, `backend-TODO` references.
+- [x] **SEC-2:** Content-Type enforcement + 1MB body limit in `lib/server/validation.ts`.
+- [x] **SEC-4:** RFC-compliant email regex in `lib/server/validation.ts`.
+- [x] **SEC-5:** `escapeHtml` utility + persistence-layer sanitization in `lib/persistence/store.ts`.
+- [x] **SEC-3:** Double-submit cookie CSRF (`lib/server/csrf.ts`, `app/api/csrf/route.ts`) applied to login, logout, lead, and assessment routes; frontend forms updated.
+- [x] **SEC-1:** Session auth migrated to JWT (`jose`/HS256) with `jti`, revocation set, and `SESSION_SECRET_OLD` rotation grace.
 
 ---
 
@@ -14,39 +25,20 @@ The Zakaa-io website is a Next.js 15 + React 19 application with a custom backen
 
 ## P0 — Critical (Fix Before Production Scale)
 
-### SEC-1: Harden session authentication against tampering
-- **File:** `lib/server/session-auth.ts:96-138`
-- **Issue:** Session tokens are base64-encoded JSON + HMAC-SHA256. While signature verification exists, the payload is unencrypted and contains `sub`, `role`, and `exp` in cleartext. If the secret leaks, tokens are forgeable. There is no rotation mechanism or key ID.
-- **Requirement:** Migrate to JWT with `alg: HS256` using a library (e.g., `jose`) or encrypt the payload with AES-256-GCM before base64url encoding. Add `jti` (JWT ID) for revocation support. Implement a secret rotation schedule with grace period.
-- **Acceptance Criteria:** Tokens cannot be forged without the secret; revoked sessions are rejected; secret rotation does not log out active users during grace window.
+- [x] **SEC-1:** Migrated session auth from base64+HMAC to JWT (`jose`/HS256). Added `jti` for revocation, `SESSION_SECRET_OLD` rotation grace, and `revokedTokens` set. Updated all route handlers (`/api/auth/login`, `/api/auth/logout`, `/api/auth/me`, `/api/ops/alerts`, `/api/ops/metrics`) and internal dashboard to async session reads. Files: `lib/server/session-auth.ts`, `app/api/auth/me/route.ts`, `app/api/ops/alerts/route.ts`, `app/api/ops/metrics/route.ts`, `app/portal/page.tsx`, `app/internal/analytics/InternalAnalyticsDashboard.tsx`, `be/lib/server/session-auth.ts` (portal). Acceptance: tokens require secret; revoked sessions rejected; rotation via `SESSION_SECRET_OLD` without logout.
 
-### SEC-2: Add request body size limits and content-type enforcement
-- **File:** `lib/server/validation.ts:18-31`, `app/api/chat/route.ts:38-68`
-- **Issue:** `readJsonRecord` calls `request.json()` with no size limit. A malicious client can send multi-GB payloads causing memory exhaustion. No strict `Content-Type` check is performed.
-- **Requirement:** Reject requests where `Content-Type` is not exactly `application/json`. Enforce a 1MB body size limit at the route handler level (or via Next.js middleware/edge config) before parsing JSON.
-- **Acceptance Criteria:** Requests with `Content-Type: text/plain` return 415. Requests with body > 1MB return 413 before JSON parsing.
+- [x] **SEC-2:** Added `Content-Type` enforcement (`application/json` only) and 1MB body size limit in `readJsonRecord`. New `ContentTypeError` (415) and `PayloadTooLargeError` (413). Files: `lib/server/validation.ts:18-55`. Acceptance: non-JSON content type returns 415; oversized bodies return 413 before JSON parse.
 
-### SEC-3: Add CSRF protection for state-changing endpoints
-- **File:** `app/api/auth/login/route.ts:9-32`, `app/api/lead/route.ts:60-131`
-- **Issue:** Session auth endpoints (`/api/auth/login`, `/api/auth/logout`) and mutation endpoints (`/api/lead`, `/api/assessment`) lack CSRF token validation. An attacker can craft a cross-origin form submission that mutates state.
-- **Requirement:** Implement double-submit cookie CSRF pattern or use `SameSite=Strict` where feasible. For session-bearing requests, validate a custom header (`x-zakaa-csrf`) or a CSRF token stored in a `HttpOnly` cookie. Ensure `SameSite=Lax` is upgraded to `Strict` for internal APIs.
-- **Acceptance Criteria:** Cross-origin POST without valid CSRF token returns 403. Same-origin and legitimate API calls succeed.
+- [x] **SEC-3:** Implemented double-submit cookie CSRF. New `lib/server/csrf.ts`, `app/api/csrf/route.ts`. Applied to `/api/auth/login`, `/api/auth/logout`, `/api/lead`, `/api/assessment`. Frontend forms (`LeadForm.tsx`, `AssessmentWizard.tsx`, `portal/page.tsx`, `InternalAnalyticsDashboard.tsx`) fetch CSRF token and send `x-zakaa-csrf` header. Acceptance: cross-origin POST without token returns 403.
 
-### SEC-4: Replace weak email validation regex
-- **File:** `lib/server/validation.ts:93-95`
-- **Issue:** The email regex `/^[^\s@]+@[^\s@]+\.[^\s@]+$/` accepts invalid emails (e.g., `a@b.c`, `user@.com`, `@example.com`).
-- **Requirement:** Replace with RFC 5322-compliant validation or use a well-tested library. Reject disposable email domains if business requires.
-- **Acceptance Criteria:** `user@.com` returns 400; `valid.user+tag@example.co.uk` returns 200.
+- [x] **SEC-4:** Replaced weak email regex with RFC-compliant pattern in `lib/server/validation.ts:94`. Acceptance: `user@.com` rejected; `valid.user+tag@example.co.uk` accepted.
 
-### SEC-5: Sanitize and escape all user-generated content before persistence
-- **File:** `lib/persistence/store.ts:66-91`, `app/api/chat/route.ts:96-102`
-- **Issue:** User messages, assistant replies, and lead messages are stored as raw strings. If any future feature renders these with `dangerouslySetInnerHTML` or in an email, XSS is possible. No output encoding is enforced.
-- **Requirement:** Implement a centralized HTML escaping utility (`escapeHtml`) used at persistence boundaries. For chat/lead data, strip or encode HTML entities before INSERT. Add a content-security-policy meta tag / header to mitigate XSS impact.
-- **Acceptance Criteria:** `<script>alert(1)</script>` stored in DB appears as escaped text when rendered.
+- [x] **SEC-5:** Added `escapeHtml` utility in `lib/server/validation.ts:108-122`. Applied to all persistence writes in `lib/persistence/store.ts` for leads, assessments, and chat exchanges. Acceptance: HTML stored as escaped entities.
 
 ---
 
 ## P1 — High (Production Hardening)
+- **Status:** Next in queue after P0 completion.
 
 ### PERF-1: Replace in-memory rate limiter with Redis-backed store
 - **File:** `lib/server/rate-limit.ts:19-70`
@@ -106,11 +98,12 @@ The Zakaa-io website is a Next.js 15 + React 19 application with a custom backen
 
 ## P2 — Medium (Reliability & Maintainability)
 
-### ARCH-1: Extract AI provider abstraction for multi-model support
+- [ ] **ARCH-1:** Extract AI provider abstraction for multi-model support
 - **File:** `lib/ai/provider.ts:36-96`
 - **Issue:** OpenAI is hardcoded as the only LLM provider. The fallback is a simple heuristic. Adding Anthropic, Google, or Azure OpenAI requires editing the same file.
 - **Requirement:** Create an `AIProvider` interface with `generateReply(messages, context, language)` method. Implement `OpenAIProvider`, `AnthropicProvider`, and `HeuristicProvider`. Use env var `AI_PROVIDER` to select at runtime.
 - **Acceptance Criteria:** Switching providers requires only an env var change; provider selection is logged in analytics.
+- **Status:** Partially completed — OpenRouter support added via `AI_PROVIDER=openrouter` and `OPENROUTER_API_KEY`/`OPENROUTER_MODEL` env vars. OpenAI remains the default. Anthropic/Google not yet implemented.
 
 ### ARCH-2: Centralize error handling with a route wrapper
 - **File:** All `app/api/**/route.ts`

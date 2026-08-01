@@ -19,6 +19,7 @@ import {
   requireStringArray,
   validationErrorResponse,
 } from "@/lib/server/validation";
+import { requireCsrfToken } from "@/lib/server/csrf";
 
 function recommendationCatalog(payload: AssessmentRequest): SolutionRecommendation[] {
   const recommendations: SolutionRecommendation[] = [];
@@ -118,6 +119,9 @@ function buildNextActions(language: AssistantLanguage): string[] {
 
 export async function POST(request: Request) {
   try {
+    const csrfResponse = requireCsrfToken(request);
+    if (csrfResponse) return csrfResponse;
+
     const rateLimit = checkRateLimit({
       key: resolveRateLimitKey(request, "assessment"),
       limit: 12,

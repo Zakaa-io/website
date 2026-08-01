@@ -15,7 +15,31 @@ function isJsonRecord(value: unknown): value is JsonRecord {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+const MAX_JSON_BODY_BYTES = 1024 * 1024; // 1MB
+
+export class ContentTypeError extends ValidationError {
+  constructor(message: string) {
+    super(message, 415);
+  }
+}
+
+export class PayloadTooLargeError extends ValidationError {
+  constructor(message: string) {
+    super(message, 413);
+  }
+}
+
 export async function readJsonRecord(request: Request): Promise<JsonRecord> {
+  const contentType = request.headers.get("content-type");
+  if (!contentType || !contentType.startsWith("application/json")) {
+    throw new ContentTypeError("Content-Type must be application/json.");
+  }
+
+  const contentLength = request.headers.get("content-length");
+  if (contentLength && Number(contentLength) > MAX_JSON_BODY_BYTES) {
+    throw new PayloadTooLargeError("Request body exceeds 1MB limit.");
+  }
+
   let data: unknown;
   try {
     data = await request.json();
@@ -91,7 +115,7 @@ export function requireStringArray(
 }
 
 export function validateEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/.test(value);
 }
 
 export function validationErrorResponse(error: unknown) {
@@ -100,4 +124,16 @@ export function validationErrorResponse(error: unknown) {
   }
 
   return NextResponse.json({ error: "Unexpected validation error." }, { status: 500 });
+}
+
+const HTML_ESCAPE_MAP: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  "\"": "&quot;",
+  "'": "&#39;",
+};
+
+export function escapeHtml(value: string): string {
+  return value.replace(/[&<>"']/g, (char) => HTML_ESCAPE_MAP[char]);
 }

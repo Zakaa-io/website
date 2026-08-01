@@ -33,9 +33,17 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
     setError(null);
     setResult(null);
 
+    const csrfToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("zakaa_csrf="))
+      ?.split("=")[1];
+
     const response = await fetch("/api/lead", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...(csrfToken ? { "x-zakaa-csrf": csrfToken } : {}),
+      },
       body: JSON.stringify({
         ...formValues,
         source,

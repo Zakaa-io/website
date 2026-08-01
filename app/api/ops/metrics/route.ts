@@ -5,7 +5,7 @@ import { readJsonRecord, validationErrorResponse } from "@/lib/server/validation
 
 export async function POST(request: Request) {
   try {
-    const auth = enforceSessionRole(request, {
+    const auth = await enforceSessionRole(request, {
       routeLabel: "Ops metrics API",
       allowedRoles: ["admin", "operator", "viewer"],
     });

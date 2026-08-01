@@ -1,4 +1,5 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { SignJWT, jwtVerify } from "jose";
+import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 
 export type UserRole = "admin" | "operator" | "viewer" | "client";
@@ -7,6 +8,7 @@ interface SessionPayload {
   sub: string;
   role: UserRole;
   exp: number;
+  jti: string;
 }
 
 interface AuthUser {
@@ -17,14 +19,6 @@ interface AuthUser {
 
 const SESSION_COOKIE_NAME = "zakaa_session";
 
-function base64UrlEncode(value: string): string {
-  return Buffer.from(value, "utf8").toString("base64url");
-}
-
-function base64UrlDecode(value: string): string {
-  return Buffer.from(value, "base64url").toString("utf8");
-}
-
 function getSessionSecret(): string {
   const secret = process.env.SESSION_SECRET;
   if (!secret || secret.trim().length < 16) {
@@ -33,9 +27,11 @@ function getSessionSecret(): string {
   return secret;
 }
 
-function sign(payloadEncoded: string, secret: string): string {
-  return createHmac("sha256", secret).update(payloadEncoded).digest("base64url");
+function getOldSessionSecret(): string | null {
+  return process.env.SESSION_SECRET_OLD?.trim() ?? null;
 }
+
+const revokedTokens = new Set<string>();
 
 function parseCookie(request: Request, name: string): string | null {
   const cookieHeader = request.headers.get("cookie");
@@ -78,7 +74,6 @@ function constantTimeEquals(a: string, b: string): boolean {
   const bufA = Buffer.from(a, "utf8");
   const bufB = Buffer.from(b, "utf8");
   if (bufA.length !== bufB.length) {
-    // Compare against self to burn constant time, then return false
     timingSafeEqual(bufA, bufA);
     return false;
   }
@@ -93,49 +88,44 @@ export function authenticateCredentials(email: string, password: string): { emai
   return { email: user.email, role: user.role };
 }
 
-export function createSessionToken(input: { email: string; role: UserRole }): string {
+export async function createSessionToken(input: { email: string; role: UserRole }): Promise<string> {
   const secret = getSessionSecret();
   const maxAgeSeconds = Number(process.env.SESSION_MAX_AGE_SECONDS ?? "28800");
-  const payload: SessionPayload = {
-    sub: input.email,
-    role: input.role,
-    exp: Math.floor(Date.now() / 1000) + maxAgeSeconds,
-  };
-  const payloadEncoded = base64UrlEncode(JSON.stringify(payload));
-  const signature = sign(payloadEncoded, secret);
-  return `${payloadEncoded}.${signature}`;
+  const jti = randomBytes(16).toString("hex");
+
+  const jwt = await new SignJWT({ sub: input.email, role: input.role, jti })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime(Math.floor(Date.now() / 1000) + maxAgeSeconds)
+    .sign(secret);
+
+  return jwt;
 }
 
-export function readSession(request: Request): { email: string; role: UserRole } | null {
+export async function readSession(request: Request): Promise<{ email: string; role: UserRole } | null> {
   const token = parseCookie(request, SESSION_COOKIE_NAME);
   if (!token) return null;
 
-  const [payloadEncoded, signature] = token.split(".");
-  if (!payloadEncoded || !signature) return null;
-
-  let secret: string;
-  try {
-    secret = getSessionSecret();
-  } catch {
-    return null;
-  }
-
-  const expected = sign(payloadEncoded, secret);
-  const givenBuffer = Buffer.from(signature);
-  const expectedBuffer = Buffer.from(expected);
-  if (givenBuffer.length !== expectedBuffer.length) return null;
-  if (!timingSafeEqual(givenBuffer, expectedBuffer)) return null;
+  const secret = getSessionSecret();
+  const oldSecret = getOldSessionSecret();
 
   try {
-    const payload = JSON.parse(base64UrlDecode(payloadEncoded)) as SessionPayload;
-    if (!payload?.sub || !payload?.role || !payload?.exp) return null;
-    const role = parseRole(payload.role);
-    if (!role) return null;
-    if (payload.exp < Math.floor(Date.now() / 1000)) return null;
-    return { email: payload.sub, role };
+    const { payload } = await jwtVerify<SessionPayload>(token, secret, { algorithms: ["HS256"] });
+    if (revokedTokens.has(payload.jti)) return null;
+    return { email: payload.sub, role: payload.role };
   } catch {
-    return null;
+    if (!oldSecret) return null;
+    try {
+      const { payload } = await jwtVerify<SessionPayload>(token, oldSecret, { algorithms: ["HS256"] });
+      if (revokedTokens.has(payload.jti)) return null;
+      return { email: payload.sub, role: payload.role };
+    } catch {
+      return null;
+    }
   }
+}
+
+export function revokeToken(jti: string) {
+  revokedTokens.add(jti);
 }
 
 export function setSessionCookie(response: NextResponse, token: string) {
@@ -158,15 +148,16 @@ export function clearSessionCookie(response: NextResponse) {
 export function enforceSessionRole(
   request: Request,
   options: { routeLabel: string; allowedRoles: UserRole[] }
-): { email: string; role: UserRole } | NextResponse {
-  const session = readSession(request);
-  if (!session) {
-    return NextResponse.json({ error: `${options.routeLabel} requires an authenticated session.` }, { status: 401 });
-  }
+): Promise<{ email: string; role: UserRole } | NextResponse> {
+  return readSession(request).then((session) => {
+    if (!session) {
+      return NextResponse.json({ error: `${options.routeLabel} requires an authenticated session.` }, { status: 401 });
+    }
 
-  if (!options.allowedRoles.includes(session.role)) {
-    return NextResponse.json({ error: "Insufficient role for this resource." }, { status: 403 });
-  }
+    if (!options.allowedRoles.includes(session.role)) {
+      return NextResponse.json({ error: "Insufficient role for this resource." }, { status: 403 });
+    }
 
-  return session;
+    return session;
+  });
 }

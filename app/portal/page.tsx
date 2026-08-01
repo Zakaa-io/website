@@ -53,20 +53,35 @@ export default function PortalPage() {
     void loadSession();
   }, [loadSession]);
 
+  useEffect(() => {
+    void fetch("/api/csrf", { method: "GET", credentials: "include" });
+  }, []);
+
   const onLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAuthError(null);
     setAuthNotice(null);
     setIsLoggingIn(true);
     try {
-      const result = await postJson<{ success: boolean; user: { email: string; role: UserRole } }>("/api/auth/login", {
-        email,
-        password,
+      const csrfToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("zakaa_csrf="))
+        ?.split("=")[1];
+
+      const result = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(csrfToken ? { "x-zakaa-csrf": csrfToken } : {}),
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
       });
 
+      const data = (await result.json()) as { success?: boolean; user?: { email: string; role: UserRole }; error?: string };
+
       if (result.status !== 200) {
-        const errorMessage = (result.data as { error?: string }).error ?? "Login failed.";
-        setAuthError(errorMessage);
+        setAuthError(data.error ?? "Login failed.");
         setIsLoggingIn(false);
         return;
       }

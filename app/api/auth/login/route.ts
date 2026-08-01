@@ -5,9 +5,15 @@ import {
   setSessionCookie,
 } from "@/lib/server/session-auth";
 import { readJsonRecord, requireString, validationErrorResponse } from "@/lib/server/validation";
+import { validateCsrfToken } from "@/lib/server/csrf";
 
 export async function POST(request: Request) {
   try {
+    const csrfResult = validateCsrfToken(request);
+    if (!csrfResult.success) {
+      return NextResponse.json({ error: csrfResult.error }, { status: 403 });
+    }
+
     const payload = await readJsonRecord(request);
     const email = requireString(payload.email, "email", { minLength: 3, maxLength: 200 }).toLowerCase();
     const password = requireString(payload.password, "password", { minLength: 4, maxLength: 200 });

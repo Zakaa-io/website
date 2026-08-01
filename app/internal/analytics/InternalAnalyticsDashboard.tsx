@@ -153,6 +153,10 @@ export default function InternalAnalyticsDashboard() {
     void loadDashboardData();
   }, [session.authenticated, loadDashboardData]);
 
+  useEffect(() => {
+    void fetch("/api/csrf", { method: "GET", credentials: "include" });
+  }, []);
+
   const routeRows = useMemo(() => {
     if (!metrics) return [];
     return Object.entries(metrics.routeCounts).sort((a, b) => b[1] - a[1]);
@@ -161,13 +165,24 @@ export default function InternalAnalyticsDashboard() {
   const onLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setAuthError(null);
-    const result = await postJson<{ success: boolean; user: { email: string; role: UserRole } }>(
-      "/api/auth/login",
-      { email, password }
-    );
-    if (result.status !== 200) {
-      const errorMessage = (result.data as { error?: string }).error ?? "Login failed.";
-      setAuthError(errorMessage);
+    const csrfToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("zakaa_csrf="))
+      ?.split("=")[1];
+
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(csrfToken ? { "x-zakaa-csrf": csrfToken } : {}),
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = (await response.json()) as { success?: boolean; user?: { email: string; role: UserRole }; error?: string };
+    if (response.status !== 200) {
+      setAuthError(data.error ?? "Login failed.");
       return;
     }
 
@@ -176,7 +191,18 @@ export default function InternalAnalyticsDashboard() {
   };
 
   const onLogout = async () => {
-    await postJson<{ success: boolean }>("/api/auth/logout", {});
+    const csrfToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("zakaa_csrf="))
+      ?.split("=")[1];
+
+    await fetch("/api/auth/logout", {
+      method: "POST",
+      headers: {
+        ...(csrfToken ? { "x-zakaa-csrf": csrfToken } : {}),
+      },
+      credentials: "include",
+    });
     setSession({ authenticated: false });
     setMetrics(null);
     setAlerts([]);
