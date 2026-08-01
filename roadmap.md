@@ -1,10 +1,10 @@
 # Zakaa Site Route Roadmap
 
-## How to access `zakaa-client-portal`
+## How to access `be`
 
 ### Local development
 1. Open terminal in:
-   - `C:\Mensh\other-works\zakaa\website\app\portal\_zakaa-client-portal`
+   - `D:\GitHub\Zakaa-io\be`
 2. Install dependencies:
    - `npm install`
 3. Create local env file:
@@ -21,7 +21,7 @@
    - `http://localhost:3000/login`
 
 ### Planned production access
-- `https://portal.zakaa.io` (as defined in `CLIENT_PORTAL_PLAN.md`)
+- `https://be.zakaa.io` (as defined in `CLIENT_PORTAL_PLAN.md`)
 
 ---
 
@@ -100,7 +100,7 @@
 
 ---
 
-## `zakaa-client-portal` routes/pages
+## `be` routes/pages
 
 ### UI pages
 - `/` (redirects to `/dashboard`)

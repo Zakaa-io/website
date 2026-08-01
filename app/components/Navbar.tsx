@@ -15,7 +15,7 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
-  const portalAccessUrl = process.env.NEXT_PUBLIC_CLIENT_PORTAL_URL?.trim() || "https://portal.zakaa.io/login";
+  const portalAccessUrl = process.env.NEXT_PUBLIC_BE_URL?.trim() || "https://be.zakaa.io/login";
   const isArabic = locale === "ar";
   const navLinks = [
     { label: isArabic ? "الخدمات" : "Services", href: "#services" },

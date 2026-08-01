@@ -4,7 +4,7 @@
 
 Use this flow:
 
-- `zakaa-client-portal` (Next.js UI)
+- `zakaa client portal` with a subdmian called `be.zakaa.io` (Next.js UI)
 - -> Portal API/BFF layer (server-side authZ + tenant checks)
 - -> Postgres (single source of truth for portal domain data)
 

@@ -2,7 +2,7 @@
 
 ## 1) Goal
 
-Build a dedicated **client portal** as a **separate application** from the current website, hosted on a **separate subdomain** (recommended: `portal.zakaa.io`), with secure client authentication, account-specific data access, and operational readiness for production.
+Build a dedicated **backend** as a **separate application** from the current website, hosted on a **separate subdomain** (recommended: `be.zakaa.io`), with secure client authentication, account-specific data access, and operational readiness for production.
 
 ---
 
