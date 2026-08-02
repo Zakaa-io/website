@@ -63,7 +63,7 @@ export default function Testimonials({ locale = "en" }: Readonly<TestimonialsPro
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold">{review.name}</h4>
-                    <p className="text-xs text-[#64748B]">{review.role}</p>
+                    <p className="text-xs text-[#94A3B8]">{review.role}</p>
                   </div>
                 </div>
               </div>

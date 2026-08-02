@@ -64,7 +64,7 @@ href="#assessment-form"
 <button
 	                type="button"
 	                onClick={openChat}
-	                className="inline-flex items-center gap-2 px-9 py-4 rounded-[10px] text-base font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all no-underline"
+	                className="inline-flex items-center gap-2 px-9 py-4 rounded-[10px] text-base font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all no-underline"
             >
               {isArabic ? "تحدث مع مهندس" : "Talk to an Engineer"}
             </button>
@@ -72,14 +72,14 @@ href="#assessment-form"
         </FadeIn>
         <FadeIn delay={350}>
           <div id="assessment-form" className="mt-10 space-y-4">
-            <div className="flex items-center justify-end gap-2">
+            <div className={`flex items-center gap-2 ${isArabic ? "justify-start" : "justify-end"}`}>
               <button
                 type="button"
                 onClick={() => setAssessmentLanguage("en")}
 className={`rounded-md px-3 py-1.5 text-xs ${
 	                   assessmentLanguage === "en"
 	                     ? "bg-[#6366f1] text-white"
-	                     : "bg-[#12121a] text-[#a1a1aa] border border-[rgba(148,163,184,0.14)]"
+	                     : "bg-[#12121a] text-[#94A3B8] border border-[rgba(148,163,184,0.14)]"
 	                   }`}
               >
                 EN
@@ -90,18 +90,18 @@ className={`rounded-md px-3 py-1.5 text-xs ${
 className={`rounded-md px-3 py-1.5 text-xs ${
 	                   assessmentLanguage === "ar"
 	                     ? "bg-[#6366f1] text-white"
-	                     : "bg-[#12121a] text-[#a1a1aa] border border-[rgba(148,163,184,0.14)]"
+	                     : "bg-[#12121a] text-[#94A3B8] border border-[rgba(148,163,184,0.14)]"
 	                   }`}
               >
                 AR
               </button>
             </div>
             <AssessmentWizard language={assessmentLanguage} />
-            <LeadForm source="cta" />
+            <LeadForm source="cta" locale={locale} />
           </div>
         </FadeIn>
         <FadeIn delay={400}>
-          <div className="mt-8 text-sm text-[#64748B] space-y-1">
+          <div className="mt-8 text-sm text-[#94A3B8] space-y-1">
             <p>📧 hello@zakaa.io</p>
             <p>📞 +20 1000 292 919 &nbsp;|&nbsp; +20 1234 522 055</p>
             <p>📍 5th Settlement — Cairo — Egypt</p>

@@ -45,7 +45,7 @@ export default function BackToTopButton({ locale = "en" }: Readonly<BackToTopBut
       aria-label={isArabic ? "العودة للرئيسية" : "Back to home"}
       title={isArabic ? "العودة للرئيسية" : "Back to home"}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-6 left-6 z-[1100] inline-flex items-center justify-center rounded-full border border-[rgba(239,68,68,0.5)] bg-[#06060a] p-1 shadow-[0_0_20px_rgba(239,68,68,0.2)] transition-all hover:scale-110 hover:border-[rgba(239,68,68,0.7)]"
+      className={`fixed bottom-6 z-[1100] inline-flex items-center justify-center rounded-full border border-[rgba(239,68,68,0.5)] bg-[#06060a] p-1 shadow-[0_0_20px_rgba(239,68,68,0.2)] transition-all hover:scale-110 hover:border-[rgba(239,68,68,0.7)] ${isArabic ? "right-6" : "left-6"}`}
     >
       <svg className="absolute inset-0 m-auto" width="48" height="48" viewBox="0 0 48 48">
         <circle

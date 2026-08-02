@@ -3,10 +3,12 @@
 import { FormEvent, useMemo, useState } from "react";
 import { emitAnalyticsEvent } from "@/lib/analytics/client";
 import type { LeadResponse } from "@/types/ai";
+import type { SiteLocale } from "../types/locale";
 
 interface LeadFormProps {
   source?: "cta" | "chat" | "assessment" | "unknown";
   compact?: boolean;
+  locale?: SiteLocale;
 }
 
 const initialState = {
@@ -16,7 +18,7 @@ const initialState = {
   message: "",
 };
 
-export default function LeadForm({ source = "cta", compact = false }: LeadFormProps) {
+export default function LeadForm({ source = "cta", compact = false, locale = "en" }: LeadFormProps) {
   const [formValues, setFormValues] = useState(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,8 +69,10 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
     setIsSubmitting(false);
   };
 
+  const isArabic = locale === "ar";
+
   return (
-    <div className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 text-left">
+    <div className={`rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 ${isArabic ? "text-right" : "text-left"}`}>
       <h3 className="text-xl font-bold">{title}</h3>
       <p className="text-sm text-[#94A3B8] mt-2 mb-6">
         We will review your current setup and send a practical action plan.
@@ -76,43 +80,51 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
 
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="lead-name" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "الاسم الكامل" : "Full name"}</label>
+            <input
+              id="lead-name"
+              type="text"
+              value={formValues.name}
+              onChange={(event) => setFormValues((prev) => ({ ...prev, name: event.target.value }))}
+              className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="lead-email" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "البريد الإلكتروني" : "Work email"}</label>
+            <input
+              id="lead-email"
+              type="email"
+              value={formValues.email}
+              onChange={(event) => setFormValues((prev) => ({ ...prev, email: event.target.value }))}
+              className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
+              required
+            />
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor="lead-company" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "الشركة (اختياري)" : "Company (optional)"}</label>
           <input
+            id="lead-company"
             type="text"
-            aria-label="Full name"
-            placeholder="Full name"
-            value={formValues.name}
-            onChange={(event) => setFormValues((prev) => ({ ...prev, name: event.target.value }))}
+            value={formValues.company}
+            onChange={(event) => setFormValues((prev) => ({ ...prev, company: event.target.value }))}
             className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
-            required
-          />
-          <input
-            type="email"
-            aria-label="Work email"
-            placeholder="Work email"
-            value={formValues.email}
-            onChange={(event) => setFormValues((prev) => ({ ...prev, email: event.target.value }))}
-            className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
-            required
           />
         </div>
 
-        <input
-          type="text"
-          aria-label="Company"
-          placeholder="Company (optional)"
-          value={formValues.company}
-          onChange={(event) => setFormValues((prev) => ({ ...prev, company: event.target.value }))}
-          className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
-        />
-
-        <textarea
-          aria-label="Tell us about your infrastructure goals or pain points"
-          placeholder="Tell us about your infrastructure goals or pain points"
-          value={formValues.message}
-          onChange={(event) => setFormValues((prev) => ({ ...prev, message: event.target.value }))}
-          className="w-full min-h-28 rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
-          required
-        />
+        <div>
+          <label htmlFor="lead-message" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "أخبرنا عن أهداف بنيتك التحتية" : "Tell us about your infrastructure goals or pain points"}</label>
+          <textarea
+            id="lead-message"
+            value={formValues.message}
+            onChange={(event) => setFormValues((prev) => ({ ...prev, message: event.target.value }))}
+            className="w-full min-h-28 rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
+            required
+          />
+        </div>
 
         <button
           type="submit"
@@ -131,8 +143,8 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
               Submitted successfully — lead score {result.score}/100 ({result.tier.toUpperCase()}).
             </p>
             <p className="text-[#94A3B8] mt-1">{result.nextStep}</p>
-            <p className="text-[#64748B] mt-1">We will send a summary to your email shortly.</p>
-            <p className="text-[#64748B] mt-2">Reference: {result.referenceId}</p>
+            <p className="text-[#94A3B8] mt-1">We will send a summary to your email shortly.</p>
+            <p className="text-[#94A3B8] mt-2">Reference: {result.referenceId}</p>
           </div>
         )}
     </div>

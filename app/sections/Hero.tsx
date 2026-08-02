@@ -62,7 +62,7 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
           <span className="accent-text">{isArabic ? "مدعومة بوكلاء الذكاء الاصطناعي" : "Powered by AI Agents"}</span>
         </h1>
 
-        <p className="text-[clamp(1rem,2vw,1.25rem)] text-[#a1a1aa] max-w-[600px] mb-10 leading-relaxed">
+        <p className="text-[clamp(1rem,2vw,1.25rem)] text-[#94A3B8] max-w-[600px] mb-10 leading-relaxed">
           {isArabic
             ? "نقوم بتصميم ونشر وإدارة بنية تحتية سحابية حديثة باستخدام وكلاء ذكاء اصطناعي مستقلين يتولون المهام التشغيلية المتكررة، حتى يركز فريقك على ما يهم فعلاً."
             : "We design, deploy, and manage cloud-native infrastructure with autonomous AI agents that handle repetitive operations — so your team focuses on what matters."}
@@ -75,11 +75,11 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer"
           >
             <span>{isArabic ? "ابدأ تقييمك الآن" : "Start Your Assessment"}</span>
-            <span>→</span>
+            <span>{isArabic ? "←" : "→"}</span>
           </button>
           <button
             onClick={() => handleNav("#services")}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all cursor-pointer"
           >
             {isArabic ? "استكشف الخدمات" : "Explore Services"}
           </button>

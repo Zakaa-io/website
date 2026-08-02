@@ -55,8 +55,18 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
   }, []);
 
   // Focus management for mobile menu
-  useEffect(() => {
-    if (!mobileOpen) return;
+useEffect(() => {
+    if (!mobileOpen) {
+      menuToggleRef.current?.focus();
+      return;
+    }
+
+    const focusable = menuToggleRef.current?.parentElement?.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled])'
+    );
+    if (focusable && focusable.length > 0) {
+      setTimeout(() => focusable[0].focus(), 0);
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -86,6 +96,21 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [mobileOpen]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest("[data-mobile-menu]")) {
+        setMobileOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [mobileOpen]);
 
   useEffect(() => {
@@ -149,9 +174,10 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
             {navLinks.map((link) => (
               <li key={link.label}>
                 <button
+                  type="button"
                   onClick={() => handleNav(link.href)}
                   aria-current={activeSection === link.href.substring(1) ? "location" : undefined}
-                  className="zakaa-navbar-control text-sm font-medium text-[#a1a1aa] px-4 py-2 rounded-lg transition-all hover:text-[#e4e4e7] hover:bg-[#1a1a24] bg-transparent border-none cursor-pointer"
+                  className="zakaa-navbar-control text-sm font-medium text-[#94A3B8] px-4 py-2 rounded-lg transition-all hover:text-[#e4e4e7] hover:bg-[#1a1a24] bg-transparent border-none cursor-pointer"
                 >
                   {link.label}
                 </button>
@@ -163,17 +189,19 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
             <ThemeToggle locale={locale} />
 <a
                 href={langSwitchHref}
-                className="zakaa-navbar-control inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all underline underline-offset-4"
+                className="zakaa-navbar-control inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all underline underline-offset-4"
             >
               {isArabic ? "English" : "العربية"}
             </a>
-            <button
+<button
+              type="button"
               onClick={handlePortalAccess}
-              className="zakaa-navbar-control inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all cursor-pointer"
+              className="zakaa-navbar-control inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all cursor-pointer"
             >
               {isArabic ? "دخول البوابة" : "Portal Access"}
             </button>
             <button
+              type="button"
               onClick={() => handleNav("#contact")}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer"
             >
@@ -182,6 +210,7 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
           </div>
 
           <button
+            type="button"
             className="zakaa-navbar-menu-toggle md:hidden bg-transparent border-none text-[#e4e4e7] text-2xl cursor-pointer"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={isArabic ? "تبديل القائمة" : "Toggle menu"}
@@ -191,26 +220,28 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
         </div>
       </nav>
 
-      {mobileOpen && (
-        <div className="fixed top-[72px] left-0 right-0 bg-[#0c0c12] border-b border-[rgba(148,163,184,0.06)] px-6 py-4 z-[999] md:hidden">
+{mobileOpen && (
+        <div data-mobile-menu className="fixed top-[72px] left-0 right-0 bg-[#0c0c12] border-b border-[rgba(148,163,184,0.06)] px-6 py-4 z-[999] md:hidden">
           {navLinks.map((link) => (
 <button
                 key={link.label}
+                type="button"
                 onClick={() => handleNav(link.href)}
-                className="zakaa-navbar-control block w-full text-left py-3 text-base font-medium text-[#a1a1aa] border-b border-[rgba(148,163,184,0.06)] last:border-none bg-transparent border-none cursor-pointer"
-            >
-              {link.label}
-            </button>
+                className={`zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] last:border-none bg-transparent border-none cursor-pointer ${isArabic ? "text-right" : "text-left"}`}
+              >
+                {link.label}
+              </button>
           ))}
 <button
+              type="button"
               onClick={handlePortalAccess}
-              className="zakaa-navbar-control block w-full text-left py-3 text-base font-medium text-[#a1a1aa] border-b border-[rgba(148,163,184,0.06)] bg-transparent border-none cursor-pointer"
-          >
-            {isArabic ? "دخول البوابة" : "Portal Access"}
-          </button>
+              className={`zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] bg-transparent border-none cursor-pointer ${isArabic ? "text-right" : "text-left"}`}
+            >
+              {isArabic ? "دخول البوابة" : "Portal Access"}
+            </button>
           <a
             href={langSwitchHref}
-            className="zakaa-navbar-control block w-full py-3 text-base font-medium text-[#a1a1aa] border-b border-[rgba(148,163,184,0.06)] underline underline-offset-4"
+            className="zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] underline underline-offset-4"
           >
             {isArabic ? "English" : "العربية"}
           </a>
@@ -218,8 +249,9 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
             <ThemeToggle locale={locale} />
           </div>
           <button
+            type="button"
             onClick={() => handleNav("#contact")}
-            className="block w-full text-left py-3 text-base font-medium text-[#a1a1aa] bg-transparent border-none cursor-pointer"
+            className={`block w-full py-3 text-base font-medium text-[#94A3B8] bg-transparent border-none cursor-pointer ${isArabic ? "text-right" : "text-left"}`}
           >
             {isArabic ? "ابدأ الآن" : "Get Started"}
           </button>

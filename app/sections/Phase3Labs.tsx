@@ -187,7 +187,7 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
               <p className="text-xs uppercase tracking-[0.2em] text-[#3B82F6]">Product</p>
               <h3 className="mt-2 text-xl font-bold text-[#F8FAFC]">{product.name}</h3>
               <p className="mt-2 text-sm text-[#94A3B8]">{product.description}</p>
-              <p className="mt-3 text-sm font-medium text-[#60A5FA]">Explore product →</p>
+              <p className="mt-3 text-sm font-medium text-[#60A5FA]">{isArabic ? "← استكشف المنتج" : "Explore product →"}</p>
             </Link>
           ))}
         </div>
@@ -343,7 +343,7 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
                       <li key={action}>{action}</li>
                     ))}
                   </ul>
-                  <p className="mt-3 text-xs text-[#64748B]">{portalResult.escalationPath}</p>
+                  <p className="mt-3 text-xs text-[#94A3B8]">{portalResult.escalationPath}</p>
                 </div>
               )}
             </div>

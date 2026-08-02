@@ -219,7 +219,7 @@ export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold">{feature.title}</h4>
-                    <p className="text-xs text-[#64748B]">{feature.desc}</p>
+                    <p className="text-xs text-[#94A3B8]">{feature.desc}</p>
                   </div>
                 </div>
               ))}

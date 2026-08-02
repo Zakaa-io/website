@@ -108,7 +108,7 @@ export default function AIChatWidget({ initialLanguage = "en" }: Readonly<AIChat
   };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[1100]">
+    <div className={`fixed bottom-5 z-[1100] ${language === "ar" ? "left-5" : "right-5"}`}>
       {!open && !minimized && (
         <button
           onClick={() => {
@@ -139,7 +139,7 @@ export default function AIChatWidget({ initialLanguage = "en" }: Readonly<AIChat
           <div className="flex items-center justify-between border-b border-[rgba(148,163,184,0.1)] px-4 py-3">
             <div>
               <p className="text-sm font-semibold">Zakaa AI Assistant</p>
-              <p className="text-xs text-[#64748B]">Provider: {provider}</p>
+              <p className="text-xs text-[#94A3B8]">Provider: {provider}</p>
             </div>
             <div className="flex items-center gap-2">
               <select

@@ -61,8 +61,8 @@ export default function Process({ locale = "en" }: Readonly<ProcessProps>) {
             <FadeIn key={step.number} delay={i * 150}>
               <div className="relative text-center p-8 bg-[#111827] border border-[rgba(148,163,184,0.08)] rounded-2xl transition-all duration-300 hover:border-[rgba(59,130,246,0.15)] hover:-translate-y-1 group">
                 {i < steps.length - 1 && (
-                  <span className="hidden lg:block absolute -right-9 top-1/2 -translate-y-1/2 text-[#64748B] text-2xl font-mono">
-                    →
+                  <span className="hidden lg:block absolute top-1/2 -translate-y-1/2 text-[#94A3B8] text-2xl font-mono" style={{ [isArabic ? "left" : "right"]: "-9px" }}>
+                    {isArabic ? "←" : "→"}
                   </span>
                 )}
 

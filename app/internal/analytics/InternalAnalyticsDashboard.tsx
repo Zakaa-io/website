@@ -373,7 +373,7 @@ export default function InternalAnalyticsDashboard() {
           </div>
         </section>
 
-        <footer className="text-xs text-[#64748B]">
+        <footer className="text-xs text-[#94A3B8]">
           {loadingData ? "Refreshing data..." : `Last updated: ${metrics?.generatedAt ?? "N/A"}`}
         </footer>
       </div>

@@ -96,7 +96,7 @@ export async function createSessionToken(input: { email: string; role: UserRole 
   const jwt = await new SignJWT({ sub: input.email, role: input.role, jti })
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime(Math.floor(Date.now() / 1000) + maxAgeSeconds)
-    .sign(secret);
+    .sign(new Uint8Array(Buffer.from(secret)));
 
   return jwt;
 }
@@ -107,15 +107,17 @@ export async function readSession(request: Request): Promise<{ email: string; ro
 
   const secret = getSessionSecret();
   const oldSecret = getOldSessionSecret();
+  const secretKey = new Uint8Array(Buffer.from(secret));
+  const oldSecretKey = oldSecret ? new Uint8Array(Buffer.from(oldSecret)) : null;
 
   try {
-    const { payload } = await jwtVerify<SessionPayload>(token, secret, { algorithms: ["HS256"] });
+    const { payload } = await jwtVerify<SessionPayload>(token, secretKey, { algorithms: ["HS256"] });
     if (revokedTokens.has(payload.jti)) return null;
     return { email: payload.sub, role: payload.role };
   } catch {
-    if (!oldSecret) return null;
+    if (!oldSecretKey) return null;
     try {
-      const { payload } = await jwtVerify<SessionPayload>(token, oldSecret, { algorithms: ["HS256"] });
+      const { payload } = await jwtVerify<SessionPayload>(token, oldSecretKey, { algorithms: ["HS256"] });
       if (revokedTokens.has(payload.jti)) return null;
       return { email: payload.sub, role: payload.role };
     } catch {

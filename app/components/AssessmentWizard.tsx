@@ -125,7 +125,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
   return (
     <div
       dir={language === "ar" ? "rtl" : "ltr"}
-      className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 text-left"
+      className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6"
     >
       <h3 className="text-xl font-bold">{labels.title}</h3>
       <p className="mt-2 text-sm text-[#94A3B8]">{labels.subtitle}</p>
@@ -239,7 +239,22 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
           >
             {isSubmitting ? labels.submitting : step === 2 ? labels.submit : labels.next}
           </button>
-          <p className="text-xs text-[#64748B]">Step {step + 1}/3</p>
+          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {[0, 1, 2].map((s) => (
+              <div
+                key={s}
+                className={`h-2 rounded-full transition-all ${
+                  s <= step ? "w-6 bg-[#3B82F6]" : "w-2 bg-[rgba(148,163,184,0.2)]"
+                }`}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
+          <p className="text-xs text-[#94A3B8]" aria-live="polite">
+            {language === "ar" ? `الخطوة ${step + 1} من 3` : `Step ${step + 1} of 3`}
+          </p>
+        </div>
         </div>
       </form>
 
@@ -260,7 +275,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
               <div key={item.title} className="rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] p-3">
                 <p className="font-semibold text-sm">{item.title}</p>
                 <p className="mt-1 text-xs text-[#94A3B8]">{item.rationale}</p>
-                <p className="mt-2 text-xs text-[#64748B]">
+                <p className="mt-2 text-xs text-[#94A3B8]">
                   {language === "ar" ? "الخدمات:" : "Services:"} {item.mappedServices.join(" • ")}
                 </p>
               </div>

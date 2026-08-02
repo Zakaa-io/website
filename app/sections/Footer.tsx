@@ -66,12 +66,12 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
               <BrandLogo size="sm" />
               <span>{isArabic ? "ذكاء" : "Zakaa"}</span>
             </a>
-            <p className="text-[#64748B] text-sm mt-4 leading-relaxed max-w-sm">
+            <p className="text-[#94A3B8] text-sm mt-4 leading-relaxed max-w-sm">
               {isArabic
                 ? "إدارة بنية تحتية مؤسسية مدعومة بوكلاء ذكاء اصطناعي مستقلين. نبني ونؤمّن ونشغّل الأنظمة التي تدعم أعمالك."
                 : "Enterprise IT infrastructure management powered by autonomous AI agents. We build, secure, and operate the systems that power your business."}
             </p>
-            <div className="mt-4 text-sm text-[#64748B] space-y-1">
+            <div className="mt-4 text-sm text-[#94A3B8] space-y-1">
               <p>📧 hello@zakaa.io</p>
               <p>📞 +20 1000 292 919</p>
               <p>📞 +20 1234 522 055</p>
@@ -87,7 +87,7 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
                 <a
                   key={item.platform}
                   href="#"
-                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#12121a] border border-[rgba(148,163,184,0.06)] px-3 py-2 text-[#a1a1aa] text-sm no-underline transition-all hover:bg-[#1a1a24] hover:text-[#6366f1] hover:border-[rgba(99,102,241,0.2)]"
+                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#12121a] border border-[rgba(148,163,184,0.06)] px-3 py-2 text-[#94A3B8] text-sm no-underline transition-all hover:bg-[#1a1a24] hover:text-[#6366f1] hover:border-[rgba(99,102,241,0.2)]"
                   aria-label={`${item.platform} zakaa-ai`}
                 >
                   <span className="font-semibold">{item.icon}</span>
@@ -106,15 +106,16 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
                   <li key={link.label} className="mb-2.5">
                     {link.href.startsWith("#") ? (
 <button
+	                        type="button"
 	                        onClick={() => handleNav(link.href)}
-	                        className="text-[#a1a1aa] text-sm no-underline transition-colors hover:text-[#6366f1] bg-transparent border-none cursor-pointer"
+	                        className="text-[#94A3B8] text-sm no-underline transition-colors hover:text-[#6366f1] bg-transparent border-none cursor-pointer"
 	                      >
                         {link.label}
                       </button>
                     ) : (
 <a
 	                        href={link.href}
-	                        className="text-[#a1a1aa] text-sm underline underline-offset-4 transition-colors hover:text-[#6366f1]"
+	                        className="text-[#94A3B8] text-sm underline underline-offset-4 transition-colors hover:text-[#6366f1]"
 	                      >
                         {link.label}
                       </a>
@@ -128,7 +129,7 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
 
         {/* Bottom */}
         <div className="border-t border-[rgba(148,163,184,0.08)] pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-[#64748B] text-xs">
+          <p className="text-[#94A3B8] text-xs">
             {isArabic ? "© 2026 ذكاء. جميع الحقوق محفوظة." : "© 2026 Zakaa. All rights reserved."}
           </p>
           <div className="flex gap-6">
@@ -141,7 +142,7 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-[#64748B] text-xs underline underline-offset-4 hover:text-[#94A3B8] transition-colors"
+                className="text-[#94A3B8] text-xs underline underline-offset-4 hover:text-[#94A3B8] transition-colors"
               >
                 {item.label}
               </a>

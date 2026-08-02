@@ -138,7 +138,7 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
 	                  className={`w-full justify-center inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold transition-all cursor-pointer ${
 	                    plan.ctaStyle === "primary"
 	                      ? "text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5"
-	                      : "text-[#a1a1aa] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7]"
+	                      : "text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7]"
 	                  }`}
 	                >
                   {plan.cta}

@@ -58,7 +58,7 @@ export default function Terminal() {
         <div className="w-3 h-3 rounded-full bg-[#475569]" />
         <div className="w-3 h-3 rounded-full bg-[#475569]" />
         <div className="w-3 h-3 rounded-full bg-[#475569]" />
-        <span className="ml-3 text-xs text-[#64748B] font-mono">
+        <span className="ml-3 text-xs text-[#94A3B8] font-mono">
           zakaa-agent — zsh — 80×24
         </span>
       </div>
@@ -94,23 +94,23 @@ export default function Terminal() {
         </div>
         <div>
           {"  ├─ infra-monitor "}
-          <span className="text-[#64748B]"># watching 47 metrics</span>
+          <span className="text-[#94A3B8]"># watching 47 metrics</span>
         </div>
         <div>
           {"  ├─ security-scanner "}
-          <span className="text-[#64748B]"># last scan: 2m ago</span>
+          <span className="text-[#94A3B8]"># last scan: 2m ago</span>
         </div>
         <div>
           {"  ├─ cost-optimizer "}
-          <span className="text-[#64748B]"># saved $12.4K this month</span>
+          <span className="text-[#94A3B8]"># saved $12.4K this month</span>
         </div>
         <div>
           {"  ├─ patch-manager "}
-          <span className="text-[#64748B]"># 0 critical patches pending</span>
+          <span className="text-[#94A3B8]"># 0 critical patches pending</span>
         </div>
         <div>
           {"  └─ incident-responder "}
-          <span className="text-[#64748B]"># 3 auto-resolved today</span>
+          <span className="text-[#94A3B8]"># 3 auto-resolved today</span>
         </div>
         <div className="mt-2">
           <span className="text-[#3B82F6]">$</span>{" "}
