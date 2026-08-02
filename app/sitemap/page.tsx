@@ -1,6 +1,5 @@
 const siteRoutes = [
   "/",
-  "/ar",
   "/portal",
   "/internal/analytics",
   "/case-studies",

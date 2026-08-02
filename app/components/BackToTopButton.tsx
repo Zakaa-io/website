@@ -2,14 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-import type { SiteLocale } from "../types/locale";
 
-interface BackToTopButtonProps {
-  locale?: SiteLocale;
-}
-
-export default function BackToTopButton({ locale = "en" }: Readonly<BackToTopButtonProps>) {
-  const isArabic = locale === "ar";
+export default function BackToTopButton() {
   const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -36,16 +30,13 @@ export default function BackToTopButton({ locale = "en" }: Readonly<BackToTopBut
     return null;
   }
 
-  const circumference = 2 * Math.PI * 18;
-  const dashoffset = circumference * (1 - progress);
-
   return (
     <button
       type="button"
-      aria-label={isArabic ? "العودة للرئيسية" : "Back to home"}
-      title={isArabic ? "العودة للرئيسية" : "Back to home"}
+      aria-label="Back to home"
+      title="Back to home"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className={`fixed bottom-6 z-[1100] inline-flex items-center justify-center rounded-full border border-[rgba(239,68,68,0.5)] bg-[#06060a] shadow-[0_0_20px_rgba(239,68,68,0.2)] transition-all hover:scale-110 hover:border-[rgba(239,68,68,0.7)] ${isArabic ? "right-6" : "left-6"}`}
+      className="fixed bottom-6 left-6 z-[1100] inline-flex items-center justify-center rounded-full border border-[rgba(239,68,68,0.5)] bg-[#06060a] shadow-[0_0_20px_rgba(239,68,68,0.2)] transition-all hover:scale-110 hover:border-[rgba(239,68,68,0.7)]"
       style={{ width: 48, height: 48, padding: 0 }}
     >
       <svg className="absolute inset-0" width="48" height="48" viewBox="0 0 48 48">

@@ -3,12 +3,10 @@
 import { FormEvent, useMemo, useState } from "react";
 import { emitAnalyticsEvent } from "@/lib/analytics/client";
 import type { LeadResponse } from "@/types/ai";
-import type { SiteLocale } from "../types/locale";
 
 interface LeadFormProps {
   source?: "cta" | "chat" | "assessment" | "unknown";
   compact?: boolean;
-  locale?: SiteLocale;
 }
 
 const initialState = {
@@ -18,7 +16,7 @@ const initialState = {
   message: "",
 };
 
-export default function LeadForm({ source = "cta", compact = false, locale = "en" }: LeadFormProps) {
+export default function LeadForm({ source = "cta", compact = false }: LeadFormProps) {
   const [formValues, setFormValues] = useState(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -69,10 +67,8 @@ export default function LeadForm({ source = "cta", compact = false, locale = "en
     setIsSubmitting(false);
   };
 
-  const isArabic = locale === "ar";
-
   return (
-    <div className={`rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 ${isArabic ? "text-right" : "text-left"}`}>
+    <div className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 text-left">
       <h3 className="text-xl font-bold">{title}</h3>
       <p className="text-sm text-[#94A3B8] mt-2 mb-6">
         We will review your current setup and send a practical action plan.
@@ -81,7 +77,7 @@ export default function LeadForm({ source = "cta", compact = false, locale = "en
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="lead-name" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "الاسم الكامل" : "Full name"}</label>
+            <label htmlFor="lead-name" className="block text-sm font-medium text-[#94A3B8] mb-1.5">Full name</label>
             <input
               id="lead-name"
               type="text"
@@ -92,7 +88,7 @@ export default function LeadForm({ source = "cta", compact = false, locale = "en
             />
           </div>
           <div>
-            <label htmlFor="lead-email" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "البريد الإلكتروني" : "Work email"}</label>
+            <label htmlFor="lead-email" className="block text-sm font-medium text-[#94A3B8] mb-1.5">Work email</label>
             <input
               id="lead-email"
               type="email"
@@ -105,7 +101,7 @@ export default function LeadForm({ source = "cta", compact = false, locale = "en
         </div>
 
         <div>
-          <label htmlFor="lead-company" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "الشركة (اختياري)" : "Company (optional)"}</label>
+          <label htmlFor="lead-company" className="block text-sm font-medium text-[#94A3B8] mb-1.5">Company (optional)</label>
           <input
             id="lead-company"
             type="text"
@@ -116,7 +112,7 @@ export default function LeadForm({ source = "cta", compact = false, locale = "en
         </div>
 
         <div>
-          <label htmlFor="lead-message" className="block text-sm font-medium text-[#94A3B8] mb-1.5">{isArabic ? "أخبرنا عن أهداف بنيتك التحتية" : "Tell us about your infrastructure goals or pain points"}</label>
+          <label htmlFor="lead-message" className="block text-sm font-medium text-[#94A3B8] mb-1.5">Tell us about your infrastructure goals or pain points</label>
           <textarea
             id="lead-message"
             value={formValues.message}
@@ -137,16 +133,16 @@ export default function LeadForm({ source = "cta", compact = false, locale = "en
 
       {error && <p className="mt-4 text-sm text-[#EF4444]">{error}</p>}
 
-{result && (
-          <div className="mt-4 rounded-lg border border-[rgba(16,185,129,0.2)] bg-[rgba(16,185,129,0.08)] p-4 text-sm">
-            <p className="font-semibold">
-              Submitted successfully — lead score {result.score}/100 ({result.tier.toUpperCase()}).
-            </p>
-            <p className="text-[#94A3B8] mt-1">{result.nextStep}</p>
-            <p className="text-[#94A3B8] mt-1">We will send a summary to your email shortly.</p>
-            <p className="text-[#94A3B8] mt-2">Reference: {result.referenceId}</p>
-          </div>
-        )}
+      {result && (
+        <div className="mt-4 rounded-lg border border-[rgba(16,185,129,0.2)] bg-[rgba(16,185,129,0.08)] p-4 text-sm">
+          <p className="font-semibold">
+            Submitted successfully — lead score {result.score}/100 ({result.tier.toUpperCase()}).
+          </p>
+          <p className="text-[#94A3B8] mt-1">{result.nextStep}</p>
+          <p className="text-[#94A3B8] mt-1">We will send a summary to your email shortly.</p>
+          <p className="text-[#94A3B8] mt-2">Reference: {result.referenceId}</p>
+        </div>
+      )}
     </div>
   );
 }

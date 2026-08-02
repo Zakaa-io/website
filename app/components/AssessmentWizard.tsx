@@ -44,25 +44,15 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
   const [error, setError] = useState<string | null>(null);
 
   const labels = useMemo(
-    () =>
-      language === "ar"
-        ? {
-            title: "مساعد التقييم الذكي",
-            subtitle: "أجب عن الأسئلة التالية لتحصل على توصية فورية.",
-            previous: "السابق",
-            next: "التالي",
-            submit: "إنشاء التقييم",
-            submitting: "جاري التحليل...",
-          }
-        : {
-            title: "AI Assessment Assistant",
-            subtitle: "Answer a few questions to get an instant recommendation.",
-            previous: "Previous",
-            next: "Next",
-            submit: "Generate Assessment",
-            submitting: "Analyzing...",
-          },
-    [language]
+    () => ({
+      title: "AI Assessment Assistant",
+      subtitle: "Answer a few questions to get an instant recommendation.",
+      previous: "Previous",
+      next: "Next",
+      submit: "Generate Assessment",
+      submitting: "Analyzing...",
+    }),
+    []
   );
 
   const togglePriority = (priority: string) => {
@@ -124,8 +114,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
 
   return (
     <div
-      dir={language === "ar" ? "rtl" : "ltr"}
-      className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6"
+      className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 text-left"
     >
       <h3 className="text-xl font-bold">{labels.title}</h3>
       <p className="mt-2 text-sm text-[#94A3B8]">{labels.subtitle}</p>
@@ -135,7 +124,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
           <>
             <input
               type="text"
-              placeholder={language === "ar" ? "اسم الشركة" : "Company name"}
+              placeholder="Company name"
               value={state.companyName}
               onChange={(event) => setState((prev) => ({ ...prev, companyName: event.target.value }))}
               className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
@@ -176,7 +165,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
           <>
             <input
               type="text"
-              placeholder={language === "ar" ? "ميزانية شهرية تقريبية (اختياري)" : "Approx. monthly budget (optional)"}
+              placeholder="Approx. monthly budget (optional)"
               value={state.monthlyBudget}
               onChange={(event) => setState((prev) => ({ ...prev, monthlyBudget: event.target.value }))}
               className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-4 py-3 text-sm outline-none focus:border-[#3B82F6]"
@@ -198,7 +187,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
         {step === 2 && (
           <div>
             <p className="mb-3 text-sm text-[#94A3B8]">
-              {language === "ar" ? "اختر أولوياتك الأساسية:" : "Select your top priorities:"}
+              Select your top priorities:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {priorityOptions.map((option) => {
@@ -222,6 +211,23 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
           </div>
         )}
 
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {[0, 1, 2].map((s) => (
+              <div
+                key={s}
+                className={`h-2 rounded-full transition-all ${
+                  s <= step ? "w-6 bg-[#3B82F6]" : "w-2 bg-[rgba(148,163,184,0.2)]"
+                }`}
+                aria-hidden="true"
+              />
+            ))}
+          </div>
+          <p className="text-xs text-[#94A3B8]" aria-live="polite">
+            Step {step + 1} of 3
+          </p>
+        </div>
+
         <div className="flex items-center gap-3">
           {step > 0 && (
             <button
@@ -239,22 +245,6 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
           >
             {isSubmitting ? labels.submitting : step === 2 ? labels.submit : labels.next}
           </button>
-          <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {[0, 1, 2].map((s) => (
-              <div
-                key={s}
-                className={`h-2 rounded-full transition-all ${
-                  s <= step ? "w-6 bg-[#3B82F6]" : "w-2 bg-[rgba(148,163,184,0.2)]"
-                }`}
-                aria-hidden="true"
-              />
-            ))}
-          </div>
-          <p className="text-xs text-[#94A3B8]" aria-live="polite">
-            {language === "ar" ? `الخطوة ${step + 1} من 3` : `Step ${step + 1} of 3`}
-          </p>
-        </div>
         </div>
       </form>
 
@@ -264,10 +254,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
         <div className="mt-6 rounded-xl border border-[rgba(59,130,246,0.25)] bg-[rgba(59,130,246,0.08)] p-4">
           <p className="text-sm font-semibold">{result.summary}</p>
           <p className="mt-3 text-sm text-[#94A3B8]">
-            {language === "ar" ? "درجة الجاهزية:" : "Readiness score:"}{" "}
-            <span className="text-[#F8FAFC] font-semibold">{result.readinessScore}/100</span> |{" "}
-            {language === "ar" ? "مستوى المخاطر:" : "Risk:"}{" "}
-            <span className="text-[#F8FAFC] font-semibold uppercase">{result.riskLevel}</span>
+            Readiness score: <span className="text-[#F8FAFC] font-semibold">{result.readinessScore}/100</span> | Risk: <span className="text-[#F8FAFC] font-semibold uppercase">{result.riskLevel}</span>
           </p>
 
           <div className="mt-4 space-y-3">
@@ -276,7 +263,7 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
                 <p className="font-semibold text-sm">{item.title}</p>
                 <p className="mt-1 text-xs text-[#94A3B8]">{item.rationale}</p>
                 <p className="mt-2 text-xs text-[#94A3B8]">
-                  {language === "ar" ? "الخدمات:" : "Services:"} {item.mappedServices.join(" • ")}
+                  Services: {item.mappedServices.join(" • ")}
                 </p>
               </div>
             ))}

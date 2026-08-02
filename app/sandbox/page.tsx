@@ -24,7 +24,7 @@ export default function SandboxPage() {
       </section>
 
       <section className="max-w-3xl">
-        <LeadForm source="unknown" compact locale="en" />
+        <LeadForm source="unknown" compact />
       </section>
     </MarketingPageShell>
   );

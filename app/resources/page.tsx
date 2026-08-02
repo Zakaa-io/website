@@ -45,7 +45,7 @@ export default function ResourcesPage() {
         ))}
       </section>
       <section className="max-w-3xl">
-        <LeadForm source="unknown" compact locale="en" />
+        <LeadForm source="unknown" compact />
       </section>
     </MarketingPageShell>
   );

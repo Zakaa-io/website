@@ -2,46 +2,41 @@
 
 import BrandLogo from "../components/BrandLogo";
 import { useSmoothScroll } from "@/lib/useSmoothScroll";
-import type { SiteLocale } from "../types/locale";
 
-interface FooterProps {
-  locale?: SiteLocale;
-}
+const footerLinks = {
+  Services: [
+    { label: "Cloud Infrastructure", href: "#services" },
+    { label: "DevOps & CI/CD", href: "#services" },
+    { label: "Security", href: "#services" },
+    { label: "Networking", href: "#services" },
+    { label: "Managed Hosting", href: "#services" },
+  ],
+  Platform: [
+    { label: "AI Agents", href: "#ai" },
+    { label: "Client Portal", href: "/portal" },
+    { label: "API Documentation", href: "/docs" },
+    { label: "Status Page", href: "/status" },
+    { label: "Changelog", href: "/resources" },
+  ],
+  Company: [
+    { label: "Company Details", href: "/company/details" },
+    { label: "About Us", href: "/company/details" },
+    { label: "Careers", href: "/company/details" },
+    { label: "Blog", href: "/resources" },
+    { label: "Case Studies", href: "/case-studies" },
+    { label: "Contact", href: "#contact" },
+  ],
+  Legal: [
+    { label: "Legal Details", href: "/legal/details" },
+    { label: "Privacy Policy", href: "/legal/privacy-policy" },
+    { label: "Terms of Service", href: "/legal/terms-of-service" },
+    { label: "SLA", href: "/legal/sla" },
+    { label: "Security", href: "/legal/security" },
+    { label: "Compliance", href: "/legal/compliance" },
+  ],
+};
 
-export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
-  const isArabic = locale === "ar";
-  const footerLinks = {
-    [isArabic ? "الخدمات" : "Services"]: [
-      { label: isArabic ? "البنية التحتية السحابية" : "Cloud Infrastructure", href: "#services" },
-      { label: "DevOps & CI/CD", href: "#services" },
-      { label: isArabic ? "الأمن" : "Security", href: "#services" },
-      { label: isArabic ? "الشبكات" : "Networking", href: "#services" },
-      { label: isArabic ? "الاستضافة المُدارة" : "Managed Hosting", href: "#services" },
-    ],
-    [isArabic ? "المنصة" : "Platform"]: [
-      { label: isArabic ? "وكلاء الذكاء الاصطناعي" : "AI Agents", href: "#ai" },
-      { label: isArabic ? "بوابة العملاء" : "Client Portal", href: "/portal" },
-      { label: isArabic ? "توثيق API" : "API Documentation", href: "/docs" },
-      { label: isArabic ? "حالة الخدمة" : "Status Page", href: "/status" },
-      { label: isArabic ? "سجل التحديثات" : "Changelog", href: "/resources" },
-    ],
-    [isArabic ? "الشركة" : "Company"]: [
-      { label: isArabic ? "تفاصيل الشركة" : "Company Details", href: "/company/details" },
-      { label: isArabic ? "من نحن" : "About Us", href: "/company/details" },
-      { label: isArabic ? "الوظائف" : "Careers", href: "/company/details" },
-      { label: isArabic ? "المدونة" : "Blog", href: "/resources" },
-      { label: isArabic ? "دراسات الحالة" : "Case Studies", href: "/case-studies" },
-      { label: isArabic ? "تواصل" : "Contact", href: "#contact" },
-    ],
-    [isArabic ? "قانوني" : "Legal"]: [
-      { label: isArabic ? "التفاصيل القانونية" : "Legal Details", href: "/legal/details" },
-      { label: isArabic ? "سياسة الخصوصية" : "Privacy Policy", href: "/legal/privacy-policy" },
-      { label: isArabic ? "شروط الخدمة" : "Terms of Service", href: "/legal/terms-of-service" },
-      { label: "SLA", href: "/legal/sla" },
-      { label: isArabic ? "الأمن" : "Security", href: "/legal/security" },
-      { label: isArabic ? "الامتثال" : "Compliance", href: "/legal/compliance" },
-    ],
-  };
+export default function Footer() {
   const scrollTo = useSmoothScroll();
   const handleNav = (href: string) => {
     if (href.startsWith("#")) {
@@ -55,21 +50,19 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-12 mb-12">
           {/* Brand */}
           <div>
-<a
-	               href="#"
-	               className="flex items-center gap-3 font-extrabold text-lg tracking-tight text-[#e4e4e7] no-underline"
+            <a
+               href="#"
+               className="flex items-center gap-3 font-extrabold text-lg tracking-tight text-[#e4e4e7] no-underline"
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
               <BrandLogo size="sm" />
-              <span>{isArabic ? "ذكاء" : "Zakaa"}</span>
+              <span>Zakaa</span>
             </a>
             <p className="text-[#94A3B8] text-sm mt-4 leading-relaxed max-w-sm">
-              {isArabic
-                ? "إدارة بنية تحتية مؤسسية مدعومة بوكلاء ذكاء اصطناعي مستقلين. نبني ونؤمّن ونشغّل الأنظمة التي تدعم أعمالك."
-                : "Enterprise IT infrastructure management powered by autonomous AI agents. We build, secure, and operate the systems that power your business."}
+              Enterprise IT infrastructure management powered by autonomous AI agents. We build, secure, and operate the systems that power your business.
             </p>
             <div className="mt-4 text-sm text-[#94A3B8] space-y-1">
               <p>📧 hello@zakaa.io</p>
@@ -105,18 +98,18 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
                 {links.map((link) => (
                   <li key={link.label} className="mb-2.5">
                     {link.href.startsWith("#") ? (
-<button
-	                        type="button"
-	                        onClick={() => handleNav(link.href)}
-	                        className="text-[#94A3B8] text-sm transition-colors hover:text-[#6366f1] bg-transparent border-none cursor-pointer"
-	                      >
+                      <button
+                        type="button"
+                        onClick={() => handleNav(link.href)}
+                        className="text-[#94A3B8] text-sm transition-colors hover:text-[#6366f1] bg-transparent border-none cursor-pointer"
+                      >
                         {link.label}
                       </button>
                     ) : (
-<a
-	                        href={link.href}
-	                        className="text-[#94A3B8] text-sm transition-colors hover:text-[#6366f1]"
-	                      >
+                      <a
+                        href={link.href}
+                        className="text-[#94A3B8] text-sm transition-colors hover:text-[#6366f1]"
+                      >
                         {link.label}
                       </a>
                     )}
@@ -130,14 +123,14 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
         {/* Bottom */}
         <div className="border-t border-[rgba(148,163,184,0.08)] pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-[#94A3B8] text-xs">
-            {isArabic ? "© 2026 ذكاء. جميع الحقوق محفوظة." : "© 2026 Zakaa. All rights reserved."}
+            © 2026 Zakaa. All rights reserved.
           </p>
           <div className="flex gap-6">
             {[
-              { label: isArabic ? "الخصوصية" : "Privacy", href: "/legal/privacy-policy" },
-              { label: isArabic ? "الشروط" : "Terms", href: "/legal/terms-of-service" },
-              { label: isArabic ? "الكوكيز" : "Cookies", href: "/legal/cookies" },
-              { label: isArabic ? "خريطة الموقع" : "Sitemap", href: "/sitemap" },
+              { label: "Privacy", href: "/legal/privacy-policy" },
+              { label: "Terms", href: "/legal/terms-of-service" },
+              { label: "Cookies", href: "/legal/cookies" },
+              { label: "Sitemap", href: "/sitemap" },
             ].map((item) => (
               <a
                 key={item.label}

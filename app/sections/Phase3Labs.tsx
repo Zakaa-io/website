@@ -6,7 +6,6 @@ import { emitAnalyticsEvent } from "@/lib/analytics/client";
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
 import type { DemoSimulationResponse, PortalAgentResponse } from "@/types/ai";
-import type { SiteLocale } from "../types/locale";
 
 interface VoiceRecognitionResult {
   transcript: string;
@@ -43,12 +42,7 @@ declare global {
   }
 }
 
-interface Phase3LabsProps {
-  locale?: SiteLocale;
-}
-
-export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>) {
-  const isArabic = locale === "ar";
+export default function Phase3Labs() {
   const [portalAccessToken, setPortalAccessToken] = useState("");
   const [simulatorAccessToken, setSimulatorAccessToken] = useState("");
   const [scenario, setScenario] = useState<"cpu-spike" | "db-latency" | "disk-pressure">("cpu-spike");
@@ -162,19 +156,15 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
     <section id="phase3" className="py-24 relative border-y border-[rgba(148,163,184,0.08)]">
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeader
-          label={isArabic ? "المرحلة 3" : "Phase 3"}
+          label="Phase 3"
           title={
             <>
-              {isArabic ? "عمليات ذكاء اصطناعي منتجة" : "Productized AI Ops"}
+              Productized AI Ops
               <br />
-              <span className="accent-text">{isArabic ? "عرض حي + وكيل البوابة" : "Live Demo + Portal Agent"}</span>
+              <span className="accent-text">Live Demo + Portal Agent</span>
             </>
           }
-          subtitle={
-            isArabic
-              ? "محاكاة حوادث تفاعلية، وفرز تذاكر البوابة، وإدخال صوتي اختياري لتسليم تشغيلي أسرع."
-              : "Interactive incident simulation, portal triage, and optional voice intake for faster operational handoffs."
-          }
+          subtitle="Interactive incident simulation, portal triage, and optional voice intake for faster operational handoffs."
         />
 
         <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -187,7 +177,7 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
               <p className="text-xs uppercase tracking-[0.2em] text-[#3B82F6]">Product</p>
               <h3 className="mt-2 text-xl font-bold text-[#F8FAFC]">{product.name}</h3>
               <p className="mt-2 text-sm text-[#94A3B8]">{product.description}</p>
-              <p className="mt-3 text-sm font-medium text-[#60A5FA]">{isArabic ? "← استكشف المنتج" : "Explore product →"}</p>
+              <p className="mt-3 text-sm font-medium text-[#60A5FA]">Explore product →</p>
             </Link>
           ))}
         </div>
@@ -195,40 +185,38 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <FadeIn>
             <div className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6">
-              <h3 className="text-xl font-bold">{isArabic ? "محاكي العرض الحي" : "Live Demo Simulator"}</h3>
+              <h3 className="text-xl font-bold">Live Demo Simulator</h3>
               <p className="mt-2 text-sm text-[#94A3B8]">
-                {isArabic
-                  ? "أعد إنتاج سيناريوهات الحوادث التي تُظهر تشخيص الذكاء الاصطناعي والمعالجة والوقاية."
-                  : "Reproduce incident narratives that show AI diagnosis, remediation, and prevention guardrails."}
+                Reproduce incident narratives that show AI diagnosis, remediation, and prevention guardrails.
               </p>
 
               <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <input
                   type="text"
-                  aria-label={isArabic ? "رمز الوصول الاختياري للمحاكي" : "Optional simulator bearer token"}
+                  aria-label="Optional simulator bearer token"
                   value={simulatorAccessToken}
                   onChange={(event) => setSimulatorAccessToken(event.target.value)}
                   className="md:col-span-2 rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
-                  placeholder={isArabic ? "رمز وصول اختياري (إذا كان مصادقة المحاكي مفعّلة)" : "Optional bearer token (if simulator auth is enabled)"}
+                  placeholder="Optional bearer token (if simulator auth is enabled)"
                 />
                 <select
-                  aria-label={isArabic ? "السيناريو" : "Scenario"}
+                  aria-label="Scenario"
                   value={scenario}
                   onChange={(event) => setScenario(event.target.value as "cpu-spike" | "db-latency" | "disk-pressure")}
                   className="rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
                 >
-                  <option value="cpu-spike">{isArabic ? "ارتفاع المعالج" : "CPU spike"}</option>
-                  <option value="db-latency">{isArabic ? "تأخر قاعدة البيانات" : "Database latency"}</option>
-                  <option value="disk-pressure">{isArabic ? "ضغط القرص" : "Disk pressure"}</option>
+                  <option value="cpu-spike">CPU spike</option>
+                  <option value="db-latency">Database latency</option>
+                  <option value="disk-pressure">Disk pressure</option>
                 </select>
                 <select
-                  aria-label={isArabic ? "البيئة" : "Environment"}
+                  aria-label="Environment"
                   value={environment}
                   onChange={(event) => setEnvironment(event.target.value as "production" | "staging")}
                   className="rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
                 >
-                  <option value="production">{isArabic ? "إنتاج" : "Production"}</option>
-                  <option value="staging">{isArabic ? "تجريبي" : "Staging"}</option>
+                  <option value="production">Production</option>
+                  <option value="staging">Staging</option>
                 </select>
               </div>
 
@@ -238,7 +226,7 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
                 disabled={isSimulating}
                 className="mt-4 rounded-[10px] bg-[#3B82F6] px-5 py-2 text-sm font-semibold text-white transition-all hover:bg-[#2563EB] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSimulating ? (isArabic ? "جارٍ تشغيل المحاكاة..." : "Running simulation...") : isArabic ? "تشغيل المحاكاة" : "Run Simulation"}
+                {isSimulating ? "Running simulation..." : "Run Simulation"}
               </button>
 
               {simError && <p className="mt-3 text-sm text-[#EF4444]">{simError}</p>}
@@ -269,65 +257,63 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
 
           <FadeIn delay={150}>
             <div className="rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6">
-              <h3 className="text-xl font-bold">{isArabic ? "وكيل بوابة العملاء الذكي" : "Client Portal AI Agent"}</h3>
+              <h3 className="text-xl font-bold">Client Portal AI Agent</h3>
               <p className="mt-2 text-sm text-[#94A3B8]">
-                {isArabic
-                  ? "أرسل تذكرة بأسلوب الحوادث واحصل على إرشادات فرز فورية ومسار تصعيد."
-                  : "Submit an incident-style ticket and get immediate triage guidance and escalation path."}
+                Submit an incident-style ticket and get immediate triage guidance and escalation path.
               </p>
 
               <form onSubmit={runPortalAgent} className="mt-5 space-y-3">
-<input
-                type="text"
-                aria-label={isArabic ? "رمز الوصول الاختياري للبوابة" : "Optional portal bearer token"}
-                value={portalAccessToken}
-                onChange={(event) => setPortalAccessToken(event.target.value)}
-                className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
-                placeholder={isArabic ? "رمز وصول اختياري (إذا كان مصادقة البوابة مفعّلة)" : "Optional bearer token (if portal auth is enabled)"}
-              />
-              <input
-                type="text"
-                aria-label={isArabic ? "عنوان التذكرة" : "Ticket title"}
-                value={ticketTitle}
-                onChange={(event) => setTicketTitle(event.target.value)}
-                className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
-                placeholder={isArabic ? "عنوان التذكرة" : "Ticket title"}
-                required
-              />
-              <input
-                type="text"
-                aria-label={isArabic ? "الخدمة المتأثرة" : "Affected service"}
-                value={affectedService}
-                onChange={(event) => setAffectedService(event.target.value)}
-                className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
-                placeholder={isArabic ? "الخدمة المتأثرة" : "Affected service"}
-                required
-              />
-                <textarea
-                  aria-label={isArabic ? "تفاصيل التذكرة" : "Ticket details"}
-                  value={ticketDescription}
-                  onChange={(event) => setTicketDescription(event.target.value)}
-                  className="min-h-28 w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
-                  placeholder={isArabic ? "تفاصيل التذكرة" : "Ticket details"}
+                <input
+                  type="text"
+                  aria-label="Optional portal bearer token"
+                  value={portalAccessToken}
+                  onChange={(event) => setPortalAccessToken(event.target.value)}
+                  className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                  placeholder="Optional bearer token (if portal auth is enabled)"
+                />
+                <input
+                  type="text"
+                  aria-label="Ticket title"
+                  value={ticketTitle}
+                  onChange={(event) => setTicketTitle(event.target.value)}
+                  className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                  placeholder="Ticket title"
                   required
                 />
-                {speechSupported && (
+                <input
+                  type="text"
+                  aria-label="Affected service"
+                  value={affectedService}
+                  onChange={(event) => setAffectedService(event.target.value)}
+                  className="w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                  placeholder="Affected service"
+                  required
+                />
+                  <textarea
+                    aria-label="Ticket details"
+                    value={ticketDescription}
+                    onChange={(event) => setTicketDescription(event.target.value)}
+                    className="min-h-28 w-full rounded-lg border border-[rgba(148,163,184,0.14)] bg-[#0F172A] px-3 py-2 text-sm outline-none focus:border-[#3B82F6]"
+                    placeholder="Ticket details"
+                    required
+                  />
+                  {speechSupported && (
+                    <button
+                      type="button"
+                      onClick={captureVoiceBrief}
+                      className="rounded-[10px] border border-[rgba(148,163,184,0.2)] px-4 py-2 text-sm text-[#94A3B8] transition-all hover:bg-[#1E293B] hover:text-[#F8FAFC]"
+                    >
+                      Add Voice Brief
+                    </button>
+                  )}
                   <button
-                    type="button"
-                    onClick={captureVoiceBrief}
-                    className="rounded-[10px] border border-[rgba(148,163,184,0.2)] px-4 py-2 text-sm text-[#94A3B8] transition-all hover:bg-[#1E293B] hover:text-[#F8FAFC]"
+                    type="submit"
+                    disabled={isTriageRunning}
+                    className="ml-2 rounded-[10px] bg-[#3B82F6] px-5 py-2 text-sm font-semibold text-white transition-all hover:bg-[#2563EB] disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    {isArabic ? "إضافة ملخص صوتي" : "Add Voice Brief"}
+                    {isTriageRunning ? "Analyzing..." : "Run Triage"}
                   </button>
-                )}
-                <button
-                  type="submit"
-                  disabled={isTriageRunning}
-                  className="ml-2 rounded-[10px] bg-[#3B82F6] px-5 py-2 text-sm font-semibold text-white transition-all hover:bg-[#2563EB] disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {isTriageRunning ? (isArabic ? "جارٍ التحليل..." : "Analyzing...") : isArabic ? "تشغيل الفرز" : "Run Triage"}
-                </button>
-              </form>
+                </form>
 
               {portalError && <p className="mt-3 text-sm text-[#EF4444]">{portalError}</p>}
 

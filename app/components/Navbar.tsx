@@ -7,10 +7,9 @@ import ThemeToggle from "./ThemeToggle";
 import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 interface NavbarProps {
-  locale?: "en";
 }
 
-export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
