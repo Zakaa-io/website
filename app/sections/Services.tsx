@@ -79,7 +79,7 @@ export default function Services({ locale = "en" }: Readonly<ServicesProps>) {
             <FadeIn key={service.title} delay={i * 100}>
               <Link
                 href={service.href}
-                className="group block bg-[#12121a] border border-[rgba(148,163,184,0.06)] rounded-2xl p-8 transition-all duration-300 hover:border-[rgba(99,102,241,0.2)] hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_40px_rgba(99,102,241,0.06)] relative overflow-hidden h-full underline underline-offset-4"
+                className="group block bg-[#12121a] border border-[rgba(148,163,184,0.06)] rounded-2xl p-8 transition-all duration-300 hover:border-[rgba(99,102,241,0.2)] hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3),0_0_40px_rgba(99,102,241,0.06)] relative overflow-hidden h-full"
               >
                 {/* Top accent line */}
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#6366f1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

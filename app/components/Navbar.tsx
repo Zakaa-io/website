@@ -189,7 +189,7 @@ useEffect(() => {
             <ThemeToggle locale={locale} />
 <a
                 href={langSwitchHref}
-                className="zakaa-navbar-control inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all underline underline-offset-4"
+                className="zakaa-navbar-control inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all"
             >
               {isArabic ? "English" : "العربية"}
             </a>
@@ -241,7 +241,7 @@ useEffect(() => {
             </button>
           <a
             href={langSwitchHref}
-            className="zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] underline underline-offset-4"
+            className="zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)]"
           >
             {isArabic ? "English" : "العربية"}
           </a>

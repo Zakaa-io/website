@@ -182,7 +182,7 @@ export default function Phase3Labs({ locale = "en" }: Readonly<Phase3LabsProps>)
             <Link
               key={product.href}
               href={product.href}
-              className="block rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 transition-all hover:border-[rgba(59,130,246,0.3)] hover:-translate-y-0.5 underline underline-offset-4"
+              className="block rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#111827] p-6 transition-all hover:border-[rgba(59,130,246,0.3)] hover:-translate-y-0.5"
             >
               <p className="text-xs uppercase tracking-[0.2em] text-[#3B82F6]">Product</p>
               <h3 className="mt-2 text-xl font-bold text-[#F8FAFC]">{product.name}</h3>

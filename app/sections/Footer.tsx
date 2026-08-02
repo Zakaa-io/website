@@ -108,14 +108,14 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
 <button
 	                        type="button"
 	                        onClick={() => handleNav(link.href)}
-	                        className="text-[#94A3B8] text-sm no-underline transition-colors hover:text-[#6366f1] bg-transparent border-none cursor-pointer"
+	                        className="text-[#94A3B8] text-sm transition-colors hover:text-[#6366f1] bg-transparent border-none cursor-pointer"
 	                      >
                         {link.label}
                       </button>
                     ) : (
 <a
 	                        href={link.href}
-	                        className="text-[#94A3B8] text-sm underline underline-offset-4 transition-colors hover:text-[#6366f1]"
+	                        className="text-[#94A3B8] text-sm transition-colors hover:text-[#6366f1]"
 	                      >
                         {link.label}
                       </a>
@@ -142,7 +142,7 @@ export default function Footer({ locale = "en" }: Readonly<FooterProps>) {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-[#94A3B8] text-xs underline underline-offset-4 hover:text-[#94A3B8] transition-colors"
+                className="text-[#94A3B8] text-xs hover:text-[#94A3B8] transition-colors"
               >
                 {item.label}
               </a>
