@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     });
 
     const response: ChatResponse = {
-      reply: generation.text,
+      reply: generation.reply,
       provider: generation.provider,
       language,
       suggestedNextStep: hasLeadIntent(latestUserMessage.content)
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
         language,
         provider: generation.provider,
         userMessage: latestUserMessage.content,
-        assistantReply: generation.text,
+        assistantReply: generation.reply,
         suggestedNextStep: response.suggestedNextStep,
       });
     } catch (persistError) {

@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
-import { randomBytes } from "node:crypto";
+import { randomBytes, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 
 export type UserRole = "admin" | "operator" | "viewer" | "client";

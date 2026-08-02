@@ -123,7 +123,7 @@ export async function generateAssistantReply({
 
   if (provider === "heuristic") {
     return {
-      text: buildFallbackReply(question, contextBlocks, language),
+      reply: buildFallbackReply(question, contextBlocks, language),
       provider: "heuristic",
       language,
     };
@@ -143,22 +143,22 @@ export async function generateAssistantReply({
       const model = process.env.OPENROUTER_MODEL?.trim();
       if (!model) {
         return {
-          text: buildFallbackReply(question, contextBlocks, language),
+          reply: buildFallbackReply(question, contextBlocks, language),
           provider: "heuristic",
           language,
         };
       }
 
       const text = await callOpenRouter(chatMessages, model);
-      return { text, provider: "openrouter", language };
+      return { reply: text, provider: "openrouter", language };
     }
 
     const text = await callOpenAI(chatMessages);
-    return { text, provider: "openai", language };
+    return { reply: text, provider: "openai", language };
   } catch (error) {
     console.error("[ai] provider error", error);
     return {
-      text: buildFallbackReply(question, contextBlocks, language),
+      reply: buildFallbackReply(question, contextBlocks, language),
       provider: "heuristic",
       language,
     };
