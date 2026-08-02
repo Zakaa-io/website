@@ -2,7 +2,6 @@
 
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
-import type { SiteLocale } from "../types/locale";
 
 const reviews = [
   {
@@ -25,27 +24,18 @@ const reviews = [
   },
 ];
 
-interface TestimonialsProps {
-  locale?: SiteLocale;
-}
-
-export default function Testimonials({ locale = "en" }: Readonly<TestimonialsProps>) {
-  const isArabic = locale === "ar";
+export default function Testimonials() {
   return (
     <section id="testimonials" className="py-24 relative">
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeader
-          label={isArabic ? "موثوق من" : "Trusted By"}
+          label="Trusted By"
           title={
             <>
-              {isArabic ? "ماذا يقول " : "What Our "}<span className="accent-text">{isArabic ? "عملاؤنا" : "Clients Say"}</span>
+              What Our <span className="accent-text">Clients Say</span>
             </>
           }
-          subtitle={
-            isArabic
-              ? "فرق مؤسسية طورت بنيتها التحتية مع ذكاء."
-              : "Enterprise teams that transformed their infrastructure with Zakaa."
-          }
+          subtitle="Enterprise teams that transformed their infrastructure with Zakaa."
           layout="left"
         />
 

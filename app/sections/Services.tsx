@@ -3,7 +3,6 @@
 import Link from "next/link";
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
-import type { SiteLocale } from "../types/locale";
 
 const servicesList = [
   {
@@ -48,29 +47,20 @@ const servicesList = [
   },
 ];
 
-interface ServicesProps {
-  locale?: SiteLocale;
-}
-
-export default function Services({ locale = "en" }: Readonly<ServicesProps>) {
-  const isArabic = locale === "ar";
+export default function Services() {
   return (
     <section id="services" className="py-24 relative">
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeader
-          label={isArabic ? "ماذا نقدم" : "What We Do"}
+          label="What We Do"
           title={
             <>
-              {isArabic ? "خدمات تقنية معلومات متكاملة لـ" : "Full-Stack IT Services for"}
+              Full-Stack IT Services for
               <br />
-              <span className="accent-text">{isArabic ? "المؤسسات الحديثة" : "Modern Enterprises"}</span>
+              <span className="accent-text">Modern Enterprises</span>
             </>
           }
-          subtitle={
-            isArabic
-              ? "من الخوادم التقليدية إلى السحابة الحديثة، نقوم بالتصميم والنشر والتشغيل لبنية تحتية تتوسع مع نمو أعمالك."
-              : "From bare metal to cloud-native, we architect, deploy, and operate infrastructure that scales with your business."
-          }
+          subtitle="From bare metal to cloud-native, we architect, deploy, and operate infrastructure that scales with your business."
           layout="left"
         />
 
@@ -93,10 +83,10 @@ export default function Services({ locale = "en" }: Readonly<ServicesProps>) {
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {service.tags.map((tag) => (
-<span
-	                       key={tag}
-	                       className="px-3 py-1 rounded-md bg-[#1a1a24] text-xs text-[#a1a1aa] border border-[rgba(148,163,184,0.06)]"
-	                     >
+                    <span
+                      key={tag}
+                      className="px-3 py-1 rounded-md bg-[#1a1a24] text-xs text-[#a1a1aa] border border-[rgba(148,163,184,0.06)]"
+                    >
                       {tag}
                     </span>
                   ))}

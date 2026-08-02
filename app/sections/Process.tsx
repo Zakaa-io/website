@@ -2,7 +2,6 @@
 
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
-import type { SiteLocale } from "../types/locale";
 
 const steps = [
   {
@@ -31,28 +30,19 @@ const steps = [
   },
 ];
 
-interface ProcessProps {
-  locale?: SiteLocale;
-}
-
-export default function Process({ locale = "en" }: Readonly<ProcessProps>) {
-  const isArabic = locale === "ar";
+export default function Process() {
   return (
     <section id="process" className="py-24 relative">
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeader
-          label={isArabic ? "كيف نعمل" : "How We Work"}
+          label="How We Work"
           title={
             <>
-              {isArabic ? "من التقييم إلى" : "From Assessment to"}{" "}
-              <span className="accent-text">{isArabic ? "عمليات ذاتية" : "Autonomous Ops"}</span>
+              From Assessment to{" "}
+              <span className="accent-text">Autonomous Ops</span>
             </>
           }
-          subtitle={
-            isArabic
-              ? "منهجية مجربة تنقلك من الوضع الحالي إلى بنية تحتية مدعومة بالذكاء الاصطناعي خلال 90 يوماً."
-              : "A proven methodology that gets you from current state to AI-powered infrastructure in 90 days."
-          }
+          subtitle="A proven methodology that gets you from current state to AI-powered infrastructure in 90 days."
           layout="split"
         />
 
@@ -61,8 +51,8 @@ export default function Process({ locale = "en" }: Readonly<ProcessProps>) {
             <FadeIn key={step.number} delay={i * 150}>
               <div className="relative text-center p-8 bg-[#111827] border border-[rgba(148,163,184,0.08)] rounded-2xl transition-all duration-300 hover:border-[rgba(59,130,246,0.15)] hover:-translate-y-1 group">
                 {i < steps.length - 1 && (
-                  <span className="hidden lg:block absolute top-1/2 -translate-y-1/2 text-[#94A3B8] text-2xl font-mono" style={{ [isArabic ? "left" : "right"]: "-9px" }}>
-                    {isArabic ? "←" : "→"}
+                  <span className="hidden lg:block absolute -right-9 top-1/2 -translate-y-1/2 text-[#94A3B8] text-2xl font-mono">
+                    →
                   </span>
                 )}
 

@@ -5,10 +5,9 @@ import { Menu, X } from "lucide-react";
 import BrandLogo from "./BrandLogo";
 import ThemeToggle from "./ThemeToggle";
 import { useSmoothScroll } from "@/lib/useSmoothScroll";
-import type { SiteLocale } from "../types/locale";
 
 interface NavbarProps {
-  locale?: SiteLocale;
+  locale?: "en";
 }
 
 export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
@@ -16,16 +15,14 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const portalAccessUrl = process.env.NEXT_PUBLIC_BE_URL?.trim() || "https://be.zakaa.io/login";
-  const isArabic = locale === "ar";
   const navLinks = [
-    { label: isArabic ? "الخدمات" : "Services", href: "#services" },
-    { label: isArabic ? "وكلاء الذكاء الاصطناعي" : "AI Agents", href: "#ai" },
-    { label: isArabic ? "آلية العمل" : "Process", href: "#process" },
-    { label: isArabic ? "العملاء" : "Clients", href: "#testimonials" },
-    { label: isArabic ? "الأسعار" : "Pricing", href: "#pricing" },
-    { label: isArabic ? "المنتجات" : "Products", href: "#phase3" },
+    { label: "Services", href: "#services" },
+    { label: "AI Agents", href: "#ai" },
+    { label: "Process", href: "#process" },
+    { label: "Clients", href: "#testimonials" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Products", href: "#phase3" },
   ];
-  const langSwitchHref = isArabic ? "/" : "/ar";
 
   const menuToggleRef = useRef<HTMLButtonElement>(null);
 
@@ -55,7 +52,7 @@ export default function Navbar({ locale = "en" }: Readonly<NavbarProps>) {
   }, []);
 
   // Focus management for mobile menu
-useEffect(() => {
+  useEffect(() => {
     if (!mobileOpen) {
       menuToggleRef.current?.focus();
       return;
@@ -151,7 +148,7 @@ useEffect(() => {
             }}
           >
             <BrandLogo size="md" />
-            <span>{isArabic ? "ذكاء" : "Zakaa"}</span>
+            <span>Zakaa</span>
           </a>
 
           <ul
@@ -186,26 +183,20 @@ useEffect(() => {
           </ul>
 
           <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle locale={locale} />
-<a
-                href={langSwitchHref}
-                className="zakaa-navbar-control inline-flex items-center gap-2 px-4 py-2.5 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all"
-            >
-              {isArabic ? "English" : "العربية"}
-            </a>
-<button
+            <ThemeToggle />
+            <button
               type="button"
               onClick={handlePortalAccess}
               className="zakaa-navbar-control inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all cursor-pointer"
             >
-              {isArabic ? "دخول البوابة" : "Portal Access"}
+              Portal Access
             </button>
             <button
               type="button"
               onClick={() => handleNav("#contact")}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[10px] text-sm font-semibold text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer"
             >
-              {isArabic ? "ابدأ الآن" : "Get Started"}
+              Get Started
             </button>
           </div>
 
@@ -213,47 +204,41 @@ useEffect(() => {
             type="button"
             className="zakaa-navbar-menu-toggle md:hidden bg-transparent border-none text-[#e4e4e7] text-2xl cursor-pointer"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label={isArabic ? "تبديل القائمة" : "Toggle menu"}
+            aria-label="Toggle menu"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </nav>
 
-{mobileOpen && (
+      {mobileOpen && (
         <div data-mobile-menu className="fixed top-[72px] left-0 right-0 bg-[#0c0c12] border-b border-[rgba(148,163,184,0.06)] px-6 py-4 z-[999] md:hidden">
           {navLinks.map((link) => (
-<button
+            <button
                 key={link.label}
                 type="button"
                 onClick={() => handleNav(link.href)}
-                className={`zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] last:border-none bg-transparent border-none cursor-pointer ${isArabic ? "text-right" : "text-left"}`}
+                className={`zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] last:border-none bg-transparent border-none cursor-pointer text-left`}
               >
                 {link.label}
               </button>
           ))}
-<button
+          <button
               type="button"
               onClick={handlePortalAccess}
-              className={`zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] bg-transparent border-none cursor-pointer ${isArabic ? "text-right" : "text-left"}`}
+              className={`zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)] bg-transparent border-none cursor-pointer text-left`}
             >
-              {isArabic ? "دخول البوابة" : "Portal Access"}
+              Portal Access
             </button>
-          <a
-            href={langSwitchHref}
-            className="zakaa-navbar-control block w-full py-3 text-base font-medium text-[#94A3B8] border-b border-[rgba(148,163,184,0.06)]"
-          >
-            {isArabic ? "English" : "العربية"}
-          </a>
           <div className="py-3 border-b border-[rgba(148,163,184,0.08)]">
-            <ThemeToggle locale={locale} />
+            <ThemeToggle />
           </div>
           <button
             type="button"
             onClick={() => handleNav("#contact")}
-            className={`block w-full py-3 text-base font-medium text-[#94A3B8] bg-transparent border-none cursor-pointer ${isArabic ? "text-right" : "text-left"}`}
+            className="block w-full py-3 text-base font-medium text-[#94A3B8] bg-transparent border-none cursor-pointer text-left"
           >
-            {isArabic ? "ابدأ الآن" : "Get Started"}
+            Get Started
           </button>
         </div>
       )}

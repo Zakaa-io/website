@@ -17,19 +17,19 @@ export default function Home() {
     <main className="relative min-h-screen bg-[#06060a] text-[#e4e4e7]">
       <ParticleCanvas />
       <div className="relative z-10">
-        <Navbar locale="en" />
-        <Hero locale="en" />
-        <Services locale="en" />
-        <AIAgents locale="en" />
-        <Process locale="en" />
-        <Testimonials locale="en" />
-        <Pricing locale="en" />
-        <Phase3Labs locale="en" />
-        <CTA locale="en" />
-        <Footer locale="en" />
+        <Navbar />
+        <Hero />
+        <Services />
+        <AIAgents />
+        <Process />
+        <Testimonials />
+        <Pricing />
+        <Phase3Labs />
+        <CTA />
+        <Footer />
       </div>
-      <AIChatWidget initialLanguage="en" />
-      <BackToTopButton locale="en" />
+      <AIChatWidget />
+      <BackToTopButton />
     </main>
   );
 }

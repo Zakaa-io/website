@@ -2,17 +2,11 @@
 
 import { useSmoothScroll } from "@/lib/useSmoothScroll";
 import Terminal from "../components/Terminal";
-import type { SiteLocale } from "../types/locale";
 
-interface HeroProps {
-  locale?: SiteLocale;
-}
-
-export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
-  const isArabic = locale === "ar";
+export default function Hero() {
   const stats = [
-    { value: "99.99%", label: isArabic ? "اتفاقية الجاهزية" : "Uptime SLA" },
-    { value: "500+", label: isArabic ? "خوادم مُدارة" : "Servers Managed" },
+    { value: "99.99%", label: "Uptime SLA" },
+    { value: "500+", label: "Servers Managed" },
   ];
   const scrollTo = useSmoothScroll();
   const handleNav = (href: string) => {
@@ -51,21 +45,19 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#12121a] border border-[rgba(148,163,184,0.06)] text-sm font-medium text-[#6366f1] mb-8">
           <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_#10B981] animate-pulse-dot" />
           <span className="font-mono text-xs">
-            {isArabic ? "مراقبة البنية التحتية تعمل 24/7" : "24/7 Infrastructure Monitoring Active"}
+            24/7 Infrastructure Monitoring Active
           </span>
         </div>
 
         {/* Heading */}
         <h1 className="text-[clamp(2rem,5vw,4rem)] font-extrabold leading-[1.05] tracking-tight mb-6 text-[#e4e4e7]">
-          {isArabic ? "بنية تحتية مؤسسية لتقنية المعلومات،" : "Enterprise IT Infrastructure,"}
+          Enterprise IT Infrastructure,
           <br />
-          <span className="accent-text">{isArabic ? "مدعومة بوكلاء الذكاء الاصطناعي" : "Powered by AI Agents"}</span>
+          <span className="accent-text">Powered by AI Agents</span>
         </h1>
 
         <p className="text-[clamp(1rem,2vw,1.25rem)] text-[#94A3B8] max-w-[600px] mb-10 leading-relaxed">
-          {isArabic
-            ? "نقوم بتصميم ونشر وإدارة بنية تحتية سحابية حديثة باستخدام وكلاء ذكاء اصطناعي مستقلين يتولون المهام التشغيلية المتكررة، حتى يركز فريقك على ما يهم فعلاً."
-            : "We design, deploy, and manage cloud-native infrastructure with autonomous AI agents that handle repetitive operations — so your team focuses on what matters."}
+          We design, deploy, and manage cloud-native infrastructure with autonomous AI agents that handle repetitive operations — so your team focuses on what matters.
         </p>
 
         {/* CTAs */}
@@ -74,14 +66,14 @@ export default function Hero({ locale = "en" }: Readonly<HeroProps>) {
             onClick={() => handleNav("#contact")}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5 transition-all cursor-pointer"
           >
-            <span>{isArabic ? "ابدأ تقييمك الآن" : "Start Your Assessment"}</span>
-            <span>{isArabic ? "←" : "→"}</span>
+            <span>Start Your Assessment</span>
+            <span>→</span>
           </button>
           <button
             onClick={() => handleNav("#services")}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7] transition-all cursor-pointer"
           >
-            {isArabic ? "استكشف الخدمات" : "Explore Services"}
+            Explore Services
           </button>
         </div>
 

@@ -3,7 +3,6 @@
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
 import { useSmoothScroll } from "@/lib/useSmoothScroll";
-import type { SiteLocale } from "../types/locale";
 
 const plans = [
   {
@@ -63,12 +62,7 @@ const plans = [
   },
 ];
 
-interface PricingProps {
-  locale?: SiteLocale;
-}
-
-export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
-  const isArabic = locale === "ar";
+export default function Pricing() {
   const scrollTo = useSmoothScroll();
   const handleNav = () => {
     scrollTo("#contact");
@@ -78,25 +72,21 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
     <section id="pricing" className="py-24 relative">
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeader
-          label={isArabic ? "الأسعار" : "Pricing"}
+          label="Pricing"
           title={
             <>
-              {isArabic ? "أسعار واضحة،" : "Transparent Pricing,"}
+              Transparent Pricing,
               <br />
-              <span className="accent-text">{isArabic ? "نتائج مؤسسية" : "Enterprise Results"}</span>
+              <span className="accent-text">Enterprise Results</span>
             </>
           }
-          subtitle={
-            isArabic
-              ? "اختر الباقة المناسبة لحجم بنيتك التحتية. جميع الباقات تشمل دعم 24/7 ومراقبة وكلاء الذكاء الاصطناعي."
-              : "Choose the plan that fits your infrastructure scale. All plans include 24/7 support and AI agent monitoring."
-          }
+          subtitle="Choose the plan that fits your infrastructure scale. All plans include 24/7 support and AI agent monitoring."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start max-w-[1100px] mx-auto">
           {plans.map((plan, i) => (
             <FadeIn key={plan.name} delay={i * 150}>
-<div
+              <div
                 className={`relative bg-[#12121a] border rounded-[20px] p-10 transition-all duration-300 hover:border-[rgba(16,185,129,0.15)] ${
                   plan.popular
                     ? "border-[#10B981] shadow-[0_0_40px_rgba(16,185,129,0.08)] md:scale-[1.05]"
@@ -105,7 +95,7 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
               >
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-full bg-[#10B981] text-white text-sm font-bold">
-                    {isArabic ? "الأكثر طلباً" : "Most Popular"}
+                    Most Popular
                   </div>
                 )}
 
@@ -133,14 +123,14 @@ export default function Pricing({ locale = "en" }: Readonly<PricingProps>) {
                   ))}
                 </ul>
 
-<button
-	                  onClick={handleNav}
-	                  className={`w-full justify-center inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold transition-all cursor-pointer ${
-	                    plan.ctaStyle === "primary"
-	                      ? "text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5"
-	                      : "text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7]"
-	                  }`}
-	                >
+                <button
+                  onClick={handleNav}
+                  className={`w-full justify-center inline-flex items-center gap-2 px-6 py-3 rounded-[10px] text-sm font-semibold transition-all cursor-pointer ${
+                    plan.ctaStyle === "primary"
+                      ? "text-white bg-[#6366f1] hover:bg-[#4f46e5] shadow-[0_4px_20px_rgba(99,102,241,0.2)] hover:shadow-[0_8px_30px_rgba(99,102,241,0.3)] hover:-translate-y-0.5"
+                      : "text-[#94A3B8] bg-transparent border border-[rgba(148,163,184,0.1)] hover:bg-[#1a1a24] hover:text-[#e4e4e7]"
+                  }`}
+                >
                   {plan.cta}
                 </button>
               </div>

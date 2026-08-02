@@ -3,7 +3,6 @@
 import React from "react";
 import FadeIn from "../components/FadeIn";
 import SectionHeader from "../components/SectionHeader";
-import type { SiteLocale } from "../types/locale";
 
 type MessageToken =
   | { type: "text"; content: string }
@@ -128,12 +127,7 @@ const aiFeatures = [
   },
 ];
 
-interface AIAgentsProps {
-  locale?: SiteLocale;
-}
-
-export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
-  const isArabic = locale === "ar";
+export default function AIAgents() {
   const openChat = () => {
     window.dispatchEvent(new Event("zakaa:open-ai-chat"));
   };
@@ -149,18 +143,14 @@ export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
     >
       <div className="max-w-[1280px] mx-auto px-6">
         <SectionHeader
-          label={isArabic ? "عمليات مدعومة بالذكاء الاصطناعي" : "AI-Powered Operations"}
+          label="AI-Powered Operations"
           title={
             <>
-              {isArabic ? "تعرّف على" : "Meet Your"}{" "}
-              <span className="accent-text">{isArabic ? "فريق تقنية المعلومات الذاتي" : "Autonomous IT Team"}</span>
+              Meet Your{" "}
+              <span className="accent-text">Autonomous IT Team</span>
             </>
           }
-          subtitle={
-            isArabic
-              ? "وكلاؤنا لا يكتفون بالتنبيه، بل يقومون بالتحقيق والتشخيص والإصلاح مع تكامل كامل مع بيئتك التقنية."
-              : "Our AI agents don't just alert — they investigate, diagnose, and fix. Integrated with your entire stack."
-          }
+          subtitle="Our AI agents don't just alert — they investigate, diagnose, and fix. Integrated with your entire stack."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -183,7 +173,7 @@ export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
                     >
                       {msg.avatar}
                     </div>
-<div
+                    <div
                        className={`rounded-[14px] px-5 py-3.5 text-sm leading-relaxed max-w-[380px] border ${
                          msg.type === "ai"
                            ? "bg-[rgba(59,130,246,0.06)] border-[rgba(59,130,246,0.12)]"
@@ -192,7 +182,7 @@ export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
                      >
                        <ChatMessageContent text={msg.text} />
                      </div>
-                  </div>
+                   </div>
                 ))}
               </div>
             </div>
@@ -201,12 +191,10 @@ export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
           {/* Features */}
           <FadeIn delay={200}>
             <h3 className="text-2xl font-bold mb-4">
-              {isArabic ? "كيف يعمل وكلاء الذكاء الاصطناعي" : "How Our AI Agents Work"}
+              How Our AI Agents Work
             </h3>
             <p className="text-[#94A3B8] mb-8 leading-relaxed">
-              {isArabic
-                ? "كل وكيل هو عامل ذكي متخصص لديه صلاحية الوصول لأدوات بنيتك التحتية. يراقب ويفكر ويتصرف مع سجل تدقيق كامل وإشراف بشري."
-                : "Each agent is a specialized AI worker with access to your infrastructure tools. They observe, reason, and act — with full audit trails and human oversight."}
+              Each agent is a specialized AI worker with access to your infrastructure tools. They observe, reason, and act — with full audit trails and human oversight.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {aiFeatures.map((feature) => (
@@ -229,7 +217,7 @@ export default function AIAgents({ locale = "en" }: Readonly<AIAgentsProps>) {
               onClick={openChat}
               className="mt-8 inline-flex items-center gap-2 rounded-[10px] bg-[#3B82F6] px-6 py-3 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 hover:bg-[#2563EB]"
             >
-              {isArabic ? "جرّب المساعد الذكي" : "Try AI Assistant"}
+              Try AI Assistant
             </button>
           </FadeIn>
         </div>
