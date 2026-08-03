@@ -3,18 +3,11 @@ import { trackServerEvent } from "@/lib/analytics/server";
 import { runDemoSimulation } from "@/lib/ai/demo-simulator";
 import { enqueueJob } from "@/lib/jobs/queue";
 import type { AsyncJobAcceptedResponse, DemoSimulationRequest } from "@/types/ai";
-import { enforceOptionalBearerAuth } from "@/lib/server/auth";
 import { checkRateLimit, resolveRateLimitKey } from "@/lib/server/rate-limit";
 import { readJsonRecord, requireEnum, validationErrorResponse } from "@/lib/server/validation";
 
 export async function POST(request: Request) {
   try {
-    const authResponse = enforceOptionalBearerAuth(request, {
-      envVarName: "SIMULATOR_BEARER_TOKEN",
-      routeLabel: "Demo simulator API",
-    });
-    if (authResponse) return authResponse;
-
     const rateLimit = checkRateLimit({
       key: resolveRateLimitKey(request, "demo-simulator"),
       limit: 20,

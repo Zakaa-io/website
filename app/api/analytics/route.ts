@@ -14,6 +14,13 @@ export async function POST(request: Request) {
     });
     if (authResponse) return authResponse;
 
+    const publicAuthResponse = enforceOptionalHeaderSecret(request, {
+      envVarName: "NEXT_PUBLIC_ANALYTICS_INGEST_TOKEN",
+      headerName: "x-zakaa-analytics-token",
+      routeLabel: "Analytics ingestion API",
+    });
+    if (publicAuthResponse) return publicAuthResponse;
+
     const rateLimit = checkRateLimit({
       key: resolveRateLimitKey(request, "analytics"),
       limit: 120,

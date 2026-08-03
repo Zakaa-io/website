@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { emitAnalyticsEvent } from "@/lib/analytics/client";
 import type { LeadResponse } from "@/types/ai";
 
@@ -21,6 +21,10 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<LeadResponse | null>(null);
+
+  useEffect(() => {
+    void fetch("/api/csrf", { method: "GET", credentials: "include" });
+  }, []);
 
   const title = useMemo(
     () => (compact ? "Share your requirements" : "Request your free infrastructure assessment"),

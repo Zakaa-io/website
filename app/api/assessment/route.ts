@@ -206,7 +206,7 @@ export async function POST(request: Request) {
     trackServerEvent({
       name: "assessment_failed",
       route: "/api/assessment",
-      details: { reason: message },
+      details: { reason: message, stack: error instanceof Error ? error.stack : undefined },
     });
     return NextResponse.json({ error: message }, { status: 500 });
   }

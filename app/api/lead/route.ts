@@ -128,7 +128,7 @@ export async function POST(request: Request) {
     trackServerEvent({
       name: "lead_submit_failed",
       route: "/api/lead",
-      details: { reason: message },
+      details: { reason: message, stack: error instanceof Error ? error.stack : undefined },
     });
     return NextResponse.json({ error: message }, { status: 500 });
   }

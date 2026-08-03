@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { emitAnalyticsEvent } from "@/lib/analytics/client";
 import type { AssessmentResponse, AssistantLanguage, CloudProvider, DeliveryTimeline, EmployeeRange } from "@/types/ai";
 
@@ -42,6 +42,10 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
   const [result, setResult] = useState<AssessmentResponse | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    void fetch("/api/csrf", { method: "GET", credentials: "include" });
+  }, []);
 
   const labels = useMemo(
     () => ({
