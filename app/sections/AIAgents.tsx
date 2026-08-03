@@ -100,7 +100,7 @@ const chatMessages = [
   {
     type: "ai" as const,
     avatar: "🤖",
-    text: 'Scanned all 26 web instances. <span class="text-[#10B981]">All clear.</span> Ive added a guardrail to prevent this logrotate pattern from recurring.',
+    text: 'Scanned all 26 web instances. <span class="text-[#10B981]">All clear.</span> I\'ve added a guardrail to prevent this logrotate pattern from recurring.',
   },
 ];
 
@@ -165,7 +165,7 @@ export default function AIAgents() {
                     style={{ animationDelay: `${i * 0.6}s` }}
                   >
                     <div
-                      className={`w-9 h-9 rounded-[10px] flex items-center justify-center text-sm flex-shrink-0 ${
+                      aria-hidden="true" className={`w-9 h-9 rounded-[10px] flex items-center justify-center text-sm flex-shrink-0 ${
                         msg.type === "ai"
                           ? "bg-[#3B82F6] text-white"
                           : "bg-[#1E293B]"
@@ -202,7 +202,7 @@ export default function AIAgents() {
                   key={feature.title}
                   className="flex items-center gap-3 p-4 rounded-xl bg-[#111827] border border-[rgba(148,163,184,0.08)]"
                 >
-                  <div className="w-10 h-10 rounded-[10px] flex items-center justify-center bg-[#1E293B] text-lg">
+                  <div className="w-10 h-10 rounded-[10px] flex items-center justify-center bg-[#1E293B] text-lg" aria-hidden="true">
                     {feature.icon}
                   </div>
                   <div>

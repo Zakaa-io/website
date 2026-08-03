@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import MarketingPageShell from "../components/MarketingPageShell";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Ecosystem", title: "Technology & Delivery Partners", description: "Zakaa combines engineering expertise with leading cloud, security, and data platforms to deliver reliable outcomes." });
 const partnerGroups = [
   {
     group: "Cloud Platforms",
@@ -10,7 +15,7 @@ const partnerGroups = [
     partners: ["SIEM & Threat Monitoring", "Identity & Access Management", "Endpoint Protection"],
   },
   {
-    group: "Data & AI Tooling",
+    group: "Data & AI Platforms",
     partners: ["Data Platforms", "AIOps and Automation", "Model Operations and Governance"],
   },
 ];
@@ -20,7 +25,7 @@ export default function PartnersPage() {
     <MarketingPageShell
       label="Ecosystem"
       title="Technology & Delivery Partners"
-      subtitle="Zakaa combines engineering expertise with leading cloud, security, and data platforms to deliver reliable outcomes."
+      subtitle="Zakaa combines engineering expertise with leading cloud, security, and data platforms to deliver reliable outcomes. Note: the listings below represent key technology areas we work with, not exhaustive partner agreements."
     >
       <section className="grid gap-5 md:grid-cols-3">
         {partnerGroups.map((group) => (

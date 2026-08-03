@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import MarketingPageShell from "../../components/MarketingPageShell";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Product", title: "AI Ops Copilot", description: "A production-ready operations layer that combines AI triage with engineered workflows for resilient service delivery." });
 const featureMatrix = [
   { feature: "Incident Detection", capability: "Real-time signal correlation with alert deduplication" },
   { feature: "AI Triage", capability: "Priority classification, root-cause hints, and action recommendations" },

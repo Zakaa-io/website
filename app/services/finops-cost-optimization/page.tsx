@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Service", title: "FinOps & Cost Optimization", description: "Establish cloud cost visibility, accountability, and continuous optimization at engineering speed." });
 export default function FinopsPage() {
   return (
     <SolutionPage

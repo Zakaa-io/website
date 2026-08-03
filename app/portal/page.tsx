@@ -112,7 +112,7 @@ export default function PortalPage() {
     return (
       <main className="min-h-screen bg-[#06060a] text-[#e4e4e7] p-6 md:p-10">
       <div className="max-w-md mx-auto mt-10 md:mt-20 rounded-2xl border border-[rgba(148,163,184,0.12)] bg-[#12121a] p-6 md:p-8">
-        <h1 className="text-2xl font-bold">Admin / Client Portal Login</h1>
+        <h1 className="text-2xl font-bold">Admin & Client Portal Login</h1>
         <p className="mt-2 text-sm text-[#a1a1aa]">Sign in to access your portal workspace.</p>
         <form className="mt-6 space-y-4" onSubmit={onLogin} aria-busy={isLoggingIn}>
           <div>

@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import LeadForm from "../components/LeadForm";
 import MarketingPageShell from "../components/MarketingPageShell";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Sandbox", title: "Request a Guided Sandbox", description: "Fast-track your proof-of-value with a scoped demo environment and implementation guidance." });
 const sandboxSteps = [
   "Tell us your target use case (operations, security, migration, or AI automation).",
   "Select preferred environment (cloud, hybrid, or on-prem).",

@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Service", title: "Cloud Migration & Modernization", description: "Move critical workloads from legacy environments to resilient, governed cloud architectures." });
 export default function CloudMigrationPage() {
   return (
     <SolutionPage

@@ -67,7 +67,7 @@ export default function Terminal() {
           <span className="text-[#3B82F6]">$</span>{" "}
           <span>zakaa status --all</span>
         </div>
-        <div className="text-[#10B981]">✓ All systems operational</div>
+        <div className="text-[#10B981]" aria-hidden="true">✓ All systems operational</div>
         <div>
           {"  ├─ AWS us-east-1: "}
           <span className="text-[#10B981]">HEALTHY</span> (12 instances)
@@ -88,7 +88,7 @@ export default function Terminal() {
           {"  └─ K8s clusters: "}
           <span className="text-[#10B981]">3/3 RUNNING</span>
         </div>
-        <div className="mt-2">
+        <div className="mt-2" aria-hidden="true">
           <span className="text-[#3B82F6]">$</span>{" "}
           <span>zakaa agent --list</span>
         </div>
@@ -112,7 +112,7 @@ export default function Terminal() {
           {"  └─ incident-responder "}
           <span className="text-[#94A3B8]"># 3 auto-resolved today</span>
         </div>
-        <div className="mt-2">
+        <div className="mt-2" aria-hidden="true">
           <span className="text-[#3B82F6]">$</span>{" "}
           <span>{displayed}</span>
           {!reducedMotion && (

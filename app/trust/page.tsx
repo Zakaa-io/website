@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import MarketingPageShell from "../components/MarketingPageShell";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Trust Center", title: "Security, Compliance, and Operational Transparency", description: "Built into every Zakaa delivery model from architecture and deployment to ongoing operations." });
 const trustBlocks = [
   {
     title: "Security by Design",

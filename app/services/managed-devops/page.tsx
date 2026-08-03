@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Service", title: "Managed DevOps & CI/CD", description: "Scale secure software delivery with automation, release governance, and continuous quality controls." });
 export default function ManagedDevOpsPage() {
   return (
     <SolutionPage

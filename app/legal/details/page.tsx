@@ -1,3 +1,8 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
+
+export const metadata: Metadata = generateMetadata({ label: "Legal", title: "Legal Details", description: "Contract and policy structure governing Zakaa services and client engagements." });
 export default function LegalDetailsPage() {
   return (
     <main className="min-h-screen bg-[#0B1120] px-6 py-24 text-[#F8FAFC]">

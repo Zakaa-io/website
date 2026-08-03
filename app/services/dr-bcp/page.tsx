@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Service", title: "Disaster Recovery & Business Continuity", description: "Design resilient recovery architecture that protects mission-critical services and business outcomes." });
 export default function DrBcpPage() {
   return (
     <SolutionPage

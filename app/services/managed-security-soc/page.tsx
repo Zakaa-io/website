@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Service", title: "Managed Security Operations (SOC)", description: "24/7 threat monitoring, triage, and response operations with expert and AI-assisted workflows." });
 export default function ManagedSecuritySocPage() {
   return (
     <SolutionPage

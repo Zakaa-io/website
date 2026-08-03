@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import MarketingPageShell from "../components/MarketingPageShell";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Operations", title: "Service Status & SLA", description: "Transparent visibility into service health, uptime targets, and incident communication." });
 const services = [
   { name: "API Platform", status: "Operational", uptime: "99.99%" },
   { name: "Portal Services", status: "Operational", uptime: "99.95%" },

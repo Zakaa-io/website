@@ -10,7 +10,7 @@ export default function BrandLogo({ size = "md" }: Readonly<BrandLogoProps>) {
       className={`${iconSizeClass} rounded-[12px] border border-[rgba(99,102,241,0.35)] bg-[linear-gradient(145deg,#0c0c12,#12121a)] p-1 shadow-[0_8px_24px_rgba(2,6,23,0.45)]`}
       aria-hidden="true"
     >
-      <svg viewBox="0 0 64 64" className="h-full w-full" role="img">
+      <svg viewBox="0 0 64 64" className="h-full w-full" role="img"><title>Zakaa Technology Solutions logo</title>
         <defs>
           <linearGradient id="zakaa-mark-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#60A5FA" />

@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Industry Solution", title: "Healthcare", description: "Reliable and secure infrastructure for clinical systems, patient platforms, and digital care operations." });
 export default function HealthcareIndustryPage() {
   return (
     <SolutionPage

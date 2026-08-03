@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import LeadForm from "../components/LeadForm";
 import MarketingPageShell from "../components/MarketingPageShell";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Knowledge Hub", title: "Resources", description: "Guides, whitepapers, and technical briefs for cloud, cybersecurity, and AI operations leaders." });
 const resources = [
   {
     type: "Whitepaper",
@@ -35,12 +40,12 @@ export default function ResourcesPage() {
             <p className="text-xs uppercase tracking-[0.14em] text-[#3B82F6]">{resource.type}</p>
             <h2 className="mt-3 text-lg font-semibold">{resource.title}</h2>
             <p className="mt-2 text-sm text-[#94A3B8]">Format: {resource.format}</p>
-            <button
-              type="button"
-              className="mt-4 rounded-[10px] bg-[#3B82F6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2563EB]"
+            <a
+              href="#contact"
+              className="mt-4 inline-block rounded-[10px] bg-[#3B82F6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2563EB] no-underline"
             >
               Request Download
-            </button>
+            </a>
           </article>
         ))}
       </section>

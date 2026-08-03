@@ -84,7 +84,7 @@ export default function Phase3Labs() {
 
     const payload = (await response.json()) as DemoSimulationResponse | { error: string };
     if (!response.ok) {
-      setSimError("error" in payload ? payload.error : "Simulation failed.");
+      setSimError("error" in payload ? payload.error : "Simulation failed. Please try again or check your token.");
       void emitAnalyticsEvent({ name: "simulator_failed", details: { scenario, environment } });
       setIsSimulating(false);
       return;
@@ -116,7 +116,7 @@ export default function Phase3Labs() {
 
     const payload = (await response.json()) as PortalAgentResponse | { error: string };
     if (!response.ok) {
-      setPortalError("error" in payload ? payload.error : "Triage failed.");
+      setPortalError("error" in payload ? payload.error : "Triage failed. Please check your inputs and try again.");
       void emitAnalyticsEvent({ name: "portal_triage_failed", details: { service: affectedService } });
       setIsTriageRunning(false);
       return;

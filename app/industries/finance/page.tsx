@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Industry Solution", title: "Financial Services", description: "Secure, low-latency, compliant infrastructure for digital banking, fintech platforms, and payment systems." });
 export default function FinanceIndustryPage() {
   return (
     <SolutionPage

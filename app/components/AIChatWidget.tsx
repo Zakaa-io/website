@@ -57,7 +57,7 @@ export default function AIChatWidget() {
 
     const payload = (await response.json()) as ChatResponse | { error: string };
     if (!response.ok) {
-      setError("error" in payload ? payload.error : "Could not get AI response.");
+      setError("error" in payload ? payload.error : "Could not get a response. Please try again or email hello@zakaa.io.");
       void emitAnalyticsEvent({ name: "chat_response_failed", details: {} });
       setIsSending(false);
       return;

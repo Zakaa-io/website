@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Industry Solution", title: "Retail & Logistics", description: "Elastic, observable infrastructure for digital commerce, omnichannel operations, and supply-chain reliability." });
 export default function RetailLogisticsIndustryPage() {
   return (
     <SolutionPage

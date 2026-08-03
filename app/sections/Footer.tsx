@@ -5,25 +5,23 @@ import { useSmoothScroll } from "@/lib/useSmoothScroll";
 
 const footerLinks = {
   Services: [
-    { label: "Cloud Infrastructure", href: "#services" },
-    { label: "DevOps & CI/CD", href: "#services" },
-    { label: "Security", href: "#services" },
-    { label: "Networking", href: "#services" },
-    { label: "Managed Hosting", href: "#services" },
+    { label: "Cloud Migration", href: "/services/cloud-migration" },
+    { label: "Managed DevOps", href: "/services/managed-devops" },
+    { label: "Managed Security (SOC)", href: "/services/managed-security-soc" },
+    { label: "FinOps & Cost Optimization", href: "/services/finops-cost-optimization" },
+    { label: "Disaster Recovery", href: "/services/dr-bcp" },
   ],
   Platform: [
     { label: "AI Agents", href: "#ai" },
     { label: "Client Portal", href: "/portal" },
     { label: "API Documentation", href: "/docs" },
     { label: "Status Page", href: "/status" },
-    { label: "Changelog", href: "/resources" },
+    { label: "Resources", href: "/resources" },
   ],
   Company: [
     { label: "Company Details", href: "/company/details" },
-    { label: "About Us", href: "/company/details" },
-    { label: "Careers", href: "/company/details" },
-    { label: "Blog", href: "/resources" },
     { label: "Case Studies", href: "/case-studies" },
+    { label: "Partners", href: "/partners" },
     { label: "Contact", href: "#contact" },
   ],
   Legal: [
@@ -62,13 +60,13 @@ export default function Footer() {
               <span>Zakaa</span>
             </a>
             <p className="text-[#94A3B8] text-sm mt-4 leading-relaxed max-w-sm">
-              Enterprise IT infrastructure management powered by autonomous AI agents. We build, secure, and operate the systems that power your business.
+              We design, deploy, and manage cloud-native infrastructure with autonomous AI agents — so your team focuses on what matters.
             </p>
             <div className="mt-4 text-sm text-[#94A3B8] space-y-1">
               <p>📧 hello@zakaa.io</p>
-              <p>📞 +20 1000 292 919</p>
+              <p>📞 +20 1000 292 919 | +20 1234 522 055</p>
               <p>📞 +20 1234 522 055</p>
-              <p>📍 5th Settlement — Cairo — Egypt</p>
+              <p>📍 5th Settlement, Cairo, Egypt</p>
             </div>
             <div className="flex flex-wrap gap-3 mt-5">
               {[
@@ -81,7 +79,7 @@ export default function Footer() {
                   key={item.platform}
                   href="#"
                   className="inline-flex items-center gap-2 rounded-[10px] bg-[#12121a] border border-[rgba(148,163,184,0.06)] px-3 py-2 text-[#94A3B8] text-sm no-underline transition-all hover:bg-[#1a1a24] hover:text-[#6366f1] hover:border-[rgba(99,102,241,0.2)]"
-                  aria-label={`${item.platform} zakaa-ai`}
+                  aria-label={`Follow Zakaa on ${item.platform}`}
                 >
                   <span className="font-semibold">{item.icon}</span>
                   <span className="text-xs">zakaa-ai</span>
@@ -127,8 +125,8 @@ export default function Footer() {
           </p>
           <div className="flex gap-6">
             {[
-              { label: "Privacy", href: "/legal/privacy-policy" },
-              { label: "Terms", href: "/legal/terms-of-service" },
+              { label: "Privacy Policy", href: "/legal/privacy-policy" },
+              { label: "Terms of Service", href: "/legal/terms-of-service" },
               { label: "Cookies", href: "/legal/cookies" },
               { label: "Sitemap", href: "/sitemap" },
             ].map((item) => (

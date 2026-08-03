@@ -105,7 +105,7 @@ export default function LeadForm({ source = "cta", compact = false }: LeadFormPr
         </div>
 
         <div>
-          <label htmlFor="lead-company" className="block text-sm font-medium text-[#94A3B8] mb-1.5">Company (optional)</label>
+          <label htmlFor="lead-company" className="block text-sm font-medium text-[#94A3B8] mb-1.5">Company name (optional)</label>
           <input
             id="lead-company"
             type="text"

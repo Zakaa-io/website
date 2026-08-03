@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import Link from "next/link";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Error", title: "404 - Page Not Found", description: "The page you requested does not exist or has been moved." });
 export default function NotFound() {
   return (
     <main className="min-h-screen bg-[#0B1120] text-[#F8FAFC] flex items-center justify-center px-6">

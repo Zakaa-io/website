@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
+import { generateMetadata } from "@/lib/metadata";
+
 import SolutionPage from "../../components/SolutionPage";
 
+
+export const metadata: Metadata = generateMetadata({ label: "Industry Solution", title: "Public Sector", description: "Sovereign-ready digital infrastructure for citizen services, high-scale operations, and secure modernization." });
 export default function PublicSectorIndustryPage() {
   return (
     <SolutionPage

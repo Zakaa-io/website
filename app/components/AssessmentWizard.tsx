@@ -68,6 +68,9 @@ export default function AssessmentWizard({ language }: AssessmentWizardProps) {
           priorities: filtered.length > 0 ? filtered : prev.priorities,
         };
       }
+      if (prev.priorities.length >= 3) {
+        return prev;
+      }
       return { ...prev, priorities: [...prev.priorities, priority] };
     });
   };

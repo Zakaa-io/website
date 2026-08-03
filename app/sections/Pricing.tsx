@@ -14,7 +14,7 @@ const plans = [
       "Up to 20 cloud instances",
       "Basic monitoring & alerting",
       "1 AI agent (monitoring)",
-      "Business hours support",
+      "24/7 support",
       "Monthly security reports",
       "Email & Slack integration",
     ],
@@ -117,7 +117,7 @@ export default function Pricing() {
                       key={feature}
                       className="flex items-center gap-2.5 py-1 text-sm text-[#94A3B8]"
                     >
-                      <span className="text-[#10B981] font-bold">✓</span>
+                      <span className="text-[#10B981] font-bold" aria-hidden="true">✓</span>
                       {feature}
                     </li>
                   ))}
