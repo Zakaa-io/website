@@ -201,6 +201,7 @@ export default function Navbar() {
 
           <button
             type="button"
+            ref={menuToggleRef}
             className="zakaa-navbar-menu-toggle md:hidden bg-transparent border-none text-[#e4e4e7] text-2xl cursor-pointer"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"

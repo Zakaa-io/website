@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import ThemeToggle from "./components/ThemeToggle";
 
 export const metadata: Metadata = {
   title: "Zakaa — Enterprise IT Infrastructure & AI Operations",
@@ -57,7 +56,6 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <ThemeToggle />
         <div id="main-content">{children}</div>
       </body>
     </html>
