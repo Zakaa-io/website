@@ -1,4 +1,5 @@
 import { readdir, readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -6,6 +7,33 @@ import { Pool } from "pg";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function loadEnv(filePath) {
+  try {
+    const content = readFileSync(filePath, "utf8");
+    for (const line of content.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const match = trimmed.match(/^([^=]+)=(.*)$/);
+      if (match) {
+        const key = match[1].trim();
+        let value = match[2].trim();
+        if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+          value = value.slice(1, -1);
+        }
+        if (!(key in process.env)) {
+          process.env[key] = value;
+        }
+      }
+    }
+  } catch {
+    // ignore missing env file
+  }
+}
+
+loadEnv(path.resolve(__dirname, "..", ".env.local"));
+loadEnv(path.resolve(__dirname, "..", ".env"));
+
 const MIGRATIONS_DIR = path.resolve(__dirname, "..", "db", "migrations");
 
 function getPool() {
