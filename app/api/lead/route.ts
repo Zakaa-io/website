@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { trackServerEvent } from "@/lib/analytics/server";
 import { persistLeadSubmission } from "@/lib/persistence/store";
+import { sendLeadNotificationEmail } from "@/lib/lead/email";
 import type { LeadRequest, LeadResponse, LeadTier } from "@/types/ai";
 import { checkRateLimit, resolveRateLimitKey } from "@/lib/server/rate-limit";
 import {
@@ -110,6 +111,19 @@ export async function POST(request: Request) {
       name: "lead_submitted",
       route: "/api/lead",
       details: { score, tier, source: payload.source ?? "unknown", persistence },
+    });
+
+    void sendLeadNotificationEmail({
+      name: payload.name,
+      email: payload.email,
+      company: payload.company,
+      message: payload.message,
+      source: payload.source,
+      tier,
+      score,
+      referenceId: response.referenceId,
+    }).catch((emailError) => {
+      console.error("Failed to send lead notification email", emailError);
     });
 
     return NextResponse.json(response, { status: 200 });
