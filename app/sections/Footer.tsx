@@ -64,8 +64,8 @@ export default function Footer() {
             </p>
             <div className="mt-4 text-sm text-[#94A3B8] space-y-1">
               <p>📧 hello@zakaa.io</p>
-              <p>📞 +20 1000 292 919 | +20 1234 522 055</p>
-              <p>📞 +20 1234 522 055</p>
+              <p>📞 +20 1000292919</p>
+              <p>📞 +20 1234522055</p>
               <p>📍 5th Settlement, Cairo, Egypt</p>
             </div>
             <div className="flex flex-wrap gap-3 mt-5">
