@@ -45,6 +45,8 @@ export default function Testimonials() {
   const currentTranslate = useRef(0);
   const prevTranslate = useRef(0);
   const animationID = useRef(0);
+  const autoPlayRef = useRef<number | null>(null);
+  const isPausedRef = useRef(false);
 
   const slideWidth = () => {
     if (!trackRef.current) return 0;
@@ -74,6 +76,7 @@ export default function Testimonials() {
   const touchStart = (clientX: number) => {
     startX.current = clientX;
     setIsTransitioning(false);
+    isPausedRef.current = true;
   };
 
   const touchMove = (clientX: number) => {
@@ -86,6 +89,7 @@ export default function Testimonials() {
 
   const touchEnd = (clientX: number) => {
     const movedBy = clientX - startX.current;
+    isPausedRef.current = false;
     if (movedBy < -75) {
       next();
     } else if (movedBy > 75) {
@@ -121,6 +125,29 @@ export default function Testimonials() {
   const onMouseUp = (e: React.MouseEvent) => {
     touchEnd(e.clientX);
   };
+
+  const startAutoPlay = () => {
+    if (autoPlayRef.current) {
+      window.clearInterval(autoPlayRef.current);
+    }
+    autoPlayRef.current = window.setInterval(() => {
+      if (!isPausedRef.current && !isTransitioning) {
+        next();
+      }
+    }, 3000);
+  };
+
+  const stopAutoPlay = () => {
+    if (autoPlayRef.current) {
+      window.clearInterval(autoPlayRef.current);
+      autoPlayRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    startAutoPlay();
+    return stopAutoPlay;
+  }, [index]);
 
   useEffect(() => {
     if (!trackRef.current) return;
@@ -169,8 +196,12 @@ export default function Testimonials() {
               onMouseDown={onMouseDown}
               onMouseMove={onMouseMove}
               onMouseUp={onMouseUp}
+              onMouseEnter={() => {
+                isPausedRef.current = true;
+              }}
               onMouseLeave={(e) => {
                 if (e.buttons === 1) onMouseUp(e);
+                isPausedRef.current = false;
               }}
             >
               {reviews.map((review) => (
