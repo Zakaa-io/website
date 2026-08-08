@@ -177,7 +177,7 @@ export default function Testimonials() {
                 <div
                   key={review.name}
                   data-card
-                  className="min-w-[280px] md:min-w-[360px] flex-shrink-0 bg-[#111827] border border-[rgba(148,163,184,0.08)] rounded-2xl p-8 transition-all duration-300 hover:border-[rgba(148,163,184,0.12)] hover:-translate-y-0.5 h-full flex flex-col"
+                  className="w-[calc(100vw-4rem)] md:w-[360px] flex-shrink-0 bg-[#111827] border border-[rgba(148,163,184,0.08)] rounded-2xl p-6 md:p-8 transition-all duration-300 hover:border-[rgba(148,163,184,0.12)] hover:-translate-y-0.5 h-full flex flex-col"
                 >
                   <div className="text-[#F59E0B] text-base mb-4" aria-hidden="true">★★★★★</div>
                   <p className="text-[#94A3B8] text-[0.95rem] leading-relaxed mb-6 italic flex-1">
