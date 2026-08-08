@@ -39,7 +39,7 @@ const reviews = [
 
 export default function Testimonials() {
   const [index, setIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const isTransitioning = useRef(false);
   const trackRef = useRef<HTMLDivElement>(null);
   const startX = useRef(0);
   const currentTranslate = useRef(0);
@@ -56,8 +56,8 @@ export default function Testimonials() {
   };
 
   const moveTo = (targetIndex: number) => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
+    if (isTransitioning.current) return;
+    isTransitioning.current = true;
     setIndex(targetIndex);
     prevTranslate.current = -targetIndex * slideWidth();
     currentTranslate.current = prevTranslate.current;
@@ -75,7 +75,7 @@ export default function Testimonials() {
 
   const touchStart = (clientX: number) => {
     startX.current = clientX;
-    setIsTransitioning(false);
+    isTransitioning.current = false;
     isPausedRef.current = true;
   };
 
@@ -131,7 +131,7 @@ export default function Testimonials() {
       window.clearInterval(autoPlayRef.current);
     }
     autoPlayRef.current = window.setInterval(() => {
-      if (!isPausedRef.current && !isTransitioning) {
+      if (!isPausedRef.current && !isTransitioning.current) {
         next();
       }
     }, 3000);
@@ -157,7 +157,7 @@ export default function Testimonials() {
         trackRef.current.style.transform = `translateX(${currentTranslate.current}px)`;
       }
     });
-    const timeout = setTimeout(() => setIsTransitioning(false), 350);
+    const timeout = setTimeout(() => { isTransitioning.current = false; }, 350);
     return () => clearTimeout(timeout);
   }, [index]);
 
@@ -167,7 +167,7 @@ export default function Testimonials() {
     currentTranslate.current = prevTranslate.current;
     trackRef.current.style.transition = "transform 350ms ease";
     trackRef.current.style.transform = `translateX(${currentTranslate.current}px)`;
-    const timeout = setTimeout(() => setIsTransitioning(false), 350);
+    const timeout = setTimeout(() => { isTransitioning.current = false; }, 350);
     return () => clearTimeout(timeout);
   }, []);
 
