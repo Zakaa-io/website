@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import AssessmentWizard from "../components/AssessmentWizard";
 import FadeIn from "../components/FadeIn";
 import LeadForm from "../components/LeadForm";
@@ -13,8 +12,6 @@ export default function CTA() {
   const openChat = () => {
     window.dispatchEvent(new Event("zakaa:open-ai-chat"));
   };
-
-  const [language, setLanguage] = useState<"en" | "ar">("en");
 
   return (
     <section
@@ -65,22 +62,8 @@ export default function CTA() {
         </FadeIn>
         <FadeIn delay={350}>
           <div id="assessment-form" className="mt-10 space-y-4">
-            <AssessmentWizard language={language} />
+            <AssessmentWizard language="en" />
             <LeadForm source="cta" />
-            <div className="mt-6 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={() => setLanguage("en")}
-                className={`text-xs px-3 py-1.5 rounded-md transition-all ${language === "en" ? "bg-[#3B82F6] text-white" : "text-[#94A3B8] bg-[#1a1a24]"}`}>
-                EN
-              </button>
-              <button
-                type="button"
-                onClick={() => setLanguage("ar")}
-                className={`text-xs px-3 py-1.5 rounded-md transition-all ${language === "ar" ? "bg-[#3B82F6] text-white" : "text-[#94A3B8] bg-[#1a1a24]"}`}>
-                AR
-              </button>
-            </div>
           </div>
         </FadeIn>
         <FadeIn delay={400}>
