@@ -72,7 +72,7 @@ export default function Footer() {
               {[
                 {
                   name: "X",
-                  href: "https://x.com/zakaa",
+                  href: process.env.NEXT_PUBLIC_SOCIAL_X_URL || "https://x.com/zakaa",
                   color: "#FFFFFF",
                   icon: (
                     <svg
@@ -87,7 +87,7 @@ export default function Footer() {
                 },
                 {
                   name: "LinkedIn",
-                  href: "https://linkedin.com/company/zakaa",
+                  href: process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN_URL || "https://linkedin.com/company/zakaa",
                   color: "#0077B5",
                   icon: (
                     <svg
@@ -102,7 +102,7 @@ export default function Footer() {
                 },
                 {
                   name: "GitHub",
-                  href: "https://github.com/zakaa",
+                  href: process.env.NEXT_PUBLIC_SOCIAL_GITHUB_URL || "https://github.com/zakaa",
                   color: "#FFFFFF",
                   icon: (
                     <svg
@@ -117,7 +117,7 @@ export default function Footer() {
                 },
                 {
                   name: "Discord",
-                  href: "https://discord.gg/zakaa",
+                  href: process.env.NEXT_PUBLIC_SOCIAL_DISCORD_URL || "https://discord.gg/zakaa",
                   color: "#5865F2",
                   icon: (
                     <svg
